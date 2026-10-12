@@ -140,6 +140,11 @@ def test_rank_sum_order_and_budget(xyz_pool):
     assert [r["running_cost"] for r in sel] == [2800, 5600, 8400]
     assert [r["configuration"] for r in rej] == ["cell_EC_300"]
     assert rej[0]["reason"].startswith("over budget")
+    # where each frame stands in its kind, so the budget cut can be read off
+    assert [r["rank_in_kind"] for r in sel] == [1, 2, 3]
+    assert [r["rank_sum"] for r in sel] == [4, 5, 5]
+    assert rej[0]["rank_in_kind"] == 4 and rej[0]["n_in_kind"] == 4
+    assert rej[0]["cost"] == 2800
 
 
 def test_group_costs_caps_exclude_and_fill(xyz_pool):

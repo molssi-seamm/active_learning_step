@@ -40,6 +40,12 @@ as subtracted is not added back (``--dispersion false``): it is the same in ever
 member and adds nothing to the spreads. ``--atoms frames.extxyz`` writes every frame
 with its per-atom force spread.
 
+The models are served in the dtype of their weights, usually float32, as the water
+campaign scored. Float32 reductions on CPUs are not reproducible from run to run: the
+same frame scored twice can differ by about 1e-5 relative in the pressure spreads (and
+much less in the energy and force spreads), which cannot change a ranking.
+``--dtype float64`` gives reproducible numbers at about twice the cost.
+
 Selecting
 =========
 
@@ -53,6 +59,8 @@ By default cells are ranked by the sum of their ranks in ``rho_pressure_molecula
 and ``rho_forces``, clusters by ``rho_forces`` (change with ``--rank``), and frames are
 taken in that order until the next would exceed the budget (``--fill`` skips it and
 keeps going). ``--threshold rho_forces=0.0106`` limits the candidates to frames whose
-spread reaches a threshold. The output is ``selection.csv``, with the reason and the
-running cost of every frame chosen, and the chosen frames copied byte for byte from
+spread reaches a threshold. The output is ``selection.csv``, with the reason, the
+running cost and the frame's rank within its kind (``rank_in_kind`` of ``n_in_kind``)
+for every frame chosen; the command also reports where the budget cut fell, and
+``--rejected rejected.csv`` lists every frame not chosen with its rank and why, and the chosen frames copied byte for byte from
 the pool files into ``selected.extxyz`` and/or ``selected.sdf``, ready for labelling.

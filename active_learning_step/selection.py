@@ -267,12 +267,27 @@ def choose(
                 raise ValueError(f"no column {column!r} in the scores")
         total, per_column = _ranks(these, columns)
         worst = len(these) * len(columns)
+        # the position of each frame in its kind's order (ties keep file order)
+        position = np.empty(len(these), dtype=int)
+        position[np.lexsort((np.arange(len(these)), total))] = np.arange(
+            1, len(these) + 1
+        )
         for k, r in enumerate(these):
             detail = ", ".join(
                 f"{c} #{per_column[c][k]} ({_float(r[c]):.4g})" for c in columns
             )
-            text = f"{kind} rank-sum {int(total[k])} of {len(these)}: {detail}"
-            ordered.append((total[k] / worst, total[k], k, kind, r, text))
+            text = (
+                f"{kind} #{position[k]} of {len(these)} "
+                f"(rank-sum {int(total[k])}: {detail})"
+            )
+            if id(r) in flagged_by:
+                text = f"{flagged_by[id(r)]}; {text}"
+            info = {
+                "rank_in_kind": int(position[k]),
+                "n_in_kind": len(these),
+                "rank_sum": int(total[k]),
+            }
+            ordered.append((total[k] / worst, total[k], k, kind, {**r, **info}, text))
     ordered.sort(key=lambda t: (t[0], t[1], t[3], t[2]))
 
     selected = []
@@ -305,18 +320,14 @@ def choose(
             )
         if budget is not None and running + cost > budget:
             reason = f"over budget: {running:.0f} + {cost:.0f} > {budget:.0f} core-h"
-            if fill:
-                rejected.append({**row, "reason": reason})
-                continue
-            stopped = "over budget"
-            rejected.append({**row, "reason": reason})
+            rejected.append({**row, "cost": cost, "reason": reason})
+            if not fill:
+                stopped = "over budget"
             continue
         running += cost
         for column in caps:
             counts[column][row[column]] = counts[column].get(row[column], 0) + 1
         reason = text
-        if id(row) in flagged_by:
-            reason = f"{flagged_by[id(row)]}; {text}"
         selected.append(
             {
                 **row,
@@ -428,6 +439,9 @@ def select_main(args):
     )
     lead = (
         "order",
+        "rank_in_kind",
+        "n_in_kind",
+        "rank_sum",
         "file",
         "index",
         "configuration",
@@ -443,7 +457,16 @@ def select_main(args):
         write_rows(
             args.rejected,
             rejected,
-            ("file", "index", "configuration", "kind", "reason"),
+            (
+                "rank_in_kind",
+                "n_in_kind",
+                "file",
+                "index",
+                "configuration",
+                "kind",
+                "cost",
+                "reason",
+            ),
         )
     files = write_records(selected, args.output) if selected else {}
     total = selected[-1]["running_cost"] if selected else 0.0
@@ -454,6 +477,12 @@ def select_main(args):
         f"Selected {len(selected)} of {len(rows)} frames {kinds}, {total:.1f} core-h"
         + (f" of {args.budget:.1f}" if args.budget is not None else "")
     )
+    cut = next((r for r in rejected if r["reason"].startswith("over budget:")), None)
+    if cut is not None:
+        print(
+            f"Budget cut at {cut['kind']} {cut['configuration']!r}, rank "
+            f"{cut['rank_in_kind']} of {cut['n_in_kind']} in its kind: {cut['reason']}"
+        )
     reasons = {}
     for row in rejected:
         key = row["reason"].split(":")[0]
