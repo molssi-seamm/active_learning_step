@@ -1,0 +1,193 @@
+# -*- coding: utf-8 -*-
+
+"""The ``seamm-al`` command: query-by-committee active learning from the shell.
+
+    seamm-al score -m m0/best.pt m1/best.pt ... [-o scores.csv] pool.extxyz [...]
+    seamm-al select scores.csv --budget 75000 \\
+        --cost cell:EC=2800 --cost cell:FEC=3900 \\
+        --group-column liquid --cap temperature=6 --exclude labelled.txt
+
+``score`` needs torch and xnn (run it in an MLFF environment); ``select`` needs neither.
+Without installing the package, run ``python -m active_learning_step.cli`` with the
+repository on ``PYTHONPATH``.
+"""
+
+import argparse
+import logging
+import sys
+
+
+def _bool(text):
+    value = text.strip().lower()
+    if value in ("true", "yes", "1", "on"):
+        return True
+    if value in ("false", "no", "0", "off"):
+        return False
+    raise argparse.ArgumentTypeError(f"expected true or false, not {text!r}")
+
+
+def parser():
+    """The argument parser of ``seamm-al``."""
+    p = argparse.ArgumentParser(
+        prog="seamm-al",
+        description=(
+            "Query-by-committee active learning: score candidate pools and select "
+            "frames."
+        ),
+    )
+    p.add_argument(
+        "--log-level", default="WARNING", help="logging level (default WARNING)"
+    )
+    sub = p.add_subparsers(dest="command", required=True)
+
+    s = sub.add_parser(
+        "score", help="committee spreads for every frame of candidate pools"
+    )
+    s.add_argument("pools", nargs="+", help="pool files: .extxyz, or .sdf from SEAMM")
+    s.add_argument(
+        "-m",
+        "--models",
+        nargs="+",
+        required=True,
+        help="the committee members' checkpoints (best.pt or model directories)",
+    )
+    s.add_argument(
+        "-o", "--out", default="scores.csv", help="the scores (default scores.csv)"
+    )
+    s.add_argument(
+        "--atoms",
+        default=None,
+        help="also write every frame with its per-atom force spread to this extxyz",
+    )
+    s.add_argument(
+        "--carry",
+        action="append",
+        default=[],
+        help="an info key to copy into a column (repeatable)",
+    )
+    s.add_argument(
+        "--dispersion",
+        type=_bool,
+        default=False,
+        help="add the recorded dispersion back (default false: route B, as Sina)",
+    )
+    s.add_argument("--device", default="cpu", help="torch device (default cpu)")
+    s.add_argument(
+        "--dtype",
+        default=None,
+        choices=("float32", "float64"),
+        help="serve the models in this dtype (default: the weights')",
+    )
+    s.add_argument(
+        "--batch-size",
+        type=int,
+        default=16,
+        help="clusters per batch (default 16); cells are scored one at a time",
+    )
+
+    t = sub.add_parser(
+        "select", help="choose frames from scores within a core-hour budget"
+    )
+    t.add_argument("scores", nargs="+", help="scores.csv files from 'seamm-al score'")
+    t.add_argument("--budget", type=float, default=None, help="core-hours available")
+    t.add_argument(
+        "--cost",
+        action="append",
+        default=[],
+        help="core-hours per frame: KIND=COREH or KIND:GROUP=COREH (repeatable)",
+    )
+    t.add_argument(
+        "--group-column",
+        default=None,
+        help="the column whose values the GROUP of --cost matches (shell patterns)",
+    )
+    t.add_argument(
+        "--rank",
+        action="append",
+        default=[],
+        help="ranking columns of a kind, KIND=COL[,COL...] (default "
+        "cell=rho_pressure_molecular,rho_forces and cluster=rho_forces)",
+    )
+    t.add_argument(
+        "--threshold",
+        action="append",
+        default=[],
+        help="select spreads >= a threshold: NAME=VALUE or KIND:NAME=VALUE",
+    )
+    t.add_argument(
+        "--combine",
+        choices=("any", "all"),
+        default="any",
+        help="with several thresholds, any (default, Sina's rule) or all must be met",
+    )
+    t.add_argument(
+        "--cap",
+        action="append",
+        default=[],
+        help="at most N frames per value of a column: COLUMN=N (repeatable)",
+    )
+    t.add_argument(
+        "--exclude",
+        action="append",
+        default=[],
+        help="a file of configuration names already labelled, one per line",
+    )
+    t.add_argument(
+        "--fill",
+        action="store_true",
+        help="skip frames that do not fit the budget and keep going, rather than stop",
+    )
+    t.add_argument(
+        "--max-frames", type=int, default=None, help="select at most this many frames"
+    )
+    t.add_argument(
+        "-o",
+        "--out",
+        default="selection.csv",
+        help="the selection (default selection.csv)",
+    )
+    t.add_argument(
+        "--output",
+        default="selected",
+        help="prefix of the selected frames' files (default 'selected')",
+    )
+    t.add_argument(
+        "--rejected", default=None, help="also write the frames not selected, with why"
+    )
+    return p
+
+
+def main(argv=None):
+    """Run ``seamm-al``."""
+    args = parser().parse_args(argv)
+    logging.basicConfig(
+        level=args.log_level.upper(), format="%(asctime)s %(levelname)s %(message)s"
+    )
+    if args.command == "score":
+        from .score import score_pool
+
+        n = score_pool(
+            args.pools,
+            args.models,
+            out_csv=args.out,
+            atoms_out=args.atoms,
+            carry=args.carry,
+            dispersion=args.dispersion,
+            device=args.device,
+            dtype=args.dtype,
+            batch_size=args.batch_size,
+        )
+        print(f"Scored {n} frames -> {args.out}")
+    else:
+        from .selection import select_main
+
+        try:
+            select_main(args)
+        except ValueError as e:
+            print(f"seamm-al select: {e}", file=sys.stderr)
+            return 2
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

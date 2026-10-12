@@ -51,6 +51,9 @@ setup(
     # deployment
     install_requires=requirements,
 
+    # 'seamm-al score' runs the committee: torch and xnn, in an MLFF environment
+    extras_require={'score': ['xnns>=0.11.1']},
+
     test_suite='tests',
 
     # Valid platforms your code works on, adjust to your flavor
@@ -79,6 +82,9 @@ setup(
         'Programming Language :: Python :: 3.12',
     ],
     entry_points={
+        'console_scripts': [
+            'seamm-al=active_learning_step.cli:main',
+        ],
         'org.molssi.seamm': [
             'Active Learning = active_learning_step:ActiveLearningStep',
         ],

@@ -1,3 +1,5 @@
+ase
+numpy
 seamm
 seamm-util
 seamm-widgets
