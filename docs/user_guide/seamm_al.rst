@@ -46,6 +46,37 @@ same frame scored twice can differ by about 1e-5 relative in the pressure spread
 much less in the energy and force spreads), which cannot change a ranking.
 ``--dtype float64`` gives reproducible numbers at about twice the cost.
 
+Training a committee
+====================
+
+``seamm-al train`` trains the ``k`` members of a committee in an MLFF environment::
+
+    seamm-al train -c recipe.yaml -o committee labelled.extxyz [more.extxyz ...] \
+        -k 5 --cell-share 0.15 --steps 52950 [--member 2]
+
+The recipe is an ordinary xnn YAML config (model, loss weights, optimiser, epochs and
+the dispersion subtracted from the labels); ``seamm-al`` supplies the data, the folds,
+the seeds and the batching. The labelled frames are cut into ``k`` folds with the data
+seed (``--data-seed``, default 0); member ``l`` trains on the other folds, validates on
+fold ``l`` and is initialised from seed ``1000 + l`` (``--init-seed``). Batches never
+mix clusters and cells: clusters use the recipe's ``data.batch_size`` and cells
+``--cell-batch-size`` (default 4). ``--cell-share`` makes cell batches that share of
+every epoch whatever the selection holds, and ``--steps`` trains every member for the
+same number of optimiser steps, so committees trained on different selections differ
+only in their data. ``avg_num_neighbors: auto`` in the recipe uses the mean neighbour
+count of each member's training set.
+
+The committee's directory holds ``manifest.json`` (the folds, the seeds, the data files
+and their SHA-256, a hash of the ordered frames, the recipe, the batching and the code
+versions), ``frames.csv`` (every frame's fold) and one directory per member with
+``best.pt``, ``last.pt``, ``history.json`` and ``member.json``. Members can be trained
+in separate jobs (``--member``): each checks the manifest, a directory holding a
+different plan is refused, and a member that has finished is skipped.
+
+The batch samplers reshuffle every epoch. xnn 0.12 and later call their ``set_epoch``
+each epoch; with xnn 0.11 they replace the trainer's loaders and reshuffle by
+themselves (single process only).
+
 Selecting
 =========
 

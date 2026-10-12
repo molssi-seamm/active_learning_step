@@ -3,11 +3,13 @@
 """The ``seamm-al`` command: query-by-committee active learning from the shell.
 
     seamm-al score -m m0/best.pt m1/best.pt ... [-o scores.csv] pool.extxyz [...]
+    seamm-al train -c recipe.yaml -o committee labelled.extxyz [--cell-share 0.15]
     seamm-al select scores.csv --budget 75000 \\
         --cost cell:EC=2800 --cost cell:FEC=3900 \\
         --group-column liquid --cap temperature=6 --exclude labelled.txt
 
-``score`` needs torch and xnn (run it in an MLFF environment); ``select`` needs neither.
+``score`` and ``train`` need torch and xnn (an MLFF environment); ``select`` needs
+neither.
 Without installing the package, run ``python -m active_learning_step.cli`` with the
 repository on ``PYTHONPATH``.
 """
@@ -83,6 +85,60 @@ def parser():
         type=int,
         default=16,
         help="clusters per batch (default 16); cells are scored one at a time",
+    )
+
+    r = sub.add_parser("train", help="train the members of a k-fold committee")
+    r.add_argument("data", nargs="+", help="labelled data files (.extxyz)")
+    r.add_argument("-c", "--config", required=True, help="the xnn YAML config (recipe)")
+    r.add_argument("-o", "--out", required=True, help="the committee's directory")
+    r.add_argument(
+        "-k", "--k", type=int, default=5, help="folds and members (default 5)"
+    )
+    r.add_argument(
+        "--member",
+        type=int,
+        action="append",
+        default=None,
+        help="train only this member (repeatable; default all)",
+    )
+    r.add_argument(
+        "--data-seed",
+        type=int,
+        default=0,
+        help="seed of the fold permutation (default 0)",
+    )
+    r.add_argument(
+        "--init-seed",
+        type=int,
+        default=1000,
+        help="member l uses seed INIT_SEED + l (default 1000)",
+    )
+    r.add_argument(
+        "--cell-share",
+        type=float,
+        default=None,
+        help="cell batches as this share of every epoch (default one pass)",
+    )
+    r.add_argument(
+        "--cell-batch-size",
+        type=int,
+        default=4,
+        help="cells per batch (default 4); clusters use data.batch_size",
+    )
+    r.add_argument(
+        "--steps",
+        type=int,
+        default=None,
+        help="optimiser steps per member, instead of the config's epochs",
+    )
+    r.add_argument("--device", default=None, help="override the config's device")
+    r.add_argument(
+        "--set",
+        dest="overrides",
+        action="append",
+        default=[],
+        metavar="KEY=VALUE",
+        help="xnn config override, e.g. optim.lr=0.005",
     )
 
     t = sub.add_parser(
@@ -178,6 +234,27 @@ def main(argv=None):
             batch_size=args.batch_size,
         )
         print(f"Scored {n} frames -> {args.out}")
+    elif args.command == "train":
+        from .train import train_committee
+
+        try:
+            train_committee(
+                args.config,
+                args.data,
+                args.out,
+                k=args.k,
+                members=args.member,
+                data_seed=args.data_seed,
+                init_seed=args.init_seed,
+                cell_share=args.cell_share,
+                cell_batch_size=args.cell_batch_size,
+                steps=args.steps,
+                device=args.device,
+                overrides=args.overrides,
+            )
+        except ValueError as e:
+            print(f"seamm-al train: {e}", file=sys.stderr)
+            return 2
     else:
         from .selection import select_main
 
