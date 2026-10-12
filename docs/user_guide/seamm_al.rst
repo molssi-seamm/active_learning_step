@@ -57,7 +57,11 @@ Training a committee
 The recipe is an ordinary xnn YAML config (model, loss weights, optimiser, epochs and
 the dispersion subtracted from the labels); ``seamm-al`` supplies the data, the folds,
 the seeds and the batching. The labelled frames are cut into ``k`` folds with the data
-seed (``--data-seed``, default 0); member ``l`` trains on the other folds, validates on
+seed (``--data-seed``, default 0), splitting clusters and cells separately so that
+every fold holds out its share of each (``--stratify kind``, the default; within a
+stratum the folds' counts differ by at most one). ``--stratify-column liquid`` adds an
+info key to the strata, and ``--stratify none`` is the water campaign's plain k-fold.
+Member ``l`` trains on the other folds, validates on
 fold ``l`` and is initialised from seed ``1000 + l`` (``--init-seed``). Batches never
 mix clusters and cells: clusters use the recipe's ``data.batch_size`` and cells
 ``--cell-batch-size`` (default 4). ``--cell-share`` makes cell batches that share of

@@ -61,6 +61,7 @@ def _data(path, n=14, seed=0):
         a.info["energy"] = float(rng.normal())
         a.arrays["forces"] = rng.normal(0, 0.5, (k, 3))
         a.info["SEAMM/configuration_name"] = f"frame {i}"
+        a.info["liquid"] = "EC" if i % 2 else "FEC"
         frames.append(a)
     write(path, frames, format="extxyz")
     return frames
@@ -106,10 +107,15 @@ def test_train_committee_members_manifest_and_frames(setup):
     assert manifest["batching"]["cell_share"] == 0.3
     assert "xnn" in manifest["code"]
     assert len(manifest["code"]["active_learning_step_source_sha256"]) == 64
+    assert manifest["stratification"]["by"] == ["kind"]
+    strata = manifest["stratification"]["strata"]
+    assert sorted(strata) == ["cell", "cluster"]
+    assert sum(strata["cell"]) == 5 and max(strata["cell"]) - min(strata["cell"]) <= 1
     with open(com / "frames.csv") as fh:
         frames = list(csv.DictReader(fh))
     assert [f["configuration"] for f in frames] == [f"frame {i}" for i in range(14)]
     assert sorted({f["fold"] for f in frames}) == ["0", "1", "2"]
+    assert {f["stratum"] for f in frames} == {"cell", "cluster"}
     for member in range(3):
         mdir = com / f"m{member}"
         for name in ("best.pt", "last.pt", "history.json", "member.json"):
@@ -245,3 +251,74 @@ def test_avg_num_neighbors_auto_is_the_training_folds_mean(tmp_path):
     assert ck["cfg"].model.extra["avg_num_neighbors"] == pytest.approx(
         info["avg_num_neighbors"]
     )
+
+
+def test_stratify_by_a_column_and_plain_kfold(setup):
+    from active_learning_step.train import fold_plan
+
+    tmp_path, recipe, data = setup
+    out = tmp_path / "liq"
+    assert (
+        main(
+            [
+                "train",
+                str(data),
+                "-c",
+                str(recipe),
+                "-o",
+                str(out),
+                "-k",
+                "3",
+                "--member",
+                "0",
+                "--stratify-column",
+                "liquid",
+                "--steps",
+                "1",
+            ]
+        )
+        == 0
+    )
+    manifest = json.loads((out / "manifest.json").read_text())
+    assert manifest["stratification"]["by"] == ["kind", "liquid"]
+    strata = manifest["stratification"]["strata"]
+    assert sorted(strata) == ["cell|EC", "cell|FEC", "cluster|EC", "cluster|FEC"]
+    for counts in strata.values():
+        assert max(counts) - min(counts) <= 1
+    with open(out / "frames.csv") as fh:
+        frames = list(csv.DictReader(fh))
+    assert {f["liquid"] for f in frames} == {"EC", "FEC"}
+    # every frame held out once: the folds partition the frames
+    assert sorted(int(f["frame"]) for f in frames) == list(range(14))
+    held = {
+        m: [int(f["frame"]) for f in frames if f["fold"] == str(m)] for m in range(3)
+    }
+    assert sum(len(v) for v in held.values()) == 14
+
+    plain = tmp_path / "plain"
+    assert (
+        main(
+            [
+                "train",
+                str(data),
+                "-c",
+                str(recipe),
+                "-o",
+                str(plain),
+                "-k",
+                "3",
+                "--member",
+                "0",
+                "--stratify",
+                "none",
+                "--steps",
+                "1",
+            ]
+        )
+        == 0
+    )
+    manifest = json.loads((plain / "manifest.json").read_text())
+    assert manifest["stratification"] == {"by": [], "strata": None}
+    with open(plain / "frames.csv") as fh:
+        folds = [int(f["fold"]) for f in csv.DictReader(fh)]
+    assert folds == fold_plan(14, 3, 0).tolist()

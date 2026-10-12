@@ -108,6 +108,18 @@ def parser():
         help="seed of the fold permutation (default 0)",
     )
     r.add_argument(
+        "--stratify",
+        choices=("kind", "none"),
+        default="kind",
+        help="split clusters and cells separately (default), or plain k-fold",
+    )
+    r.add_argument(
+        "--stratify-column",
+        action="append",
+        default=[],
+        help="also stratify by this info key, e.g. liquid (repeatable)",
+    )
+    r.add_argument(
         "--init-seed",
         type=int,
         default=1000,
@@ -251,6 +263,8 @@ def main(argv=None):
                 steps=args.steps,
                 device=args.device,
                 overrides=args.overrides,
+                stratify=args.stratify,
+                stratify_columns=args.stratify_column,
             )
         except ValueError as e:
             print(f"seamm-al train: {e}", file=sys.stderr)

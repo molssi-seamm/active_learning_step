@@ -52,6 +52,7 @@ __all__ = [
     "fold_plan",
     "make_trainer",
     "source_sha256",
+    "stratified_fold_plan",
     "train_committee",
 ]
 
@@ -109,7 +110,9 @@ def file_sha256(path, chunk=1 << 20):
     return h.hexdigest()
 
 
-def load_frames(paths, energy_key="energy", forces_key="forces", stress_key="stress"):
+def load_frames(
+    paths, energy_key="energy", forces_key="forces", stress_key="stress", columns=()
+):
     """The labelled structures of data files, with where each came from.
 
     Parameters
@@ -118,12 +121,14 @@ def load_frames(paths, energy_key="energy", forces_key="forces", stress_key="str
         extxyz files (or SDF from SEAMM; their labels must be in xnn's keys).
     energy_key, forces_key, stress_key : str, optional
         Where the labels are, as xnn's ``data.energy_key`` etc.
+    columns : sequence of str, optional
+        ``info`` keys to keep for every frame (as strings; ``""`` when absent).
 
     Returns
     -------
     (list of dict, list of dict)
         The xnn structure dicts, in file order, and for each the ``file``,
-        ``index`` and ``configuration``.
+        ``index``, ``configuration`` and the requested columns.
     """
     from xnn.common.data.ase_io import atoms_to_structure
 
@@ -144,16 +149,67 @@ def load_frames(paths, energy_key="energy", forces_key="forces", stress_key="str
                     "file": fname,
                     "index": index,
                     "configuration": configuration_name(atoms),
+                    **{c: _text(atoms.info.get(c)) for c in columns},
                 }
             )
     return structures, frames
 
 
+def _text(value):
+    return "" if value is None else str(value)
+
+
 def fold_plan(n, k, data_seed):
-    """The fold of every frame: ``fold[i]`` is the member that holds frame ``i`` out."""
+    """The fold of every frame: ``fold[i]`` is the member that holds frame ``i`` out.
+
+    Plain k-fold: :func:`~active_learning_step.thresholds.kfold_indices`, the water
+    campaign's split.
+    """
     fold = np.empty(n, dtype=int)
     for member, (_, held) in enumerate(kfold_indices(n, k, data_seed)):
         fold[held] = member
+    return fold
+
+
+def stratified_fold_plan(strata, k, data_seed):
+    """Folds that split every stratum as evenly as possible.
+
+    The strata are taken in sorted order; the frames of each are shuffled (one
+    generator seeded by ``data_seed``) and dealt to the folds in turn, each stratum
+    starting at the fold after the one the previous stratum ended on. So within a
+    stratum the folds' counts differ by at most one, and so do the folds' sizes.
+
+    Parameters
+    ----------
+    strata : sequence of str
+        The stratum of every frame.
+    k : int
+        Number of folds.
+    data_seed : int
+        Seed of the shuffles.
+
+    Returns
+    -------
+    numpy.ndarray of int
+        The fold of every frame.
+
+    Raises
+    ------
+    ValueError
+        If ``k`` is smaller than 2 or larger than the number of frames.
+    """
+    n = len(strata)
+    if k < 2 or k > n:
+        raise ValueError(f"k must be in [2, n]; got k={k}, n={n}")
+    rng = np.random.default_rng(data_seed)
+    strata = np.asarray(strata, dtype=object)
+    fold = np.empty(n, dtype=int)
+    start = 0
+    for label in sorted(set(strata.tolist())):
+        idx = np.flatnonzero(strata == label)
+        idx = idx[rng.permutation(len(idx))]
+        fold[idx] = (start + np.arange(len(idx))) % k
+        start = (start + len(idx)) % k
     return fold
 
 
@@ -216,6 +272,8 @@ def train_committee(
     steps=None,
     device=None,
     overrides=(),
+    stratify="kind",
+    stratify_columns=(),
 ):
     """Train members of a k-fold committee.
 
@@ -247,6 +305,13 @@ def train_committee(
         Overrides the config's device.
     overrides : sequence of str, optional
         xnn-style ``a.b=value`` overrides of the config.
+    stratify : str, optional
+        ``"kind"`` (the default) splits clusters and cells separately, so every
+        fold holds out its share of each; ``"none"`` is the water campaign's plain
+        k-fold, exactly.
+    stratify_columns : sequence of str, optional
+        ``info`` keys whose values also define strata (combined with the kind
+        unless ``stratify="none"``), e.g. ``liquid``.
 
     Returns
     -------
@@ -270,10 +335,24 @@ def train_committee(
         "forces_key": cfg0.data.forces_key,
         "stress_key": cfg0.data.stress_key,
     }
-    structures, frames = load_frames(data, **keys)
+    if stratify not in ("kind", "none"):
+        raise ValueError(f"stratify must be 'kind' or 'none', not {stratify!r}")
+    stratify_columns = list(stratify_columns)
+    structures, frames = load_frames(data, columns=stratify_columns, **keys)
     n = len(structures)
-    fold = fold_plan(n, k, data_seed)
     kinds = kinds_of(structures)
+    by = (["kind"] if stratify == "kind" else []) + stratify_columns
+    if by:
+        strata = [
+            "|".join(
+                [kinds[i]] * (stratify == "kind") + [f[c] for c in stratify_columns]
+            )
+            for i, f in enumerate(frames)
+        ]
+        fold = stratified_fold_plan(strata, k, data_seed)
+    else:
+        strata = [""] * n
+        fold = fold_plan(n, k, data_seed)
     batch_sizes = {"cluster": int(cfg0.data.batch_size), "cell": int(cell_batch_size)}
 
     order = hashlib.sha256()
@@ -312,6 +391,26 @@ def train_committee(
             }
             for member in range(k)
         ],
+        "stratification": {
+            "by": by,
+            "strata": (
+                {
+                    label: [
+                        int(
+                            sum(
+                                1
+                                for i in range(n)
+                                if strata[i] == label and fold[i] == m
+                            )
+                        )
+                        for m in range(k)
+                    ]
+                    for label in sorted(set(strata))
+                }
+                if by
+                else None
+            ),
+        },
         "batching": {
             "batch_sizes": batch_sizes,
             "cell_share": cell_share,
@@ -338,10 +437,15 @@ def train_committee(
         _write_json(path, manifest)
         with open(out / "frames.csv", "w", newline="") as fh:
             writer = csv.writer(fh)
-            writer.writerow(["frame", "file", "index", "configuration", "kind", "fold"])
+            writer.writerow(
+                ["frame", "file", "index", "configuration", "kind", *stratify_columns]
+                + ["stratum", "fold"]
+            )
             for i, f in enumerate(frames):
                 writer.writerow(
-                    [i, f["file"], f["index"], f["configuration"], kinds[i], fold[i]]
+                    [i, f["file"], f["index"], f["configuration"], kinds[i]]
+                    + [f[c] for c in stratify_columns]
+                    + [strata[i], fold[i]]
                 )
 
     done = []
