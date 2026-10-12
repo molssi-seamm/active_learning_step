@@ -149,3 +149,6 @@ target/
 # Cookiecutter
 output/
 python_boilerplate/
+
+# Local validation scripts (internal cluster paths); kept off GitHub
+validation/
