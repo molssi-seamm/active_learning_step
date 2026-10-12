@@ -46,7 +46,14 @@ from .thresholds import kfold_indices
 
 logger = logging.getLogger(__name__)
 
-__all__ = ["file_sha256", "load_frames", "fold_plan", "make_trainer", "train_committee"]
+__all__ = [
+    "file_sha256",
+    "load_frames",
+    "fold_plan",
+    "make_trainer",
+    "source_sha256",
+    "train_committee",
+]
 
 
 def make_trainer(Trainer, cfg, train_set, val_set, sampler, val_sampler):
@@ -150,6 +157,21 @@ def fold_plan(n, k, data_seed):
     return fold
 
 
+def source_sha256():
+    """A SHA-256 over the package's Python sources (name and contents, sorted).
+
+    It identifies the code however it was deployed, including a copy without git
+    history, where the version reads ``0+unknown``.
+    """
+    root = Path(__file__).resolve().parent
+    h = hashlib.sha256()
+    for path in sorted(root.glob("*.py")):
+        if path.name == "_version.py":
+            continue
+        h.update(path.name.encode() + b"\0" + path.read_bytes() + b"\0")
+    return h.hexdigest()
+
+
 def _versions():
     import torch
     import xnn
@@ -161,6 +183,7 @@ def _versions():
         "active_learning_step_revision": getattr(
             active_learning_step, "__git_revision__", None
         ),
+        "active_learning_step_source_sha256": source_sha256(),
         "xnn": xnn.__version__,
         "torch": torch.__version__,
         "python": platform.python_version(),

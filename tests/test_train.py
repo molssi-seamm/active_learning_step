@@ -105,6 +105,7 @@ def test_train_committee_members_manifest_and_frames(setup):
     )
     assert manifest["batching"]["cell_share"] == 0.3
     assert "xnn" in manifest["code"]
+    assert len(manifest["code"]["active_learning_step_source_sha256"]) == 64
     with open(com / "frames.csv") as fh:
         frames = list(csv.DictReader(fh))
     assert [f["configuration"] for f in frames] == [f"frame {i}" for i in range(14)]
