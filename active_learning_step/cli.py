@@ -8,8 +8,8 @@
         --cost cell:EC=2800 --cost cell:FEC=3900 \\
         --group-column liquid --cap temperature=6 --exclude labelled.txt
 
-``score`` and ``train`` need torch and xnn (an MLFF environment); ``select`` needs
-neither.
+``score``, ``train``, ``check`` and ``engine`` need torch and xnn: use SEAMM's MLFF
+environment (xnn 0.13 or later; training requires it). ``select`` needs neither.
 Without installing the package, run ``python -m active_learning_step.cli`` with the
 repository on ``PYTHONPATH``.
 """

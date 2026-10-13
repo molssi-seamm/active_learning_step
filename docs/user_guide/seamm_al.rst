@@ -6,11 +6,22 @@ Command line: ``seamm-al``
 committee of models (typically five, each trained on four fifths of the data) is run
 on every candidate, and the frames where the members disagree most are labelled.
 
+Environments
+============
+
+``score``, ``train``, ``check`` and ``engine`` need torch and xnn; use the MLFF
+environment SEAMM itself uses, the one named in the ``xnn.ini`` and ``lammps.ini`` of
+the installation, with xnn 0.13 or later. Training requires 0.13; scoring, checking and
+the engine give the same results with older releases, but a committee trained with 0.13
+can only be read by 0.13 or later. ``select`` needs neither torch nor xnn and runs in
+any SEAMM environment. Without installing the package, run ``python -m
+active_learning_step.cli`` with the repository on ``PYTHONPATH``.
+
 Scoring
 =======
 
-``seamm-al score`` needs torch and xnn 0.11 or later, so run it in an MLFF
-environment::
+``seamm-al score`` needs torch and xnn, so run it in an MLFF environment (see
+`Environments`_)::
 
     seamm-al score -m m0/best.pt m1/best.pt m2/best.pt m3/best.pt m4/best.pt \
         -o scores.csv --carry temperature pool.extxyz
