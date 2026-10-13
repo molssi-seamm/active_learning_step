@@ -145,7 +145,10 @@ frames it held out and on the common validation and test frames, and the median
 **leave-one-out** ratio of each spread: the spread with the member over the spread
 without it, so a member that inflates the spreads stands out. A member more than
 ``--flag-factor`` (default 1.5) times the median of the others on any of these is
-flagged. The table is written to ``<out>_members.csv``. ``--drop-member K``
+flagged — as a note only, except for the final validation loss, which is the gate. A
+member that trailed the others for a while (validation losses smoothed over 9 epochs,
+at least 5 epochs above the factor) and then recovered is noted, not flagged. The
+table is written to ``<out>_members.csv``. ``--drop-member K``
 (repeatable) leaves member ``m<K>`` out, in ``check`` and in ``score`` (where ``K``
 counts the ``--models`` from 0); the members used and dropped are recorded in the
 summary and in ``scores.csv.json``.
@@ -155,3 +158,32 @@ summary and in ``scores.csv.json``.
 frames whose worst-member error exceeds ``FAIL_LEVEL`` (eV/A for forces, atm for
 pressures, eV per sqrt(atom) for energies), with what it separates. Fewer than 10
 failures earn a warning: such a threshold is not to be trusted.
+
+Committee molecular dynamics
+============================
+
+``seamm-al engine`` serves the committee's mean to an MDI driver such as LAMMPS
+(``fix mdi/qm``) as one potential: the mean of the members' short-range energies, with
+the dispersion the checkpoints record added once on top, differentiated once for the
+forces and stress. It takes the place of ``xnn mdi`` in an MDI pair::
+
+    mpirun --bind-to none \
+        -np 1 seamm-al engine --members m0/best.pt m1/best.pt m2/best.pt m3/best.pt \
+            m4/best.pt --device cuda:0 --eeq-reuse --spreads spreads.csv --every 10 \
+            --flag rho_forces=0.05 --flagged flagged.extxyz \
+            -mdi "-role ENGINE -name xnn -method MPI" \
+      : -np 1 lmp -mdi "-role DRIVER -name LAMMPS -method MPI" -in input.dat
+
+With ``--spreads`` the engine also evaluates every member on its own every ``--every``
+force evaluations and appends the committee spreads (``rho_energy``, ``rho_forces``,
+``rho_forces_max_atom`` and, for periodic systems, ``rho_pressure`` and
+``rho_pressure_molecular``) to the CSV, with the committee-mean energy and ``max_dF``,
+the largest difference between the forces served and the mean of the members' forces
+(rounding only, without dispersion). ``--flag NAME=VALUE`` writes the frames whose
+spread reaches a value to ``--flagged`` with their step, spreads and per-atom force
+spread, ready for ``seamm-al score`` or labelling; ``--frames`` writes every frame
+recorded. ``--drop-member K`` leaves a member out and ``--no-dispersion`` serves the
+route-B energy.
+
+On a CPU (8 threads, 64 waters, five MACE members) the mean costs five times one model,
+and spreads every 10 steps add about 11 %.

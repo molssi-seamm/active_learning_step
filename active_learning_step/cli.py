@@ -41,6 +41,12 @@ def parser():
         "--log-level", default="WARNING", help="logging level (default WARNING)"
     )
     sub = p.add_subparsers(dest="command", required=True)
+    sub.add_parser(
+        "engine",
+        help="MDI engine serving a committee mean, writing its spreads "
+        "(see 'seamm-al engine --help')",
+        add_help=False,
+    )
 
     s = sub.add_parser(
         "score", help="committee spreads for every frame of candidate pools"
@@ -303,6 +309,12 @@ def parser():
 
 def main(argv=None):
     """Run ``seamm-al``."""
+    argv = list(sys.argv[1:] if argv is None else argv)
+    if argv[:1] == ["engine"]:
+        # the MDI engine has its own options (``seamm-al engine --help``)
+        from .engine import main as engine_main
+
+        return engine_main(argv[1:])
     args = parser().parse_args(argv)
     logging.basicConfig(
         level=args.log_level.upper(), format="%(asctime)s %(levelname)s %(message)s"

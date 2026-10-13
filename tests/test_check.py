@@ -339,7 +339,7 @@ def sick_committee(committee, tmp_path_factory):
                 {"held_out": held, "validation": ["T12", "T13"], "test": ["T14"]}
             )
         )
-        val = [1.0, 0.8, 0.7] if k < 3 else [2.0, 1.7, 1.6]
+        val = [1.0, 0.8, 0.7, 0.7] if k < 3 else [2.0, 1.7, 1.6, 1.6]
         (com / f"m{k}" / "history.json").write_text(json.dumps({"val": val}))
     return com, tmp / "data.extxyz"
 
@@ -354,12 +354,11 @@ def test_member_health_flags_the_sick_member(sick_committee, tmp_path):
     health = {e["member"]: e for e in summary["member_health"]}
     assert health[3]["final_val_loss"] == 1.6 and health[0]["best_val_loss"] == 0.7
     assert health[3]["n_held"] == 3 and health[3]["n_common"] == 3
-    assert any(f.startswith("final_val_loss") for f in health[3]["flags"])
-    assert any(f.startswith("common_err_forces") for f in health[3]["flags"])
-    assert all(
-        not any(f.startswith("final_val_loss") for f in health[k]["flags"])
-        for k in range(3)
-    )
+    # the gate is the final validation loss; the rest are notes
+    assert health[3]["flags"]
+    assert all(f.startswith("final_val_loss") for f in health[3]["flags"])
+    assert any(n.startswith("common_err_forces") for n in health[3]["notes"])
+    assert all(not health[k]["flags"] for k in range(3))
     # the sick member inflates the spreads: its leave-one-out ratio is the largest
     loo = {k: health[k]["loo_rho_forces"] for k in range(4)}
     assert loo[3] == max(loo.values()) and loo[3] > 1.5
@@ -367,7 +366,7 @@ def test_member_health_flags_the_sick_member(sick_committee, tmp_path):
     with open(tmp_path / "c_members.csv") as fh:
         table = list(csv.DictReader(fh))
     assert [r["member"] for r in table] == ["0", "1", "2", "3"]
-    assert "final_val_loss" in table[3]["flags"]
+    assert "final_val_loss" in table[3]["flags"] and table[3]["notes"]
     # the per-member errors match the frame's out-of-fold error
     held3 = [r for r in rows if r["role"] == "held" and r["oof_members"] == "3"]
     assert health[3]["held_err_forces"] == pytest.approx(
@@ -386,13 +385,8 @@ def test_drop_member_in_check_and_score(sick_committee, tmp_path):
     roles = {r["tag"]: r["role"] for r in rows}
     assert roles["T03"] == "trained" and roles["T00"] == "held"
     assert all(r["oof_members"] in ("", "0", "1", "2", "0;1;2") for r in rows)
-    # without the sick member, no member's losses stand out
-    assert not [
-        f
-        for e in summary["member_health"]
-        for f in e["flags"]
-        if f.startswith(("final_val_loss", "best_val_loss"))
-    ]
+    # without the sick member, no member is flagged
+    assert not [f for e in summary["member_health"] for f in e["flags"]]
     with pytest.raises(ValueError):
         check_committee(com, [str(data)], out_csv=tmp_path / "c.csv", drop=[9])
     # score: the same committee without m3, recorded beside the scores
@@ -412,3 +406,40 @@ def test_drop_member_in_check_and_score(sick_committee, tmp_path):
         main(["score", str(data), "-m", *models, "--drop-member", "7", "-o", str(out)])
         == 2
     )
+
+
+def test_slow_but_converged_member_is_noted_not_flagged(tmp_path):
+    """m1 of the EC/FEC wave-1 committee: an outlier until late, then the best."""
+    from active_learning_step.check import member_health, member_losses
+
+    histories = {
+        0: [0.5] + [0.02] * 30 + [0.0075] * 80 + [0.0071] * 39,
+        1: [0.5] + [0.017] * 110 + [0.0063] * 39,  # slow, ends among the best
+        2: [0.5] + [0.02] * 30 + [0.0078] * 80 + [0.0072] * 39,
+        3: [0.5] + [0.02] * 30 + [0.0075] * 80 + [0.0064] * 39,
+        4: [0.5] + [0.02] * 30 + [0.0090] * 80 + [0.0084] * 39,
+    }
+    for k, val in histories.items():
+        (tmp_path / f"m{k}").mkdir()
+        (tmp_path / f"m{k}" / "history.json").write_text(json.dumps({"val": val}))
+    final, best, _, converged = member_losses(tmp_path / "m1")
+    assert final == 0.0063 and converged == 111
+    health = member_health(tmp_path, list(range(5)), [], factor=1.5)
+    assert all(not e["flags"] for e in health)
+    assert any(n.startswith("converged_epoch") for n in health[1]["notes"])
+    first, last = (int(x) for x in health[1]["lag_epochs"].split("-"))
+    assert last == 110 and last - first > 70 and health[1]["lag_peak"] > 2
+    assert any(
+        "trailed the others" in n and "recovered" in n for n in health[1]["notes"]
+    )
+    assert all(health[k]["lag_epochs"] is None for k in (0, 2, 3))
+
+
+def test_lag_ignores_single_epoch_spikes():
+    from active_learning_step.check import lag
+
+    base = [0.02] * 20 + [0.008] * 80
+    spiky = list(base)
+    spiky[50] = 0.2  # one bad epoch, 25 x the others
+    stretch, peak = lag([base, base, spiky, base], 2, 1.5)
+    assert stretch is None and peak < 1.5

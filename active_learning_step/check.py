@@ -579,17 +579,18 @@ def _leave_one_out(E, F, n, P=None, Pm=None):
     return ratios
 
 
-def member_losses(mdir):
-    """A member's final and best validation loss, from its history if there is one.
+def val_history(mdir):
+    """A member's validation losses per epoch and the file they came from.
 
     Reads ``history.json`` (``seamm-al train``'s, with ``val`` a list of metric
-    dicts, or a list of numbers as the water campaign's ``train_member.py``
-    writes) or, failing that, any ``*history*.json`` in the member directory.
+    dicts, or a list of numbers as the water campaign's ``train_member.py`` and
+    mlff's trainer write) or, failing that, any ``*history*.json`` in the member
+    directory.
 
     Returns
     -------
-    (float or None, float or None, str or None)
-        The final and the best validation loss and the file read.
+    (list of float, str or None)
+        The losses (empty when none is found) and the file read.
     """
     mdir = Path(mdir)
     candidates = [mdir / "history.json"] + sorted(mdir.glob("*history*.json"))
@@ -610,14 +611,93 @@ def member_losses(mdir):
             if v is not None and np.isfinite(float(v)):
                 losses.append(float(v))
         if losses:
-            return losses[-1], min(losses), str(path)
-    return None, None, None
+            return losses, str(path)
+    return [], None
 
 
-#: The member-health metrics, each compared with the median of the other members.
+def member_losses(mdir):
+    """A member's final and best validation loss, from its history if there is one.
+
+    Reads ``history.json`` (``seamm-al train``'s, with ``val`` a list of metric
+    dicts, or a list of numbers as the water campaign's ``train_member.py``
+    writes) or, failing that, any ``*history*.json`` in the member directory.
+
+    Returns
+    -------
+    (float or None, float or None, str or None, int or None)
+        The final and the best validation loss, the file read, and the epoch of
+        convergence: the first from which the loss stays within
+        :data:`CONVERGED_WITHIN` times its best.
+    """
+    losses, source = val_history(mdir)
+    if not losses:
+        return None, None, None, None
+    limit = CONVERGED_WITHIN * min(losses)
+    converged = len(losses) - 1
+    while converged > 0 and losses[converged - 1] <= limit:
+        converged -= 1
+    return losses[-1], min(losses), source, converged
+
+
+#: Validation losses are smoothed with a running median over this many epochs
+#: before members are compared, so single-epoch spikes do not count.
+LAG_WINDOW = 9
+
+#: A member trailing the others for at least this many (smoothed) epochs is noted.
+LAG_MIN_EPOCHS = 5
+
+
+def _running_median(x, window=LAG_WINDOW):
+    h = window // 2
+    return [float(np.median(x[max(0, k - h) : k + h + 1])) for k in range(len(x))]
+
+
+def lag(histories, i, factor):
+    """How long member ``i`` trailed the others, epoch by epoch.
+
+    Each history is smoothed with a running median over :data:`LAG_WINDOW`
+    epochs; at each epoch the member's smoothed validation loss is compared with
+    the median of the others' at the same epoch.
+
+    Returns
+    -------
+    (tuple or None, float or None)
+        The longest stretch of epochs ``(first, last)`` with the member above
+        ``factor`` times the others (``None`` if none), and the largest ratio.
+    """
+    mine = _running_median(histories[i]) if histories[i] else []
+    others = [_running_median(h) for j, h in enumerate(histories) if j != i and h]
+    if not mine or not others:
+        return None, None
+    best, start, peak = None, None, 0.0
+    for epoch, value in enumerate(mine):
+        at = [h[epoch] for h in others if epoch < len(h)]
+        if not at:
+            break
+        ratio = value / max(float(np.median(at)), 1e-300)
+        peak = max(peak, ratio)
+        if ratio > factor:
+            start = epoch if start is None else start
+            if best is None or epoch - start > best[1] - best[0]:
+                best = (start, epoch)
+        else:
+            start = None
+    return best, peak
+
+
+#: A member has converged from the epoch its validation loss stays within this
+#: factor of its best.
+CONVERGED_WITHIN = 1.25
+
+#: The metric that flags a member (more than ``factor`` times the others' median).
+GATE = ("final_val_loss",)
+
+#: The metrics reported, each compared with the median of the other members; beyond
+#: the gate, one standing out is noted as information, not flagged.
 HEALTH = (
     "final_val_loss",
     "best_val_loss",
+    "converged_epoch",
     "held_err_forces",
     "held_err_pressure_molecular",
     "common_err_forces",
@@ -645,17 +725,20 @@ def member_health(directory, names, rows, factor=1.5):
         One entry per member: the metrics of :data:`HEALTH`, the counts, the
         median leave-one-out spread ratios (``loo_<rho>``: the spread with the
         member over the spread without it; well above 1 means the member inflates
-        the spreads), and ``flags``.
+        the spreads), ``flags`` (the gate, :data:`GATE`: the final validation
+        loss) and ``notes`` (any other metric standing out, as information: a
+        member that converged late but ended well is noted, not flagged).
     """
     dirs = {int(p.name[1:]): p for p in member_dirs(directory)}
     L = len(names)
     out = []
     for i, k in enumerate(names):
-        final, best, source = member_losses(dirs[k])
+        final, best, source, converged = member_losses(dirs[k])
         entry = {
             "member": k,
             "final_val_loss": final,
             "best_val_loss": best,
+            "converged_epoch": converged,
             "history": source,
         }
         held = [r for r in rows if r["role"] == "held" and r["oof_members"] == str(i)]
@@ -672,8 +755,13 @@ def member_health(directory, names, rows, factor=1.5):
             ratios = [x for x in ratios if np.isfinite(x)]
             entry[f"loo_{name}"] = float(np.median(ratios)) if ratios else None
         out.append(entry)
+    histories = [val_history(dirs[k])[0] for k in names]
+    for i, entry in enumerate(out):
+        stretch, entry["lag_peak"] = lag(histories, i, factor)
+        entry["lag_epochs"] = None if stretch is None else f"{stretch[0]}-{stretch[1]}"
+        entry["_lag"] = stretch
     for entry in out:
-        flags = []
+        flags, notes = [], []
         for metric in HEALTH:
             mine = entry[metric]
             others = [
@@ -683,23 +771,44 @@ def member_health(directory, names, rows, factor=1.5):
                 continue
             median = float(np.median(others))
             if median > 0 and mine > factor * median:
-                flags.append(f"{metric} {mine:.4g} > {factor:g} x median {median:.4g}")
-        entry["flags"] = flags
+                text = f"{metric} {mine:.4g} > {factor:g} x median {median:.4g}"
+                (flags if metric in GATE else notes).append(text)
+        for name in ("loo_rho_forces", "loo_rho_pressure_molecular"):
+            mine = entry.get(name)
+            others = [
+                e[name] for e in out if e is not entry and e.get(name) is not None
+            ]
+            if mine is not None and others and mine > factor * float(np.median(others)):
+                notes.append(f"{name} {mine:.3g}: the member inflates the spread")
+        stretch = entry.pop("_lag")
+        if stretch is not None and stretch[1] - stretch[0] + 1 >= LAG_MIN_EPOCHS:
+            n_epochs = len(histories[out.index(entry)])
+            notes.append(
+                f"trailed the others (smoothed val loss > {factor:g} x their median) "
+                f"over epochs {stretch[0]}-{stretch[1]} of {n_epochs}, at most "
+                f"{entry['lag_peak']:.2g} x"
+                + (
+                    ""
+                    if flags or stretch[1] >= n_epochs - LAG_WINDOW
+                    else ", then recovered"
+                )
+            )
+        entry["flags"], entry["notes"] = flags, notes
     if L < 3:
         logger.info("fewer than 3 members: no leave-one-out spreads")
     return out
 
 
 def _write_health(path, health):
-    columns = ["member", *HEALTH, "n_held", "n_common"]
-    columns += [f"loo_{name}" for name in LOO_RHOS] + ["flags", "history"]
+    columns = ["member", *HEALTH, "lag_epochs", "lag_peak", "n_held", "n_common"]
+    columns += [f"loo_{name}" for name in LOO_RHOS] + ["flags", "notes", "history"]
     with open(path, "w", newline="") as fh:
         writer = csv.DictWriter(fh, fieldnames=columns, extrasaction="ignore")
         writer.writeheader()
         for e in health:
             writer.writerow(
                 {
-                    c: ("; ".join(e[c]) if c == "flags" else _cell(e.get(c)))
+                    c: ("; ".join(e[c]) if c in ("flags", "notes") else _cell(e.get(c)))
                     for c in columns
                 }
             )
@@ -765,6 +874,10 @@ def print_summary(summary, fh=None):
         for e in health:
             for flag in e["flags"]:
                 print(f"  FLAG m{e['member']}: {flag}", file=fh)
+            for note in e.get("notes", []):
+                print(f"  note m{e['member']}: {note}", file=fh)
+        if not any(e["flags"] for e in health):
+            print("  no member flagged", file=fh)
     for key, v in summary.get("calibration", {}).items():
         print(
             f"\ncalibration {key}: {v['error']} > {v['fail_level']:g}, "
