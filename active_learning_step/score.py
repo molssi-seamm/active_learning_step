@@ -106,6 +106,8 @@ def score_pool(
     device="cpu",
     dtype=None,
     batch_size=16,
+    all_models=None,
+    dropped=(),
 ):
     """Score the frames of pool files with a committee and write ``scores.csv``.
 
@@ -136,6 +138,9 @@ def score_pool(
         ``"float32"`` or ``"float64"``; by default the weights' own.
     batch_size : int, optional
         Clusters per batch, by default 16. Cells are scored one at a time.
+    all_models, dropped : optional
+        The committee before any members were dropped, and the positions dropped;
+        recorded with the models used in ``<out_csv>.json``.
 
     Returns
     -------
@@ -167,6 +172,15 @@ def score_pool(
     elif atoms_out is not None:
         raise ValueError("--atoms needs a committee")
 
+    meta = {
+        "models": None if models is None else [str(m) for m in models],
+        "all_models": None if all_models is None else [str(m) for m in all_models],
+        "dropped": sorted(int(k) for k in dropped),
+        "dispersion": bool(dispersion),
+        "dtype": None if dtype is None else str(dtype),
+        "pools": [str(Path(p).resolve()) for p in paths],
+    }
+    Path(f"{out_csv}.json").write_text(json.dumps(meta, indent=1) + "\n")
     columns = list(COLUMNS) + [c for c in carry if c not in COLUMNS]
     atoms_fh = open(atoms_out, "w") if atoms_out is not None else None
     n_scored = 0

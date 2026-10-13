@@ -139,6 +139,17 @@ configuration name) or one with a ``fold_manifest.json`` per member listing tags
 Labels are read from ``REF_energy``, ``REF_forces`` and ``REF_stress`` (a 9-vector, a
 Voigt 6-vector or a matrix) unless ``--*-key`` says otherwise.
 
+``check`` also judges every member. For each it reports the final and best validation
+loss (from the member's ``history.json`` when there is one), its mean error on the
+frames it held out and on the common validation and test frames, and the median
+**leave-one-out** ratio of each spread: the spread with the member over the spread
+without it, so a member that inflates the spreads stands out. A member more than
+``--flag-factor`` (default 1.5) times the median of the others on any of these is
+flagged. The table is written to ``<out>_members.csv``. ``--drop-member K``
+(repeatable) leaves member ``m<K>`` out, in ``check`` and in ``score`` (where ``K``
+counts the ``--models`` from 0); the members used and dropped are recorded in the
+summary and in ``scores.csv.json``.
+
 ``--calibrate NAME:FAIL_LEVEL[:CAPTURE]`` calibrates a threshold as Smith *et al.*
 (fig. 1): the largest spread that still catches ``CAPTURE`` (default 0.98) of the
 frames whose worst-member error exceeds ``FAIL_LEVEL`` (eV/A for forces, atm for

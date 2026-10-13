@@ -231,7 +231,8 @@ def test_fold_manifest_layout_held_unseen_and_trained(committee, tmp_path):
             "trained_on": [],
         }
         (com / f"m{k}" / "fold_manifest.json").write_text(json.dumps(manifest))
-    paths, roles, layout = read_folds(com)
+    paths, roles, layout, names = read_folds(com)
+    assert names == [0, 1, 2]
     assert layout == "fold_manifest" and roles["T04"] == ("held", [1])
     assert roles["T10"] == ("unseen", [0, 1, 2])
     out = tmp_path / "c.csv"
@@ -310,3 +311,104 @@ def test_spearman_with_ties_matches_scipy():
     scipy = pytest.importorskip("scipy.stats")
     ref = scipy.spearmanr(x[:6], y[:6])
     assert rho == pytest.approx(ref.statistic) and p == pytest.approx(ref.pvalue)
+
+
+@pytest.fixture(scope="module")
+def sick_committee(committee, tmp_path_factory):
+    """Three trained members plus a fourth with corrupted weights and a bad history."""
+    tmp, frames = committee
+    com = tmp_path_factory.mktemp("sick") / "com"
+    gen = torch.Generator().manual_seed(5)
+    for k in range(4):
+        (com / f"m{k}").mkdir(parents=True)
+        src = tmp / "com" / f"m{min(k, 2)}" / "best.pt"
+        ck = torch.load(src, weights_only=False)
+        if k == 3:
+            ck["model"] = {
+                name: (
+                    t + 0.8 * torch.randn(t.shape, generator=gen, dtype=t.dtype)
+                    if t.is_floating_point()
+                    else t
+                )
+                for name, t in ck["model"].items()
+            }
+        torch.save(ck, com / f"m{k}" / "best.pt")
+        held = [f"T{i:02d}" for i in range(12) if i % 4 == k]
+        (com / f"m{k}" / "fold_manifest.json").write_text(
+            json.dumps(
+                {"held_out": held, "validation": ["T12", "T13"], "test": ["T14"]}
+            )
+        )
+        val = [1.0, 0.8, 0.7] if k < 3 else [2.0, 1.7, 1.6]
+        (com / f"m{k}" / "history.json").write_text(json.dumps({"val": val}))
+    return com, tmp / "data.extxyz"
+
+
+def test_member_health_flags_the_sick_member(sick_committee, tmp_path):
+    from active_learning_step.check import check_committee
+
+    com, data = sick_committee
+    rows, summary = check_committee(
+        com, [str(data)], out_csv=tmp_path / "c.csv", tag_key="frame"
+    )
+    health = {e["member"]: e for e in summary["member_health"]}
+    assert health[3]["final_val_loss"] == 1.6 and health[0]["best_val_loss"] == 0.7
+    assert health[3]["n_held"] == 3 and health[3]["n_common"] == 3
+    assert any(f.startswith("final_val_loss") for f in health[3]["flags"])
+    assert any(f.startswith("common_err_forces") for f in health[3]["flags"])
+    assert all(
+        not any(f.startswith("final_val_loss") for f in health[k]["flags"])
+        for k in range(3)
+    )
+    # the sick member inflates the spreads: its leave-one-out ratio is the largest
+    loo = {k: health[k]["loo_rho_forces"] for k in range(4)}
+    assert loo[3] == max(loo.values()) and loo[3] > 1.5
+    # the member-health CSV
+    with open(tmp_path / "c_members.csv") as fh:
+        table = list(csv.DictReader(fh))
+    assert [r["member"] for r in table] == ["0", "1", "2", "3"]
+    assert "final_val_loss" in table[3]["flags"]
+    # the per-member errors match the frame's out-of-fold error
+    held3 = [r for r in rows if r["role"] == "held" and r["oof_members"] == "3"]
+    assert health[3]["held_err_forces"] == pytest.approx(
+        np.mean([r["err_forces"] for r in held3])
+    )
+
+
+def test_drop_member_in_check_and_score(sick_committee, tmp_path):
+    from active_learning_step.check import check_committee
+
+    com, data = sick_committee
+    rows, summary = check_committee(
+        com, [str(data)], out_csv=tmp_path / "c.csv", tag_key="frame", drop=[3]
+    )
+    assert summary["dropped"] == [3] and summary["member_numbers"] == [0, 1, 2]
+    roles = {r["tag"]: r["role"] for r in rows}
+    assert roles["T03"] == "trained" and roles["T00"] == "held"
+    assert all(r["oof_members"] in ("", "0", "1", "2", "0;1;2") for r in rows)
+    # without the sick member, no member's losses stand out
+    assert not [
+        f
+        for e in summary["member_health"]
+        for f in e["flags"]
+        if f.startswith(("final_val_loss", "best_val_loss"))
+    ]
+    with pytest.raises(ValueError):
+        check_committee(com, [str(data)], out_csv=tmp_path / "c.csv", drop=[9])
+    # score: the same committee without m3, recorded beside the scores
+    models = [str(com / f"m{k}" / "best.pt") for k in range(4)]
+    out = tmp_path / "s.csv"
+    assert (
+        main(["score", str(data), "-m", *models, "--drop-member", "3", "-o", str(out)])
+        == 0
+    )
+    meta = json.loads((tmp_path / "s.csv.json").read_text())
+    assert meta["dropped"] == [3] and meta["models"] == models[:3]
+    assert meta["all_models"] == models
+    three = tmp_path / "three.csv"
+    assert main(["score", str(data), "-m", *models[:3], "-o", str(three)]) == 0
+    assert out.read_bytes() == three.read_bytes()
+    assert (
+        main(["score", str(data), "-m", *models, "--drop-member", "7", "-o", str(out)])
+        == 2
+    )

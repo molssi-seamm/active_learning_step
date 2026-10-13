@@ -54,6 +54,14 @@ def parser():
         help="the committee members' checkpoints (best.pt or model directories)",
     )
     s.add_argument(
+        "--drop-member",
+        type=int,
+        action="append",
+        default=[],
+        metavar="K",
+        help="leave out the K-th model of --models, counting from 0 (repeatable)",
+    )
+    s.add_argument(
         "--no-models",
         action="store_true",
         help="no committee: list the pool's frames for a random draw (select --random)",
@@ -183,6 +191,25 @@ def parser():
     c.add_argument("--device", default="cpu")
     c.add_argument("--dtype", default=None, choices=("float32", "float64"))
     c.add_argument(
+        "--drop-member",
+        type=int,
+        action="append",
+        default=[],
+        metavar="K",
+        help="leave member m<K> out of the committee (repeatable)",
+    )
+    c.add_argument(
+        "--flag-factor",
+        type=float,
+        default=1.5,
+        help="flag a member worse than this times the others' median (default 1.5)",
+    )
+    c.add_argument(
+        "--members-out",
+        default=None,
+        help="the member-health CSV (default <out stem>_members.csv)",
+    )
+    c.add_argument(
         "--calibrate",
         action="append",
         default=[],
@@ -286,9 +313,21 @@ def main(argv=None):
         if bool(args.models) == args.no_models:
             print("seamm-al score: give --models or --no-models", file=sys.stderr)
             return 2
+        models = None if args.no_models else list(args.models)
+        if args.drop_member:
+            if models is None or any(
+                not 0 <= k < len(models) for k in args.drop_member
+            ):
+                print(
+                    "seamm-al score: --drop-member K needs 0 <= K < the number of "
+                    "--models",
+                    file=sys.stderr,
+                )
+                return 2
+            models = [m for k, m in enumerate(models) if k not in set(args.drop_member)]
         n = score_pool(
             args.pools,
-            None if args.no_models else args.models,
+            models,
             out_csv=args.out,
             atoms_out=args.atoms,
             carry=args.carry,
@@ -296,6 +335,8 @@ def main(argv=None):
             device=args.device,
             dtype=args.dtype,
             batch_size=args.batch_size,
+            all_models=None if args.no_models else list(args.models),
+            dropped=args.drop_member,
         )
         print(f"Scored {n} frames -> {args.out}")
     elif args.command == "check":
@@ -316,6 +357,9 @@ def main(argv=None):
                 checkpoint=args.checkpoint,
                 calibrate=args.calibrate,
                 summary_json=args.summary,
+                drop=args.drop_member,
+                flag_factor=args.flag_factor,
+                members_csv=args.members_out,
             )
         except ValueError as e:
             print(f"seamm-al check: {e}", file=sys.stderr)

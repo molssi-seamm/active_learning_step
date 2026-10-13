@@ -145,7 +145,15 @@ def spearman(x, y):
     return rho, float(math.erfc(abs(t) / math.sqrt(2))), n
 
 
-def read_folds(directory, checkpoint="best.pt"):
+def member_dirs(directory):
+    """The member directories ``m<k>`` of a committee, in order of ``k``."""
+    return sorted(
+        (p for p in Path(directory).glob("m*") if p.is_dir() and p.name[1:].isdigit()),
+        key=lambda p: int(p.name[1:]),
+    )
+
+
+def read_folds(directory, checkpoint="best.pt", drop=()):
     """The members of a committee and which frames each never trained on.
 
     Parameters
@@ -154,21 +162,26 @@ def read_folds(directory, checkpoint="best.pt"):
         A ``seamm-al train`` directory, or one with ``m<k>/fold_manifest.json``.
     checkpoint : str, optional
         The members' checkpoint file, by default ``best.pt``.
+    drop : sequence of int, optional
+        Members to leave out (the ``k`` of ``m<k>``). The frames a dropped member
+        held out were trained on by all the others, so they become ``trained``.
 
     Returns
     -------
-    (list of str, dict, str)
-        The members' checkpoints (``m0``, ``m1``, ... in order); for each tag
-        either ``("held", [k])`` or ``("unseen", [members])``; and the layout,
-        ``"train"`` or ``"fold_manifest"``.
+    (list of str, dict, str, list of int)
+        The kept members' checkpoints, in order; for each tag either
+        ``("held", [i])`` or ``("unseen", [i, ...])`` with ``i`` the position in
+        that list; the layout, ``"train"`` or ``"fold_manifest"``; and the kept
+        members' ``k``.
     """
     directory = Path(directory)
-    mdirs = sorted(
-        (p for p in directory.glob("m*") if p.is_dir() and p.name[1:].isdigit()),
-        key=lambda p: int(p.name[1:]),
-    )
+    every = member_dirs(directory)
+    unknown = sorted(set(drop) - {int(p.name[1:]) for p in every})
+    if unknown:
+        raise ValueError(f"no member m{unknown[0]} in {directory}")
+    mdirs = [p for p in every if int(p.name[1:]) not in set(drop)]
     if len(mdirs) < 2:
-        raise ValueError(f"{directory} has fewer than two member directories m<k>")
+        raise ValueError(f"{directory} has fewer than two members (after dropping)")
     paths = [str(p / checkpoint) for p in mdirs]
     for p in paths:
         if not os.path.exists(p):
@@ -181,7 +194,7 @@ def read_folds(directory, checkpoint="best.pt"):
                 fold = int(row["fold"])
                 if fold in members:
                     roles[row["configuration"]] = ("held", [members.index(fold)])
-        return paths, roles, "train"
+        return paths, roles, "train", members
     manifests = []
     for p in mdirs:
         path = p / "fold_manifest.json"
@@ -198,7 +211,7 @@ def read_folds(directory, checkpoint="best.pt"):
         roles[tag] = ("unseen", ks)
     for tag, ks in held.items():
         roles[tag] = ("held", ks)
-    return paths, roles, "fold_manifest"
+    return paths, roles, "fold_manifest", members
 
 
 def _full_stress(value):
@@ -253,6 +266,9 @@ def check_committee(
     checkpoint="best.pt",
     calibrate=(),
     summary_json=None,
+    drop=(),
+    flag_factor=1.5,
+    members_csv=None,
 ):
     """Spreads against out-of-fold errors for every labelled frame.
 
@@ -280,6 +296,14 @@ def check_committee(
         ``rho_forces:0.15`` (eV/A) or ``rho_pressure_molecular:500:0.9`` (atm).
     summary_json : str, optional
         Also write the correlations and calibrations here.
+    drop : sequence of int, optional
+        Members to leave out of the committee (the ``k`` of ``m<k>``).
+    flag_factor : float, optional
+        Flag a member whose loss or error is more than this times the median of
+        the others', by default 1.5.
+    members_csv : str, optional
+        The member-health table; by default next to ``out_csv``
+        (``<stem>_members.csv``).
 
     Returns
     -------
@@ -304,11 +328,12 @@ def check_committee(
         torch.set_num_threads(int(os.environ["SLURM_CPUS_PER_TASK"]))
     if isinstance(dtype, str):
         dtype = getattr(torch, dtype)
-    paths, roles, layout = read_folds(directory, checkpoint)
+    paths, roles, layout, names = read_folds(directory, checkpoint, drop)
     com = Committee.from_checkpoints(
         paths, device=device, dtype=dtype, dispersion=None if dispersion else False
     )
     logger.info(f"{com.size} members ({layout} layout), {len(roles)} tags with folds")
+    L = com.size
 
     rows = []
     for path in data:
@@ -388,6 +413,18 @@ def check_committee(
                     row["eps_pressure"] = float((P - p_ref).abs().max())
                     row["eps_pressure_molecular"] = float((Pm - pm_ref).abs().max())
                     row["mean_error_pressure_molecular"] = float(Pm.mean()) - pm_ref
+            member = {"err_forces": per_member_f.numpy()}
+            if e_ref is not None:
+                member["err_energy"] = per_member_e.numpy()
+            P_ = Pm_ = None
+            if periodic and r.get("pressure") is not None:
+                P_, Pm_ = P.numpy(), Pm.numpy()
+                if s_ref is not None:
+                    member["err_pressure"] = np.abs(P_ - p_ref)
+                    member["err_pressure_molecular"] = np.abs(Pm_ - pm_ref)
+            row["_member"] = member
+            if L >= 3:
+                row["_loo"] = _leave_one_out(E.numpy(), F.numpy(), n, P_, Pm_)
             if oof:
                 ks = list(oof)
                 row["err_forces"] = float(per_member_f[ks].mean())
@@ -407,7 +444,20 @@ def check_committee(
         for row in rows:
             writer.writerow({c: _cell(row.get(c)) for c in COLUMNS})
 
-    summary = {"members": paths, "layout": layout, "roles": {}, "spearman": {}}
+    summary = {
+        "members": paths,
+        "member_numbers": names,
+        "dropped": sorted(int(k) for k in drop),
+        "layout": layout,
+        "roles": {},
+        "spearman": {},
+    }
+    health = member_health(directory, names, rows, flag_factor)
+    summary["member_health"] = health
+    if members_csv is None:
+        members_csv = str(Path(out_csv).with_name(Path(out_csv).stem + "_members.csv"))
+    _write_health(members_csv, health)
+    summary["members_csv"] = members_csv
     for role in ("held", "unseen", "trained"):
         summary["roles"][role] = sum(1 for r in rows if r["role"] == role)
     unmatched = summary["roles"]["trained"]
@@ -485,6 +535,176 @@ def check_committee(
     return rows, summary
 
 
+#: The spreads compared with and without each member.
+LOO_RHOS = (
+    "rho_energy",
+    "rho_forces",
+    "rho_forces_max_atom",
+    "rho_pressure",
+    "rho_pressure_molecular",
+)
+
+
+def _spreads(E, F, n, P=None, Pm=None):
+    """The committee spreads of one frame from the members' predictions (numpy)."""
+    sd_atom = np.sqrt(F.var(axis=0).sum(-1))  # (N,)
+    out = {
+        "rho_energy": float(E.std() / math.sqrt(n)),
+        "rho_forces": float(np.sqrt(np.mean(sd_atom**2))),
+        "rho_forces_max_atom": float(sd_atom.max()),
+    }
+    if P is not None:
+        out["rho_pressure"] = float(P.std())
+        out["rho_pressure_molecular"] = float(Pm.std())
+    return out
+
+
+def _leave_one_out(E, F, n, P=None, Pm=None):
+    """For each member, the ratio of each spread with it to the spread without it."""
+    full = _spreads(E, F, n, P, Pm)
+    L = len(E)
+    ratios = {name: np.full(L, np.nan) for name in full}
+    for k in range(L):
+        keep = [j for j in range(L) if j != k]
+        part = _spreads(
+            E[keep],
+            F[keep],
+            n,
+            None if P is None else P[keep],
+            None if Pm is None else Pm[keep],
+        )
+        for name, value in full.items():
+            if part[name] > 0:
+                ratios[name][k] = value / part[name]
+    return ratios
+
+
+def member_losses(mdir):
+    """A member's final and best validation loss, from its history if there is one.
+
+    Reads ``history.json`` (``seamm-al train``'s, with ``val`` a list of metric
+    dicts, or a list of numbers as the water campaign's ``train_member.py``
+    writes) or, failing that, any ``*history*.json`` in the member directory.
+
+    Returns
+    -------
+    (float or None, float or None, str or None)
+        The final and the best validation loss and the file read.
+    """
+    mdir = Path(mdir)
+    candidates = [mdir / "history.json"] + sorted(mdir.glob("*history*.json"))
+    for path in candidates:
+        if not path.is_file():
+            continue
+        try:
+            hist = json.loads(path.read_text())
+        except (OSError, ValueError):
+            continue
+        val = hist.get("val") if isinstance(hist, dict) else None
+        if not val:
+            continue
+        losses = []
+        for v in val:
+            if isinstance(v, dict):
+                v = v.get("loss")
+            if v is not None and np.isfinite(float(v)):
+                losses.append(float(v))
+        if losses:
+            return losses[-1], min(losses), str(path)
+    return None, None, None
+
+
+#: The member-health metrics, each compared with the median of the other members.
+HEALTH = (
+    "final_val_loss",
+    "best_val_loss",
+    "held_err_forces",
+    "held_err_pressure_molecular",
+    "common_err_forces",
+    "common_err_pressure_molecular",
+)
+
+
+def member_health(directory, names, rows, factor=1.5):
+    """Per member: losses, errors on its held-out and on the common frames, flags.
+
+    Parameters
+    ----------
+    directory : str
+        The committee directory.
+    names : sequence of int
+        The kept members' ``k``, in the committee's order.
+    rows : list of dict
+        The frames of :func:`check_committee`, with their per-member errors.
+    factor : float, optional
+        Flag a metric more than ``factor`` times the median of the other members.
+
+    Returns
+    -------
+    list of dict
+        One entry per member: the metrics of :data:`HEALTH`, the counts, the
+        median leave-one-out spread ratios (``loo_<rho>``: the spread with the
+        member over the spread without it; well above 1 means the member inflates
+        the spreads), and ``flags``.
+    """
+    dirs = {int(p.name[1:]): p for p in member_dirs(directory)}
+    L = len(names)
+    out = []
+    for i, k in enumerate(names):
+        final, best, source = member_losses(dirs[k])
+        entry = {
+            "member": k,
+            "final_val_loss": final,
+            "best_val_loss": best,
+            "history": source,
+        }
+        held = [r for r in rows if r["role"] == "held" and r["oof_members"] == str(i)]
+        common = [r for r in rows if r["role"] == "unseen"]
+        entry["n_held"], entry["n_common"] = len(held), len(common)
+        for prefix, sel in (("held", held), ("common", common)):
+            for err in ("err_forces", "err_pressure_molecular"):
+                values = [r["_member"][err][i] for r in sel if err in r["_member"]]
+                entry[f"{prefix}_{err}"] = float(np.mean(values)) if values else None
+        for name in LOO_RHOS:
+            ratios = [
+                r["_loo"][name][i] for r in rows if "_loo" in r and name in r["_loo"]
+            ]
+            ratios = [x for x in ratios if np.isfinite(x)]
+            entry[f"loo_{name}"] = float(np.median(ratios)) if ratios else None
+        out.append(entry)
+    for entry in out:
+        flags = []
+        for metric in HEALTH:
+            mine = entry[metric]
+            others = [
+                e[metric] for e in out if e is not entry and e[metric] is not None
+            ]
+            if mine is None or not others:
+                continue
+            median = float(np.median(others))
+            if median > 0 and mine > factor * median:
+                flags.append(f"{metric} {mine:.4g} > {factor:g} x median {median:.4g}")
+        entry["flags"] = flags
+    if L < 3:
+        logger.info("fewer than 3 members: no leave-one-out spreads")
+    return out
+
+
+def _write_health(path, health):
+    columns = ["member", *HEALTH, "n_held", "n_common"]
+    columns += [f"loo_{name}" for name in LOO_RHOS] + ["flags", "history"]
+    with open(path, "w", newline="") as fh:
+        writer = csv.DictWriter(fh, fieldnames=columns, extrasaction="ignore")
+        writer.writeheader()
+        for e in health:
+            writer.writerow(
+                {
+                    c: ("; ".join(e[c]) if c == "flags" else _cell(e.get(c)))
+                    for c in columns
+                }
+            )
+
+
 def _cell(value):
     if value is None:
         return ""
@@ -508,6 +728,43 @@ def print_summary(summary, fh=None):
     print(f"\n{'Spearman':58s} {'rho':>6s} {'p':>9s} {'n':>5s}", file=fh)
     for key, v in summary["spearman"].items():
         print(f"{key:58s} {v['rho']:+6.2f} {v['p']:9.2g} {v['n']:5d}", file=fh)
+    if summary.get("dropped"):
+        print(
+            f"dropped members: {', '.join(f'm{k}' for k in summary['dropped'])}",
+            file=fh,
+        )
+    health = summary.get("member_health", [])
+    if health:
+        print(
+            "\nmembers (errors: forces eV/A, molecular pressure atm; loo = spread "
+            "with / without the member, median over frames)",
+            file=fh,
+        )
+        print(
+            f"{'':4s} {'val final':>10s} {'val best':>10s} {'held F':>8s} "
+            f"{'held Pm':>8s} {'common F':>9s} {'common Pm':>9s} "
+            f"{'loo rhoF':>8s} {'loo rhoPm':>9s}",
+            file=fh,
+        )
+
+        def f(x, w, fmt):
+            return f"{'-':>{w}s}" if x is None else f"{x:{w}{fmt}}"
+
+        for e in health:
+            print(
+                f"m{e['member']:<3d} {f(e['final_val_loss'], 10, '.4g')} "
+                f"{f(e['best_val_loss'], 10, '.4g')} "
+                f"{f(e['held_err_forces'], 8, '.4f')} "
+                f"{f(e['held_err_pressure_molecular'], 8, '.0f')} "
+                f"{f(e['common_err_forces'], 9, '.4f')} "
+                f"{f(e['common_err_pressure_molecular'], 9, '.0f')} "
+                f"{f(e['loo_rho_forces'], 8, '.3f')} "
+                f"{f(e['loo_rho_pressure_molecular'], 9, '.3f')}",
+                file=fh,
+            )
+        for e in health:
+            for flag in e["flags"]:
+                print(f"  FLAG m{e['member']}: {flag}", file=fh)
     for key, v in summary.get("calibration", {}).items():
         print(
             f"\ncalibration {key}: {v['error']} > {v['fail_level']:g}, "
