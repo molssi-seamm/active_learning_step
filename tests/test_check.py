@@ -30,24 +30,6 @@ from active_learning_step.committee import (  # noqa: E402
 from active_learning_step.molecules import masses, molecules  # noqa: E402
 from active_learning_step.thresholds import calibrate_threshold  # noqa: E402
 
-RECIPE = """\
-model:
-  name: schnet
-  cutoff: 4.0
-  n_features: 8
-  n_interactions: 1
-  n_rbf: 6
-  extra:
-    species: [1, 8]
-data:
-  cutoff: 4.0
-  batch_size: 3
-optim:
-  epochs: 2
-  scheduler: none
-device: cpu
-"""
-
 
 def _data(path, n=15, seed=0):
     """Labelled waters, every third frame a cell with a stress; REF_* keys, tags."""
@@ -69,30 +51,53 @@ def _data(path, n=15, seed=0):
     return frames
 
 
+def _cfg():
+    from xnn.common.config import from_dict
+
+    return from_dict(
+        {
+            "model": {
+                "name": "schnet",
+                "n_features": 8,
+                "n_interactions": 1,
+                "n_rbf": 6,
+                "cutoff": 4.0,
+                "extra": {"species": [1, 8]},
+            }
+        }
+    )
+
+
 @pytest.fixture(scope="module")
 def committee(tmp_path_factory):
+    """Three members (perturbed SchNets) in a seamm-al train layout over 3 folds.
+
+    Built directly rather than trained, so these tests run with any xnn.
+    """
+    from xnn.common.models import ForceStressOutput, build_model
+
+    from active_learning_step.train import fold_plan
+
     tmp = tmp_path_factory.mktemp("check")
-    (tmp / "recipe.yaml").write_text(RECIPE)
     frames = _data(tmp / "data.extxyz")
-    assert (
-        main(
-            [
-                "train",
-                str(tmp / "data.extxyz"),
-                "-c",
-                str(tmp / "recipe.yaml"),
-                "-o",
-                str(tmp / "com"),
-                "-k",
-                "3",
-                "--set",
-                "data.energy_key=REF_energy",
-                "--set",
-                "data.forces_key=REF_forces",
-            ]
+    com = tmp / "com"
+    for seed in range(3):
+        torch.manual_seed(seed)
+        m = ForceStressOutput(build_model(_cfg().model), compute_stress=True)
+        with torch.no_grad():
+            for p in m.parameters():
+                p.add_(0.3 * torch.randn_like(p))
+        (com / f"m{seed}").mkdir(parents=True)
+        torch.save(
+            {"model": m.state_dict(), "cfg": _cfg()}, com / f"m{seed}" / "best.pt"
         )
-        == 0
-    )
+    (com / "manifest.json").write_text(json.dumps({"k": 3}))
+    fold = fold_plan(len(frames), 3, 0)
+    with open(com / "frames.csv", "w", newline="") as fh:
+        writer = csv.writer(fh)
+        writer.writerow(["frame", "configuration", "fold"])
+        for i, a in enumerate(frames):
+            writer.writerow([i, a.info["SEAMM/configuration_name"], fold[i]])
     return tmp, frames
 
 
@@ -443,3 +448,19 @@ def test_lag_ignores_single_epoch_spikes():
     spiky[50] = 0.2  # one bad epoch, 25 x the others
     stretch, peak = lag([base, base, spiky, base], 2, 1.5)
     assert stretch is None and peak < 1.5
+
+
+def test_xnn_013_metrics_csv_is_read(tmp_path):
+    from active_learning_step.check import member_losses
+
+    rows = [
+        "step,epoch,lr,train/loss,val/loss",
+        "10,0,0.01,1.0,0.9",
+        "15,,,0.95,",
+        "20,1,0.01,0.8,0.7",
+        "30,2,0.01,0.6,0.75",
+    ]
+    (tmp_path / "metrics.csv").write_text("\n".join(rows) + "\n")
+    final, best, source, converged = member_losses(tmp_path)
+    assert (final, best) == (0.75, 0.7) and source.endswith("metrics.csv")
+    assert converged == 1

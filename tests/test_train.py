@@ -13,7 +13,7 @@ import numpy as np
 import pytest
 
 torch = pytest.importorskip("torch")
-pytest.importorskip("xnn")
+xnn = pytest.importorskip("xnn")
 
 from ase import Atoms  # noqa: E402
 from ase.io import write  # noqa: E402
@@ -21,7 +21,14 @@ from ase.io import write  # noqa: E402
 from active_learning_step.cli import main  # noqa: E402
 from active_learning_step.committee import Committee  # noqa: E402
 from active_learning_step.samplers import KindBatchSampler, kinds_of  # noqa: E402
-from active_learning_step.train import make_trainer  # noqa: E402
+from active_learning_step.train import (  # noqa: E402
+    MIN_TRAIN_XNN,
+    _version_tuple,
+    make_trainer,
+)
+
+TRAINS = _version_tuple(xnn.__version__) >= MIN_TRAIN_XNN
+needs_xnn_013 = pytest.mark.skipif(not TRAINS, reason="training needs xnn >= 0.13")
 
 RECIPE = """\
 model:
@@ -92,6 +99,7 @@ def _train(tmp_path, recipe, data, *extra):
     )
 
 
+@needs_xnn_013
 def test_train_committee_members_manifest_and_frames(setup):
     tmp_path, recipe, data = setup
     assert _train(tmp_path, recipe, data, "--cell-share", "0.3") == 0
@@ -132,6 +140,7 @@ def test_train_committee_members_manifest_and_frames(setup):
     assert committee.size == 3 and committee.cutoff == 4.0
 
 
+@needs_xnn_013
 def test_rerun_skips_and_a_different_plan_is_refused(setup, capsys):
     tmp_path, recipe, data = setup
     assert _train(tmp_path, recipe, data, "--member", "1") == 0
@@ -145,6 +154,7 @@ def test_rerun_skips_and_a_different_plan_is_refused(setup, capsys):
     assert "different committee" in capsys.readouterr().err
 
 
+@needs_xnn_013
 def test_steps_set_the_epochs(setup):
     tmp_path, recipe, data = setup
     assert _train(tmp_path, recipe, data, "--member", "0", "--steps", "9") == 0
@@ -165,6 +175,7 @@ class _Recorder(KindBatchSampler):
         return iter(batches)
 
 
+@needs_xnn_013
 def test_the_trainer_sees_a_new_order_every_epoch(tmp_path):
     """Under the installed xnn, the training batches are reshuffled every epoch."""
     from xnn.common.config import from_yaml
@@ -180,7 +191,7 @@ def test_the_trainer_sees_a_new_order_every_epoch(tmp_path):
     sizes = {"cluster": 3, "cell": 2}
     sampler = _Recorder(kinds_of(structures), sizes, True, 11)
     val = KindBatchSampler(kinds_of(structures[:6]), sizes, False, 11)
-    trainer, hook = make_trainer(
+    trainer = make_trainer(
         Trainer,
         cfg,
         AtomicDataset(structures, 4.0),
@@ -189,7 +200,6 @@ def test_the_trainer_sees_a_new_order_every_epoch(tmp_path):
         val,
     )
     trainer.fit()
-    print(f"samplers attached by {hook}")
     assert len(sampler.passes) == 4
     assert len({str(p) for p in sampler.passes}) == 4
     for epoch, order in enumerate(sampler.passes):
@@ -223,6 +233,7 @@ device: cpu
 """
 
 
+@needs_xnn_013
 def test_avg_num_neighbors_auto_is_the_training_folds_mean(tmp_path):
     recipe = tmp_path / "mace.yaml"
     recipe.write_text(MACE)
@@ -253,6 +264,7 @@ def test_avg_num_neighbors_auto_is_the_training_folds_mean(tmp_path):
     )
 
 
+@needs_xnn_013
 def test_stratify_by_a_column_and_plain_kfold(setup):
     from active_learning_step.train import fold_plan
 
@@ -322,3 +334,17 @@ def test_stratify_by_a_column_and_plain_kfold(setup):
     with open(plain / "frames.csv") as fh:
         folds = [int(f["fold"]) for f in csv.DictReader(fh)]
     assert folds == fold_plan(14, 3, 0).tolist()
+
+
+@pytest.mark.skipif(TRAINS, reason="this xnn trains")
+def test_training_refuses_an_older_xnn(setup, capsys):
+    tmp_path, recipe, data = setup
+    assert _train(tmp_path, recipe, data) == 2
+    assert "is required to train" in capsys.readouterr().err
+    assert not (tmp_path / "com" / "manifest.json").exists()
+
+
+def test_version_tuples():
+    assert _version_tuple("0.13.0") == (0, 13, 0)
+    assert _version_tuple("0.12.1+g1234") == (0, 12, 1)
+    assert _version_tuple("1.0") == (1, 0, 0)

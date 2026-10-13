@@ -51,54 +51,90 @@ __all__ = [
     "load_frames",
     "fold_plan",
     "make_trainer",
+    "require_training_xnn",
     "source_sha256",
     "stratified_fold_plan",
     "train_committee",
 ]
 
 
-def make_trainer(Trainer, cfg, train_set, val_set, sampler, val_sampler):
-    """An xnn Trainer that batches with our samplers.
+#: The oldest xnn that ``seamm-al train`` trains with: 0.13 chooses ``best.pt``,
+#: drives the plateau learning rate and logs on dataset-averaged epoch metrics, takes
+#: batch samplers (``set_epoch`` every epoch) and has the callback API used here.
+#: Sina (xnn's author): older releases come with no guarantees. Inference (score,
+#: check, engine) works with older releases.
+MIN_TRAIN_XNN = (0, 13, 0)
 
-    xnn 0.12 takes the samplers itself (``train_batch_sampler``) and calls their
-    ``set_epoch`` every epoch. xnn 0.11 has no such argument; there the trainer's
-    loaders (its public ``train_loader`` and ``val_loader``) are replaced by loaders
-    over the samplers, which reshuffle every epoch on their own. A distributed run
-    needs xnn 0.12.
 
-    Returns
-    -------
-    (Trainer, str)
-        The trainer and how the samplers were attached: ``"trainer"`` or
-        ``"loaders (xnn < 0.12)"``.
-    """
-    import inspect
+def _version_tuple(text):
+    parts = []
+    for p in str(text).split("+")[0].split(".")[:3]:
+        digits = "".join(c for c in p if c.isdigit())
+        parts.append(int(digits) if digits else 0)
+    return tuple(parts + [0] * (3 - len(parts)))
 
-    if "train_batch_sampler" in inspect.signature(Trainer.__init__).parameters:
-        trainer = Trainer(
-            cfg,
-            train_set,
-            val_set,
-            train_batch_sampler=sampler,
-            val_batch_sampler=val_sampler,
+
+def require_training_xnn():
+    """Refuse to train with an xnn older than :data:`MIN_TRAIN_XNN`."""
+    import xnn
+
+    if _version_tuple(xnn.__version__) < MIN_TRAIN_XNN:
+        need = ".".join(str(v) for v in MIN_TRAIN_XNN)
+        raise ValueError(
+            f"xnn >= {need} is required to train (found {xnn.__version__}); "
+            "score, check and engine work with older releases"
         )
-        return trainer, "trainer"
 
-    from torch.utils.data import DataLoader
-    from xnn.common.data import collate
 
-    if int(os.environ.get("WORLD_SIZE", "1")) > 1:
-        raise ValueError("distributed training with batch samplers needs xnn >= 0.12")
-    logger.warning("xnn < 0.12: the batch samplers replace the trainer's loaders")
-    trainer = Trainer(cfg, train_set, val_set)
-    workers = cfg.data.num_workers
-    trainer.train_loader = DataLoader(
-        train_set, batch_sampler=sampler, collate_fn=collate, num_workers=workers
+def history_callback(history, epochs, t0):
+    """An xnn trainer callback that records every epoch in ``history``.
+
+    ``history`` gets ``epoch``, ``lr``, ``train`` and ``val`` (dicts of the
+    epoch's dataset-level metrics, without the ``train/`` and ``val/`` prefixes;
+    ``val`` is empty on epochs without validation) and ``seconds``.
+    """
+    from xnn.common.train.callbacks import Callback
+
+    class _History(Callback):
+        def __init__(self):
+            self.last = t0
+
+        def on_epoch_end(self, trainer, epoch, metrics):
+            now = time.time()
+            tr = {k[6:]: v for k, v in metrics.items() if k.startswith("train/")}
+            va = {k[4:]: v for k, v in metrics.items() if k.startswith("val/")}
+            history["epoch"].append(int(epoch))
+            history["lr"].append(metrics.get("lr"))
+            history["train"].append(tr)
+            history["val"].append(va)
+            history["seconds"].append(now - self.last)
+            self.last = now
+            if epoch < 2 or epoch % max(1, epochs // 10) == 0 or epoch == epochs - 1:
+                print(
+                    f"  epoch {epoch:>4d}  train {tr.get('loss', float('nan')):.4e}"
+                    f"  val {va.get('loss', float('nan')):.4e}  ({now - t0:.0f} s)",
+                    flush=True,
+                )
+
+    return _History()
+
+
+def make_trainer(Trainer, cfg, train_set, val_set, sampler, val_sampler, callbacks=()):
+    """An xnn Trainer that batches with our samplers and runs our callbacks.
+
+    The samplers go to the trainer's ``train_batch_sampler`` and
+    ``val_batch_sampler``; it tells them the epoch before every pass. Needs xnn
+    0.13 or later (:func:`require_training_xnn`).
+    """
+    require_training_xnn()
+    return Trainer(
+        cfg,
+        train_set,
+        val_set,
+        train_batch_sampler=sampler,
+        val_batch_sampler=val_sampler,
+        callbacks=list(callbacks),
     )
-    trainer.val_loader = DataLoader(
-        val_set, batch_sampler=val_sampler, collate_fn=collate, num_workers=workers
-    )
-    return trainer, "loaders (xnn < 0.12)"
 
 
 def file_sha256(path, chunk=1 << 20):
@@ -320,6 +356,8 @@ def train_committee(
     """
     import torch
     from xnn.common.config import apply_overrides, from_yaml
+
+    require_training_xnn()
     from xnn.common.data import AtomicDataset
     from xnn.common.train import Trainer
 
@@ -499,29 +537,18 @@ def train_committee(
             flush=True,
         )
         torch.manual_seed(seed)
-        trainer, hook = make_trainer(Trainer, cfg, ds_tr, ds_va, sampler, val_sampler)
-        history = {"epoch": [], "train": [], "val": [], "seconds": []}
+        history = {"epoch": [], "lr": [], "train": [], "val": [], "seconds": []}
         t0 = time.time()
-        last = [t0]
-
-        def _log(epoch, tr, va, history=history, last=last):
-            now = time.time()
-            history["epoch"].append(epoch)
-            history["train"].append(tr)
-            history["val"].append(va)
-            history["seconds"].append(now - last[0])
-            last[0] = now
-            if epoch < 2 or epoch % max(1, epochs // 10) == 0 or epoch == epochs - 1:
-                print(
-                    f"  epoch {epoch:>4d}  train {tr.get('loss', float('nan')):.4e}"
-                    f"  val {va.get('loss', float('nan')):.4e}  ({now - t0:.0f} s)",
-                    flush=True,
-                )
-
-        trainer._log = _log
+        trainer = make_trainer(
+            Trainer,
+            cfg,
+            ds_tr,
+            ds_va,
+            sampler,
+            val_sampler,
+            callbacks=[history_callback(history, epochs, t0)],
+        )
         trainer.fit()
-        if not (mdir / "last.pt").exists():  # xnn 0.11 leaves it to the caller
-            trainer.save(str(mdir / "last.pt"))
         _write_json(mdir / "history.json", history)
         _write_json(
             mdir / "member.json",
@@ -537,7 +564,6 @@ def train_committee(
                 "epochs": epochs,
                 "steps": per_epoch * epochs,
                 "cell_share": cell_share,
-                "sampler_hook": hook,
                 "avg_num_neighbors": avg_nn,
                 "seconds": time.time() - t0,
                 "device": str(trainer.device),

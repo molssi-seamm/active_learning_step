@@ -584,8 +584,9 @@ def val_history(mdir):
 
     Reads ``history.json`` (``seamm-al train``'s, with ``val`` a list of metric
     dicts, or a list of numbers as the water campaign's ``train_member.py`` and
-    mlff's trainer write) or, failing that, any ``*history*.json`` in the member
-    directory.
+    mlff's trainer write), failing that any ``*history*.json`` in the member
+    directory, and failing that xnn 0.13's ``metrics.csv`` (``val/loss`` per
+    epoch).
 
     Returns
     -------
@@ -594,8 +595,14 @@ def val_history(mdir):
     """
     mdir = Path(mdir)
     candidates = [mdir / "history.json"] + sorted(mdir.glob("*history*.json"))
+    candidates.append(mdir / "metrics.csv")
     for path in candidates:
         if not path.is_file():
+            continue
+        if path.suffix == ".csv":
+            losses = _csv_val_losses(path)
+            if losses:
+                return losses, str(path)
             continue
         try:
             hist = json.loads(path.read_text())
@@ -613,6 +620,28 @@ def val_history(mdir):
         if losses:
             return losses, str(path)
     return [], None
+
+
+def _csv_val_losses(path):
+    """Validation losses per epoch from xnn's CSV logger (``metrics.csv``).
+
+    xnn 0.13's :class:`~xnn.common.train.loggers.CSVLogger` writes a row per log
+    call, with ``epoch`` and ``val/loss`` on validation epochs (rows of training
+    steps have neither). The last row of each epoch is kept.
+    """
+    by_epoch = {}
+    try:
+        with open(path, newline="") as fh:
+            for row in csv.DictReader(fh):
+                value, epoch = row.get("val/loss"), row.get("epoch")
+                if value in (None, "") or epoch in (None, ""):
+                    continue
+                v = float(value)
+                if np.isfinite(v):
+                    by_epoch[int(float(epoch))] = v
+    except (OSError, ValueError):
+        return []
+    return [by_epoch[e] for e in sorted(by_epoch)]
 
 
 def member_losses(mdir):

@@ -77,9 +77,12 @@ versions), ``frames.csv`` (every frame's fold) and one directory per member with
 in separate jobs (``--member``): each checks the manifest, a directory holding a
 different plan is refused, and a member that has finished is skipped.
 
-The batch samplers reshuffle every epoch. xnn 0.12 and later call their ``set_epoch``
-each epoch; with xnn 0.11 they replace the trainer's loaders and reshuffle by
-themselves (single process only).
+Training needs xnn 0.13 or later, which chooses ``best.pt``, drives the plateau
+learning rate and logs on dataset-averaged epoch metrics, and tells the batch samplers
+the epoch every pass (``score``, ``check`` and ``engine`` work with older releases).
+Each member's epochs are recorded in its ``history.json`` through an xnn callback, and
+the recipe's ``trainer`` section (loggers, early stopping, checkpoints every n epochs)
+applies as in ``xnn train``.
 
 Selecting
 =========
