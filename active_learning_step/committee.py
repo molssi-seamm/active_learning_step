@@ -106,6 +106,30 @@ __all__ = [
 ]
 
 
+def read_checkpoint(path):
+    """``xnn.common.models.hub.load_checkpoint``, with a clear error across releases.
+
+    A trainer checkpoint pickles its config, so one written by a newer xnn (for
+    example a 0.13 ``TrainerConfig``) cannot be unpickled by an older one; the
+    error then names both releases rather than a missing attribute.
+
+    Raises
+    ------
+    ValueError
+        When the checkpoint needs a different xnn release.
+    """
+    import xnn
+    from xnn.common.models.hub import load_checkpoint
+
+    try:
+        return load_checkpoint(path)
+    except (AttributeError, ModuleNotFoundError, ImportError) as e:
+        raise ValueError(
+            f"cannot read {path} with xnn {xnn.__version__} ({type(e).__name__}: {e}); "
+            "it was probably written by a newer xnn: use that release's environment"
+        ) from e
+
+
 def structure_from_atoms(atoms, total_charge=None) -> dict:
     """The xnn structure dict of an ASE Atoms, for scoring.
 
@@ -509,11 +533,11 @@ class Committee(nn.Module):
             When the checkpoints record different subtracted dispersions or
             the members differ in cutoff.
         """
-        from xnn.common.models.hub import build_potential, load_checkpoint
+        from xnn.common.models.hub import build_potential
 
         members, records = [], []
         for p in paths:
-            ck = load_checkpoint(p)
+            ck = read_checkpoint(p)
             # as xnn.common.models.registry.recorded_dispersion: older configs lack it
             records.append(getattr(ck.config, "subtracted_dispersion", None))
             if any(r != records[0] for r in records):

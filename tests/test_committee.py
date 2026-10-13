@@ -510,3 +510,23 @@ def test_score_keeps_pressures_aligned_in_mixed_pools():
     whole = com.score(structs, batch_size=5, molecule=molecules, masses=masses)
     for k in ("rho_pressure", "rho_pressure_molecular", "rho_forces"):
         assert np.allclose(sc[k], whole[k], equal_nan=True, rtol=1e-10)
+
+
+def test_a_checkpoint_from_another_xnn_release_is_explained(tmp_path, monkeypatch):
+    """A pickled config class this xnn lacks: a clear ValueError, not AttributeError."""
+    import importlib
+    import sys
+
+    from active_learning_step.committee import read_checkpoint
+
+    (tmp_path / "newer_xnn_config.py").write_text("class TrainerConfig:\n    pass\n")
+    monkeypatch.syspath_prepend(str(tmp_path))
+    module = importlib.import_module("newer_xnn_config")
+    path = tmp_path / "m.pt"
+    torch.save({"model": _member(0).state_dict(), "cfg": module.TrainerConfig()}, path)
+    del sys.modules["newer_xnn_config"]
+    (tmp_path / "newer_xnn_config.py").unlink()
+    with pytest.raises(ValueError, match="written by a newer xnn"):
+        read_checkpoint(path)
+    with pytest.raises(ValueError, match="newer xnn"):
+        Committee.from_checkpoints([str(path), str(path)])

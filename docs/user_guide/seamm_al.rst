@@ -79,7 +79,10 @@ different plan is refused, and a member that has finished is skipped.
 
 Training needs xnn 0.13 or later, which chooses ``best.pt``, drives the plateau
 learning rate and logs on dataset-averaged epoch metrics, and tells the batch samplers
-the epoch every pass (``score``, ``check`` and ``engine`` work with older releases).
+the epoch every pass. ``score``, ``check`` and ``engine`` work with older releases on
+checkpoints those releases wrote, but a checkpoint trained with xnn 0.13 can only be
+read by 0.13 or later (its pickled config), so a committee trained here is scored,
+checked and run in an xnn 0.13 environment.
 Each member's epochs are recorded in its ``history.json`` through an xnn callback, and
 the recipe's ``trainer`` section (loggers, early stopping, checkpoints every n epochs)
 applies as in ``xnn train``.

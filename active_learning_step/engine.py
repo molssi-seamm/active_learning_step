@@ -148,11 +148,13 @@ def build_committee(paths, device=None, dtype=None):
     ValueError
         When the records differ.
     """
-    from xnn.common.models.hub import build_potential, load_checkpoint
+    from xnn.common.models.hub import build_potential
+
+    from .committee import read_checkpoint
 
     members, records = [], []
     for p in paths:
-        ck = load_checkpoint(p)
+        ck = read_checkpoint(p)
         records.append(getattr(ck.config, "subtracted_dispersion", None))
         m = build_potential(
             ck.config,
