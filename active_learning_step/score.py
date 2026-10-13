@@ -28,7 +28,7 @@ from pathlib import Path
 import numpy as np
 
 from .molecules import masses, molecules
-from .pool import configuration_name, iter_frames
+from .pool import configuration_name, iter_frames, total_charge
 
 logger = logging.getLogger(__name__)
 
@@ -113,8 +113,11 @@ def score_pool(
     ----------
     paths : sequence of str
         The pool files (``.extxyz`` or ``.sdf``).
-    models : sequence of str
-        The members' checkpoints.
+    models : sequence of str or None
+        The members' checkpoints. ``None`` (``seamm-al score --no-models``)
+        writes only the identity and carried columns, without torch or xnn: a
+        pool listing for a random draw (``seamm-al select --random``) before any
+        committee exists.
     out_csv : str, optional
         The scores file.
     atoms_out : str, optional
@@ -139,26 +142,30 @@ def score_pool(
     int
         The number of frames scored.
     """
-    import torch
+    committee = None
+    if models:
+        import torch
 
-    from .committee import Committee, structure_from_atoms
+        from .committee import Committee
 
-    if "SLURM_CPUS_PER_TASK" in os.environ:
-        torch.set_num_threads(int(os.environ["SLURM_CPUS_PER_TASK"]))
-    if dtype is not None and isinstance(dtype, str):
-        dtype = getattr(torch, dtype)
+        if "SLURM_CPUS_PER_TASK" in os.environ:
+            torch.set_num_threads(int(os.environ["SLURM_CPUS_PER_TASK"]))
+        if dtype is not None and isinstance(dtype, str):
+            dtype = getattr(torch, dtype)
 
-    committee = Committee.from_checkpoints(
-        list(models),
-        device=device,
-        dtype=dtype,
-        dispersion=None if dispersion else False,
-    )
-    logger.info(
-        f"Committee of {committee.size} members, cutoff {committee.cutoff} A, "
-        f"subtracted dispersion {committee.subtracted_dispersion}, "
-        f"dispersion {'added' if dispersion else 'not added'}"
-    )
+        committee = Committee.from_checkpoints(
+            list(models),
+            device=device,
+            dtype=dtype,
+            dispersion=None if dispersion else False,
+        )
+        logger.info(
+            f"Committee of {committee.size} members, cutoff {committee.cutoff} A, "
+            f"subtracted dispersion {committee.subtracted_dispersion}, "
+            f"dispersion {'added' if dispersion else 'not added'}"
+        )
+    elif atoms_out is not None:
+        raise ValueError("--atoms needs a committee")
 
     columns = list(COLUMNS) + [c for c in carry if c not in COLUMNS]
     atoms_fh = open(atoms_out, "w") if atoms_out is not None else None
@@ -174,19 +181,24 @@ def score_pool(
                     per_atom = {}
                     cluster_frames = []
                     for index, atoms in chunk:
-                        s = structure_from_atoms(atoms)
+                        charge = total_charge(atoms)
                         row = {
                             "file": fname,
                             "index": index,
                             "configuration": configuration_name(atoms),
-                            "kind": "cell" if s["cell"] is not None else "cluster",
+                            "kind": "cell" if atoms.pbc.any() else "cluster",
                             "n_atoms": len(atoms),
                             "formula": atoms.get_chemical_formula(mode="hill"),
-                            "total_charge": s.get("total_charge", ""),
+                            "total_charge": "" if charge is None else charge,
                         }
                         for key in carry:
                             row[key] = atoms.info.get(key, "")
                         rows[index] = row
+                        if committee is None:
+                            continue
+                        from .committee import structure_from_atoms
+
+                        s = structure_from_atoms(atoms)
                         if row["kind"] == "cell":
                             mol = molecules(atoms)
                             mas = masses(atoms)

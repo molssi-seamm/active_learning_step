@@ -269,3 +269,140 @@ def test_select_refuses_a_changed_pool(tmp_path, xyz_pool):
         )
         == 2
     )
+
+
+# round 0: a random draw from a pool listing, no committee
+def _listing(tmp_path, pool, *carry):
+    out = tmp_path / "listing.csv"
+    args = ["score", str(pool), "--no-models", "-o", str(out)]
+    for c in carry:
+        args += ["--carry", c]
+    assert main(args) == 0
+    with open(out) as fh:
+        return out, list(csv.DictReader(fh))
+
+
+def _strat_pool(tmp_path, n=36):
+    """Clusters tagged with a source and a salt, as a Li-salt round 0."""
+    from ase import Atoms
+    from ase.io import write
+
+    rng = np.random.default_rng(2)
+    frames = []
+    for i in range(n):
+        a = Atoms("LiFOHH", positions=rng.uniform(0, 5, (5, 3)))
+        a.info["SEAMM/configuration_name"] = f"c{i}"
+        a.info["source"] = ("full", "q0.8", "EC-seeded")[i % 3]
+        a.info["salt"] = ("LiPF6", "LiBF4")[(i // 3) % 2]
+        a.info["total_charge"] = 0
+        frames.append(a)
+    path = tmp_path / "salts.extxyz"
+    write(path, frames, format="extxyz")
+    return path
+
+
+def test_score_without_models_lists_the_pool(tmp_path, xyz_pool):
+    _, rows = _listing(tmp_path, xyz_pool, "total_charge")
+    assert [r["configuration"] for r in rows][:3] == [
+        "cell_EC_300",
+        "cell_FEC_300",
+        "cluster_1",
+    ]
+    assert [r["kind"] for r in rows] == [
+        "cell",
+        "cell",
+        "cluster",
+        "cell",
+        "cell",
+        "cluster",
+    ]
+    assert rows[4]["total_charge"] == "-1.0"
+    assert all(r["rho_forces"] == "" for r in rows)
+    assert main(["score", str(xyz_pool), "-o", str(tmp_path / "x.csv")]) == 2
+
+
+def test_random_draw_is_seeded_and_keeps_budget_caps_and_records(tmp_path, xyz_pool):
+    scores, rows = _listing(tmp_path, xyz_pool)
+    costs = parse_costs(["cell=10", "cluster=1"])
+    a, _ = choose(rows, costs, random_seed=7)
+    b, _ = choose(rows, costs, random_seed=7)
+    c, _ = choose(rows, costs, random_seed=8)
+    order = [r["configuration"] for r in a]
+    assert order == [r["configuration"] for r in b]
+    assert sorted(order) == sorted(r["configuration"] for r in rows)
+    assert order != [r["configuration"] for r in c]
+    assert all(r["seed"] == 7 and r["stratum"] == "" for r in a)
+    assert [r["draw"] for r in a] == list(range(1, 7))
+    sel, rej = choose(rows, costs, random_seed=7, budget=21, fill=True)
+    assert sum(r["cost"] for r in sel) <= 21
+    sel, _ = choose(rows, costs, random_seed=7, max_frames=2, exclude={order[0]})
+    assert [r["configuration"] for r in sel] == order[1:3]
+    # the command: provenance columns and verbatim records
+    out, prefix = tmp_path / "sel.csv", tmp_path / "drawn"
+    assert (
+        main(
+            [
+                "select",
+                str(scores),
+                "--random",
+                "7",
+                "--cost",
+                "cell=10",
+                "--cost",
+                "cluster=1",
+                "--max-frames",
+                "4",
+                "-o",
+                str(out),
+                "--output",
+                str(prefix),
+            ]
+        )
+        == 0
+    )
+    with open(out) as fh:
+        chosen = list(csv.DictReader(fh))
+    assert [r["configuration"] for r in chosen] == order[:4]
+    assert {r["seed"] for r in chosen} == {"7"} and "rank_in_kind" not in chosen[0]
+    original = list(iter_records(xyz_pool))
+    assert list(iter_records(f"{prefix}.extxyz")) == [
+        original[int(r["index"])] for r in chosen
+    ]
+
+
+def test_stratified_draw_spreads_over_the_strata(tmp_path):
+    pool = _strat_pool(tmp_path)
+    _, rows = _listing(tmp_path, pool, "source", "salt")
+    costs = parse_costs(["cluster=1"])
+    sel, _ = choose(
+        rows, costs, random_seed=3, stratify_columns=["source", "salt"], max_frames=14
+    )
+    counts = {}
+    for r in sel:
+        counts[r["stratum"]] = counts.get(r["stratum"], 0) + 1
+    assert len(counts) == 6 and max(counts.values()) - min(counts.values()) <= 1
+    # every round takes one frame per stratum, in one shuffled order of the strata
+    first = [r["stratum"] for r in sel[:6]]
+    assert (
+        sorted(first) == sorted(counts) and [r["stratum"] for r in sel[6:12]] == first
+    )
+    sel2, _ = choose(
+        rows,
+        costs,
+        random_seed=3,
+        stratify_columns=["source", "salt"],
+        max_frames=14,
+        caps={"salt": 5},
+    )
+    assert sum(1 for r in sel2 if r["salt"] == "LiPF6") <= 5
+
+
+def test_random_draw_option_conflicts(tmp_path, xyz_pool):
+    _, rows = _listing(tmp_path, xyz_pool)
+    costs = parse_costs(["cell=1", "cluster=1"])
+    with pytest.raises(ValueError):
+        choose(rows, costs, stratify_columns=["kind"])
+    with pytest.raises(ValueError):
+        choose(rows, costs, random_seed=1, thresholds={None: {"rho_forces": 0.1}})
+    with pytest.raises(ValueError):
+        choose(rows, costs, random_seed=1, stratify_columns=["nonesuch"])

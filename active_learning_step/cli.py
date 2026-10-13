@@ -50,8 +50,13 @@ def parser():
         "-m",
         "--models",
         nargs="+",
-        required=True,
+        default=None,
         help="the committee members' checkpoints (best.pt or model directories)",
+    )
+    s.add_argument(
+        "--no-models",
+        action="store_true",
+        help="no committee: list the pool's frames for a random draw (select --random)",
     )
     s.add_argument(
         "-o", "--out", default="scores.csv", help="the scores (default scores.csv)"
@@ -153,6 +158,37 @@ def parser():
         help="xnn config override, e.g. optim.lr=0.005",
     )
 
+    c = sub.add_parser("check", help="does the committee's spread predict its error?")
+    c.add_argument(
+        "committee", help="the committee directory (seamm-al train, or m<k>/)"
+    )
+    c.add_argument("data", nargs="+", help="labelled extxyz files")
+    c.add_argument("-o", "--out", default="check.csv", help="per-frame CSV")
+    c.add_argument("--summary", default=None, help="also write the summary as JSON")
+    c.add_argument(
+        "--tag-key",
+        default=None,
+        help="info key of the tags in the fold lists (default: configuration name)",
+    )
+    c.add_argument("--energy-key", default="REF_energy")
+    c.add_argument("--forces-key", default="REF_forces")
+    c.add_argument("--stress-key", default="REF_stress")
+    c.add_argument(
+        "--dispersion",
+        type=_bool,
+        default=False,
+        help="add the recorded dispersion (for labels that include it; default false)",
+    )
+    c.add_argument("--checkpoint", default="best.pt", help="member checkpoint file")
+    c.add_argument("--device", default="cpu")
+    c.add_argument("--dtype", default=None, choices=("float32", "float64"))
+    c.add_argument(
+        "--calibrate",
+        action="append",
+        default=[],
+        help="NAME:FAIL_LEVEL[:CAPTURE], e.g. rho_forces:0.15 (repeatable)",
+    )
+
     t = sub.add_parser(
         "select", help="choose frames from scores within a core-hour budget"
     )
@@ -201,6 +237,19 @@ def parser():
         help="a file of configuration names already labelled, one per line",
     )
     t.add_argument(
+        "--random",
+        type=int,
+        default=None,
+        metavar="SEED",
+        help="draw frames at random with this seed instead of ranking (round 0)",
+    )
+    t.add_argument(
+        "--stratify-column",
+        action="append",
+        default=[],
+        help="with --random, spread the draw evenly over this column (repeatable)",
+    )
+    t.add_argument(
         "--fill",
         action="store_true",
         help="skip frames that do not fit the budget and keep going, rather than stop",
@@ -234,9 +283,12 @@ def main(argv=None):
     if args.command == "score":
         from .score import score_pool
 
+        if bool(args.models) == args.no_models:
+            print("seamm-al score: give --models or --no-models", file=sys.stderr)
+            return 2
         n = score_pool(
             args.pools,
-            args.models,
+            None if args.no_models else args.models,
             out_csv=args.out,
             atoms_out=args.atoms,
             carry=args.carry,
@@ -246,6 +298,29 @@ def main(argv=None):
             batch_size=args.batch_size,
         )
         print(f"Scored {n} frames -> {args.out}")
+    elif args.command == "check":
+        from .check import check_committee, print_summary
+
+        try:
+            _, summary = check_committee(
+                args.committee,
+                args.data,
+                out_csv=args.out,
+                tag_key=args.tag_key,
+                energy_key=args.energy_key,
+                forces_key=args.forces_key,
+                stress_key=args.stress_key,
+                dispersion=args.dispersion,
+                device=args.device,
+                dtype=args.dtype,
+                checkpoint=args.checkpoint,
+                calibrate=args.calibrate,
+                summary_json=args.summary,
+            )
+        except ValueError as e:
+            print(f"seamm-al check: {e}", file=sys.stderr)
+            return 2
+        print_summary(summary)
     elif args.command == "train":
         from .train import train_committee
 

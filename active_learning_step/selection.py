@@ -173,6 +173,8 @@ def choose(
     exclude=None,
     fill=False,
     max_frames=None,
+    random_seed=None,
+    stratify_columns=(),
 ):
     """Choose frames from scored rows.
 
@@ -200,6 +202,13 @@ def choose(
         Skip a frame that does not fit the budget and go on, rather than stop.
     max_frames : int, optional
         Most frames to select.
+    random_seed : int, optional
+        Draw the frames in a random order (seeded) instead of ranking them: round
+        0, before any committee exists. Thresholds do not apply.
+    stratify_columns : sequence of str, optional
+        With ``random_seed``: spread the draw evenly over the values of these
+        columns, taking one frame from each stratum in turn (the strata in a
+        shuffled order, the frames of each shuffled).
 
     Returns
     -------
@@ -207,6 +216,10 @@ def choose(
         The selected rows, in order, with ``order``, ``cost``, ``running_cost``
         and ``reason``; and the rejected rows with their ``reason``.
     """
+    if random_seed is None and stratify_columns:
+        raise ValueError("--stratify-column applies to a random draw (--random)")
+    if random_seed is not None and thresholds:
+        raise ValueError("a random draw takes no thresholds")
     rank = DEFAULT_RANK if rank is None else rank
     caps = caps or {}
     exclude = exclude or set()
@@ -253,48 +266,16 @@ def choose(
                     rejected.append({**r, "reason": "below the thresholds"})
         candidates = kept
 
-    # order: normalised rank-sum within each kind, merged across kinds
-    ordered = []
-    for kind in sorted({r["kind"] for r in candidates}):
-        these = [r for r in candidates if r["kind"] == kind]
-        columns = rank.get(kind)
-        if not columns:
-            raise ValueError(
-                f"no ranking columns for kind {kind!r}; use --rank {kind}=COL"
-            )
-        for column in columns:
-            if column not in these[0]:
-                raise ValueError(f"no column {column!r} in the scores")
-        total, per_column = _ranks(these, columns)
-        worst = len(these) * len(columns)
-        # the position of each frame in its kind's order (ties keep file order)
-        position = np.empty(len(these), dtype=int)
-        position[np.lexsort((np.arange(len(these)), total))] = np.arange(
-            1, len(these) + 1
-        )
-        for k, r in enumerate(these):
-            detail = ", ".join(
-                f"{c} #{per_column[c][k]} ({_float(r[c]):.4g})" for c in columns
-            )
-            text = (
-                f"{kind} #{position[k]} of {len(these)} "
-                f"(rank-sum {int(total[k])}: {detail})"
-            )
-            if id(r) in flagged_by:
-                text = f"{flagged_by[id(r)]}; {text}"
-            info = {
-                "rank_in_kind": int(position[k]),
-                "n_in_kind": len(these),
-                "rank_sum": int(total[k]),
-            }
-            ordered.append((total[k] / worst, total[k], k, kind, {**r, **info}, text))
-    ordered.sort(key=lambda t: (t[0], t[1], t[3], t[2]))
+    if random_seed is not None:
+        ordered = _random_order(candidates, random_seed, list(stratify_columns))
+    else:
+        ordered = _rank_order(candidates, rank, flagged_by)
 
     selected = []
     counts = {column: {} for column in caps}
     running = 0.0
     stopped = None
-    for _, _, _, _, row, text in ordered:
+    for row, text in ordered:
         if stopped is not None:
             rejected.append({**row, "reason": stopped})
             continue
@@ -338,6 +319,76 @@ def choose(
             }
         )
     return selected, rejected
+
+
+def _rank_order(candidates, rank, flagged_by):
+    """(row, reason) in order: normalised rank-sum within each kind, merged."""
+    ordered = []
+    for kind in sorted({r["kind"] for r in candidates}):
+        these = [r for r in candidates if r["kind"] == kind]
+        columns = rank.get(kind)
+        if not columns:
+            raise ValueError(
+                f"no ranking columns for kind {kind!r}; use --rank {kind}=COL"
+            )
+        for column in columns:
+            if column not in these[0]:
+                raise ValueError(f"no column {column!r} in the scores")
+        total, per_column = _ranks(these, columns)
+        worst = len(these) * len(columns)
+        # the position of each frame in its kind's order (ties keep file order)
+        position = np.empty(len(these), dtype=int)
+        position[np.lexsort((np.arange(len(these)), total))] = np.arange(
+            1, len(these) + 1
+        )
+        for k, r in enumerate(these):
+            detail = ", ".join(
+                f"{c} #{per_column[c][k]} ({_float(r[c]):.4g})" for c in columns
+            )
+            text = (
+                f"{kind} #{position[k]} of {len(these)} "
+                f"(rank-sum {int(total[k])}: {detail})"
+            )
+            if id(r) in flagged_by:
+                text = f"{flagged_by[id(r)]}; {text}"
+            info = {
+                "rank_in_kind": int(position[k]),
+                "n_in_kind": len(these),
+                "rank_sum": int(total[k]),
+            }
+            ordered.append((total[k] / worst, total[k], k, kind, {**r, **info}, text))
+    ordered.sort(key=lambda t: (t[0], t[1], t[3], t[2]))
+    return [(row, text) for _, _, _, _, row, text in ordered]
+
+
+def _random_order(candidates, seed, columns):
+    """(row, reason) in a seeded random order, round-robin over the strata."""
+    rng = np.random.default_rng(seed)
+    for column in columns:
+        if candidates and column not in candidates[0]:
+            raise ValueError(
+                f"no column {column!r} in the scores for --stratify-column"
+            )
+    groups = {}
+    for row in candidates:
+        label = "|".join(str(row[c]) for c in columns)
+        groups.setdefault(label, []).append(row)
+    labels = sorted(groups)
+    for label in labels:
+        g = groups[label]
+        groups[label] = [g[j] for j in rng.permutation(len(g))]
+    labels = [labels[j] for j in rng.permutation(len(labels))]
+    ordered, turn = [], 0
+    while any(groups[label] for label in labels):
+        turn += 1
+        for label in labels:
+            if groups[label]:
+                row = groups[label].pop(0)
+                where = f"stratum {label!r} " if columns else ""
+                text = f"random draw (seed {seed}): {where}round {turn}"
+                info = {"seed": seed, "stratum": label, "draw": len(ordered) + 1}
+                ordered.append(({**row, **info}, text))
+    return ordered
 
 
 def write_rows(path, rows, first):
@@ -436,12 +487,15 @@ def select_main(args):
         exclude=exclude,
         fill=args.fill,
         max_frames=args.max_frames,
+        random_seed=args.random,
+        stratify_columns=args.stratify_column,
     )
+    drawn = ("draw", "seed", "stratum") if args.random is not None else ()
+    ranked = ("rank_in_kind", "n_in_kind", "rank_sum") if args.random is None else ()
     lead = (
         "order",
-        "rank_in_kind",
-        "n_in_kind",
-        "rank_sum",
+        *drawn,
+        *ranked,
         "file",
         "index",
         "configuration",

@@ -99,3 +99,48 @@ running cost and the frame's rank within its kind (``rank_in_kind`` of ``n_in_ki
 for every frame chosen; the command also reports where the budget cut fell, and
 ``--rejected rejected.csv`` lists every frame not chosen with its rank and why, and the chosen frames copied byte for byte from
 the pool files into ``selected.extxyz`` and/or ``selected.sdf``, ready for labelling.
+
+Round 0: a random draw
+======================
+
+Before any committee exists, ``score --no-models`` lists a pool (identity and
+``--carry`` columns only, no torch or xnn needed) and ``select --random SEED`` draws
+from it in a seeded random order, with the same costs, budget, caps, ``--exclude`` and
+``--max-frames``, and the same verbatim output::
+
+    seamm-al score --no-models --carry source --carry salt -o pool.csv clusters.extxyz
+    seamm-al select pool.csv --random 1 --stratify-column source --stratify-column salt \
+        --cost cluster=4 --max-frames 50
+
+``--stratify-column`` spreads the draw evenly over the values of the columns: one frame
+from each stratum in turn, the strata in a shuffled order. ``selection.csv`` records
+the seed, each frame's stratum and its place in the draw.
+
+Checking a committee
+====================
+
+``seamm-al check`` asks whether the committee's spread predicts its real error, on
+labelled frames::
+
+    seamm-al check committee wave1_labels.extxyz --tag-key frame \
+        --calibrate rho_forces:0.14 --calibrate rho_pressure_molecular:1500:0.9
+
+For each frame it gives the spreads and the **out-of-fold** errors: the error of the one
+member that held the frame out, or the mean over the members for a frame none trained
+on (a common validation or test set); frames every member trained on are left out. The
+errors are the force RMSE, the energy per atom and, for cells, the atomic and molecular
+pressures (the label's molecular pressure from its stress and forces). The command
+prints, and ``--summary`` writes, the Spearman correlation of each spread with its error
+per kind, over all out-of-fold frames and the held-out ones only.
+
+The committee directory is one made by ``seamm-al train`` (frames matched by
+configuration name) or one with a ``fold_manifest.json`` per member listing tags under
+``held_out``, ``validation`` and ``test``; ``--tag-key`` names the info key of the tags.
+Labels are read from ``REF_energy``, ``REF_forces`` and ``REF_stress`` (a 9-vector, a
+Voigt 6-vector or a matrix) unless ``--*-key`` says otherwise.
+
+``--calibrate NAME:FAIL_LEVEL[:CAPTURE]`` calibrates a threshold as Smith *et al.*
+(fig. 1): the largest spread that still catches ``CAPTURE`` (default 0.98) of the
+frames whose worst-member error exceeds ``FAIL_LEVEL`` (eV/A for forces, atm for
+pressures, eV per sqrt(atom) for energies), with what it separates. Fewer than 10
+failures earn a warning: such a threshold is not to be trusted.
