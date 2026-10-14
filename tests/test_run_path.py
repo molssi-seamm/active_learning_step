@@ -259,7 +259,8 @@ def test_train_check_score_select(tmp_path):
     assert f"check {job}" in log and str(data) in log.split("check ")[1]
     assert "--calibrate rho_forces:0.15" in log
     # the committee trained above, with its members as the models
-    assert "--models " in log and "committee/m0" in log
+    models = log.split("--models ")[1].split(" --")[0].split()
+    assert models == [f"{job}/1/1/committee/m{k}/best.pt" for k in range(5)]
     # the spreads are 0.0, 0.1, ... 0.5, and the calibrated threshold 0.25
     selection = _rows(next(job.glob("1/*/selection.csv")))
     assert sorted(r["configuration"] for r in selection) == [

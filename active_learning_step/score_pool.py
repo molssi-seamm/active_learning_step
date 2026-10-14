@@ -192,7 +192,15 @@ class ScorePool(active_learning_step.Substep):
             args.append("--no-models")
         else:
             committee = self.committee_directory(P)
-            args += ["--models", *(str(m) for m in member_dirs(committee))]
+            # each member's checkpoint: xnn reads a directory as a hub model
+            members = [m / "best.pt" for m in member_dirs(committee)]
+            missing = [str(m) for m in members if not m.exists()]
+            if missing:
+                raise FileNotFoundError(
+                    f"{self.title}: the committee has members without a checkpoint: "
+                    + ", ".join(missing)
+                )
+            args += ["--models", *(str(m) for m in members)]
             for member in str(P["leave out members"]).replace(",", " ").split():
                 args += ["--drop-member", member]
             args += ["--dispersion", "true" if P["add dispersion"] else "false"]
