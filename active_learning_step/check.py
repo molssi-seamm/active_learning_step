@@ -269,6 +269,7 @@ def check_committee(
     drop=(),
     flag_factor=1.5,
     members_csv=None,
+    threads=None,
 ):
     """Spreads against out-of-fold errors for every labelled frame.
 
@@ -301,6 +302,8 @@ def check_committee(
     flag_factor : float, optional
         Flag a member whose loss or error is more than this times the median of
         the others', by default 1.5.
+    threads : int, optional
+        CPU threads for torch (:func:`~active_learning_step.threads.set_threads`).
     members_csv : str, optional
         The member-health table; by default next to ``out_csv``
         (``<stem>_members.csv``).
@@ -324,8 +327,9 @@ def check_committee(
     from .molecules import masses, molecules
     from .thresholds import calibrate_threshold, split_statistics
 
-    if "SLURM_CPUS_PER_TASK" in os.environ:
-        torch.set_num_threads(int(os.environ["SLURM_CPUS_PER_TASK"]))
+    from .threads import set_threads
+
+    set_threads(threads)
     if isinstance(dtype, str):
         dtype = getattr(torch, dtype)
     paths, roles, layout, names = read_folds(directory, checkpoint, drop)

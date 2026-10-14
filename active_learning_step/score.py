@@ -22,7 +22,6 @@ written in order, so memory stays small however large the pool.
 import csv
 import json
 import logging
-import os
 from pathlib import Path
 
 import numpy as np
@@ -108,6 +107,7 @@ def score_pool(
     batch_size=16,
     all_models=None,
     dropped=(),
+    threads=None,
 ):
     """Score the frames of pool files with a committee and write ``scores.csv``.
 
@@ -138,6 +138,8 @@ def score_pool(
         ``"float32"`` or ``"float64"``; by default the weights' own.
     batch_size : int, optional
         Clusters per batch, by default 16. Cells are scored one at a time.
+    threads : int, optional
+        CPU threads for torch (:func:`~active_learning_step.threads.set_threads`).
     all_models, dropped : optional
         The committee before any members were dropped, and the positions dropped;
         recorded with the models used in ``<out_csv>.json``.
@@ -153,8 +155,9 @@ def score_pool(
 
         from .committee import Committee
 
-        if "SLURM_CPUS_PER_TASK" in os.environ:
-            torch.set_num_threads(int(os.environ["SLURM_CPUS_PER_TASK"]))
+        from .threads import set_threads
+
+        set_threads(threads)
         if dtype is not None and isinstance(dtype, str):
             dtype = getattr(torch, dtype)
 

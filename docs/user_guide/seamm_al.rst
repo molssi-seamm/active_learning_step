@@ -17,6 +17,12 @@ can only be read by 0.13 or later. ``select`` needs neither torch nor xnn and ru
 any SEAMM environment. Without installing the package, run ``python -m
 active_learning_step.cli`` with the repository on ``PYTHONPATH``.
 
+On a CPU, torch uses ``--threads`` threads when given, otherwise ``OMP_NUM_THREADS``
+(which SEAMM, PBS and most launchers set from the job's allocation), otherwise as many
+as the CPUs the process may run on, which a scheduler's cpuset or ``taskset`` limits.
+No scheduler is assumed, so the same commands work under Slurm, PBS, SEAMM's own
+JobServer or none.
+
 Scoring
 =======
 

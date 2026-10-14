@@ -498,6 +498,13 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         "--eeq-reuse", action="store_true", help="carry the D4 EEQ solve between steps"
     )
     p.add_argument("--total-charge", type=float, default=0.0)
+    p.add_argument(
+        "--threads",
+        type=int,
+        default=None,
+        help="CPU threads for torch (default: OMP_NUM_THREADS, else the "
+        "CPUs this process may use)",
+    )
     p.add_argument("--spreads", default=None, help="CSV of the spreads")
     p.add_argument(
         "--every",
@@ -525,7 +532,9 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     )
 
     from .committee import Committee
+    from .threads import set_threads
 
+    set_threads(args.threads)
     paths = [m for k, m in enumerate(args.members) if k not in set(args.drop_member)]
     dtype = getattr(torch, args.dtype) if args.dtype else None
     members, records = build_committee(paths, device=args.device, dtype=dtype)

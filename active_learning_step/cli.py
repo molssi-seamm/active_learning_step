@@ -103,6 +103,13 @@ def parser():
         help="serve the models in this dtype (default: the weights')",
     )
     s.add_argument(
+        "--threads",
+        type=int,
+        default=None,
+        help="CPU threads for torch (default: OMP_NUM_THREADS, else the CPUs this "
+        "process may use)",
+    )
+    s.add_argument(
         "--batch-size",
         type=int,
         default=16,
@@ -165,6 +172,13 @@ def parser():
         default=None,
         help="optimiser steps per member, instead of the config's epochs",
     )
+    r.add_argument(
+        "--threads",
+        type=int,
+        default=None,
+        help="CPU threads for torch (default: OMP_NUM_THREADS, else the CPUs this "
+        "process may use)",
+    )
     r.add_argument("--device", default=None, help="override the config's device")
     r.add_argument(
         "--set",
@@ -217,6 +231,13 @@ def parser():
         "--members-out",
         default=None,
         help="the member-health CSV (default <out stem>_members.csv)",
+    )
+    c.add_argument(
+        "--threads",
+        type=int,
+        default=None,
+        help="CPU threads for torch (default: OMP_NUM_THREADS, else the CPUs this "
+        "process may use)",
     )
     c.add_argument(
         "--calibrate",
@@ -361,6 +382,7 @@ def main(argv=None):
             device=args.device,
             dtype=args.dtype,
             batch_size=args.batch_size,
+            threads=args.threads,
             all_models=None if args.no_models else list(args.models),
             dropped=args.drop_member,
         )
@@ -386,6 +408,7 @@ def main(argv=None):
                 drop=args.drop_member,
                 flag_factor=args.flag_factor,
                 members_csv=args.members_out,
+                threads=args.threads,
             )
         except ValueError as e:
             print(f"seamm-al check: {e}", file=sys.stderr)
@@ -425,6 +448,7 @@ def main(argv=None):
                 overrides=args.overrides,
                 stratify=args.stratify,
                 stratify_columns=args.stratify_column,
+                threads=args.threads,
             )
         except ValueError as e:
             print(f"seamm-al train: {e}", file=sys.stderr)

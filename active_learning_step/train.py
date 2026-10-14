@@ -310,6 +310,7 @@ def train_committee(
     overrides=(),
     stratify="kind",
     stratify_columns=(),
+    threads=None,
 ):
     """Train members of a k-fold committee.
 
@@ -345,6 +346,8 @@ def train_committee(
         ``"kind"`` (the default) splits clusters and cells separately, so every
         fold holds out its share of each; ``"none"`` is a plain k-fold
         (:func:`~active_learning_step.thresholds.kfold_indices`).
+    threads : int, optional
+        CPU threads for torch (:func:`~active_learning_step.threads.set_threads`).
     stratify_columns : sequence of str, optional
         ``info`` keys whose values also define strata (combined with the kind
         unless ``stratify="none"``), e.g. ``liquid``.
@@ -362,6 +365,9 @@ def train_committee(
     from xnn.common.train import Trainer
 
     from .samplers import KindBatchSampler, ShareBatchSampler, kinds_of
+    from .threads import set_threads
+
+    set_threads(threads)
 
     out = Path(out)
     out.mkdir(parents=True, exist_ok=True)
