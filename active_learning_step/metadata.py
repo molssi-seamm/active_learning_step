@@ -143,3 +143,90 @@ units : str
 #         "units": "E_h",
 #     },
 # }
+
+metadata["results"] = {
+    # Train Committee
+    "committee": {
+        "calculation": ["train"],
+        "description": "The committee's directory",
+        "dimensionality": "scalar",
+        "type": "string",
+    },
+    "n_members": {
+        "calculation": ["train", "check"],
+        "description": "The number of members",
+        "dimensionality": "scalar",
+        "type": "integer",
+    },
+    "n_frames": {
+        "calculation": ["train", "score"],
+        "description": "The number of structures",
+        "dimensionality": "scalar",
+        "type": "integer",
+    },
+    "val_loss": {
+        "calculation": ["train"],
+        "description": "The members' best validation losses",
+        "dimensionality": [-1],
+        "type": "float",
+    },
+    # Check Committee
+    "flagged_members": {
+        "calculation": ["check"],
+        "description": "The members flagged as worse than the others",
+        "dimensionality": [-1],
+        "type": "integer",
+    },
+    "spearman": {
+        "calculation": ["check"],
+        "description": "Rank correlations of the spreads with the errors (JSON)",
+        "dimensionality": "scalar",
+        "type": "string",
+    },
+    "thresholds": {
+        "calculation": ["check"],
+        "description": "The calibrated thresholds of the spreads (JSON)",
+        "dimensionality": "scalar",
+        "type": "string",
+    },
+    # Score Pool
+    "scores": {
+        "calculation": ["score"],
+        "description": "The scores file",
+        "dimensionality": "scalar",
+        "type": "string",
+    },
+    "max_rho_forces": {
+        "calculation": ["score"],
+        "description": "The largest force spread",
+        "dimensionality": "scalar",
+        "type": "float",
+        "units": "eV/Å",
+    },
+    "median_rho_forces": {
+        "calculation": ["score"],
+        "description": "The median force spread",
+        "dimensionality": "scalar",
+        "type": "float",
+        "units": "eV/Å",
+    },
+    # Select Frames
+    "n_selected": {
+        "calculation": ["select"],
+        "description": "The number of structures selected",
+        "dimensionality": "scalar",
+        "type": "integer",
+    },
+    "cost": {
+        "calculation": ["select"],
+        "description": "The core-hours to label the selected structures",
+        "dimensionality": "scalar",
+        "type": "float",
+    },
+    "selected_file": {
+        "calculation": ["select"],
+        "description": "The file of the selected structures",
+        "dimensionality": "scalar",
+        "type": "string",
+    },
+}

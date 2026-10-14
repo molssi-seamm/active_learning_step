@@ -2,6 +2,25 @@
 History
 =======
 
+2026.10.14.1 -- The Active Learning step for flowcharts
+    * The Active Learning step now holds four sub-steps: Train Committee, Check
+      Committee, Score Pool and Select Frames, which do in a flowchart what the
+      seamm-al command does. Each can use the committee, scores and thresholds made
+      earlier in the job, and their dialogs show only the settings that apply.
+    * Training, checking and scoring run in the MLFF environment of the xnn plug-in
+      (xnn.ini) as tasks of the job, with nothing to install there; selecting runs in
+      SEAMM.
+    * Score Pool takes candidates from the job's database, with the standard
+      selection of systems and configurations, or from extxyz and SDF files. Select
+      Frames puts selected configurations from the database in a variable for later
+      steps and can copy them into a new system.
+    * Train Committee can save the committee as an xnn model, which the Model
+      Chemistry step then offers (with xnn-step 2026.10.14 or later) for molecular
+      dynamics with the committee mean, recording the members' spreads; with
+      lammps-step 2026.10.14.1 or later this also runs on the CPU.
+    * Candidate files may be gzipped, such as the trajectories LAMMPS writes.
+    * Requires xnn-step 2026.10.14 or later.
+
 2026.10.14 -- Initial release: query-by-committee active learning for MLFFs
     * A committee of machine-learned force fields, trained on different folds of the
       data, disagrees where the model is likely wrong; the seamm-al command uses that

@@ -32,7 +32,11 @@ class ActiveLearningStep(object):
     """
 
     my_description = {
-        "description": "An interface for Active Learning",
+        "description": (
+            "Query-by-committee active learning for machine-learned force fields: "
+            "train a committee, check it, score candidate structures and select the "
+            "ones to label"
+        ),
         "group": "Simulations",
         "name": "Active Learning",
     }

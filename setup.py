@@ -91,5 +91,17 @@ setup(
         'org.molssi.seamm.tk': [
             'Active Learning = active_learning_step:ActiveLearningStep',
         ],
-    }
+        'org.molssi.seamm.active_learning': [
+            'Train Committee = active_learning_step:TrainCommitteeStep',
+            'Select Frames = active_learning_step:SelectFramesStep',
+            'Score Pool = active_learning_step:ScorePoolStep',
+            'Check Committee = active_learning_step:CheckCommitteeStep',
+        ],
+        'org.molssi.seamm.active_learning.tk': [
+            'Train Committee = active_learning_step:TrainCommitteeStep',
+            'Select Frames = active_learning_step:SelectFramesStep',
+            'Score Pool = active_learning_step:ScorePoolStep',
+            'Check Committee = active_learning_step:CheckCommitteeStep',
+        ],
+    },
 )

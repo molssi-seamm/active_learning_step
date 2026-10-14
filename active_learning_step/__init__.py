@@ -16,12 +16,34 @@ try:
 except ImportError:
     pass
 else:
+    # The base class of the sub-steps, at the package level for them to subclass
+    from .substep import Substep  # noqa: F401
+
     from .active_learning import ActiveLearning  # noqa: F401, E501
-    from .active_learning_parameters import ActiveLearningParameters  # noqa: F401, E501
     from .active_learning_step import ActiveLearningStep  # noqa: F401, E501
     from .tk_active_learning import TkActiveLearning  # noqa: F401, E501
 
     from .metadata import metadata  # noqa: F401
+
+    from .train_committee_step import TrainCommitteeStep  # noqa: F401
+    from .train_committee import TrainCommittee  # noqa: F401
+    from .train_committee_parameters import TrainCommitteeParameters  # noqa: F401
+    from .tk_train_committee import TkTrainCommittee  # noqa: F401
+
+    from .check_committee_step import CheckCommitteeStep  # noqa: F401
+    from .check_committee import CheckCommittee  # noqa: F401
+    from .check_committee_parameters import CheckCommitteeParameters  # noqa: F401
+    from .tk_check_committee import TkCheckCommittee  # noqa: F401
+
+    from .score_pool_step import ScorePoolStep  # noqa: F401
+    from .score_pool import ScorePool  # noqa: F401
+    from .score_pool_parameters import ScorePoolParameters  # noqa: F401
+    from .tk_score_pool import TkScorePool  # noqa: F401
+
+    from .select_frames_step import SelectFramesStep  # noqa: F401
+    from .select_frames import SelectFrames  # noqa: F401
+    from .select_frames_parameters import SelectFramesParameters  # noqa: F401
+    from .tk_select_frames import TkSelectFrames  # noqa: F401
 
 # Handle versioneer
 from ._version import get_versions
