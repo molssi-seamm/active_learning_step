@@ -131,7 +131,7 @@ def score_pool(
     dispersion : bool, optional
         Add the dispersion the checkpoints record as subtracted, by default
         ``False``: it is shared by every member, so it adds nothing to the
-        spreads (route B, as the water campaign scores).
+        spreads, and the members are then served as they were trained.
     device : str, optional
         Torch device, by default ``"cpu"``.
     dtype : str, optional

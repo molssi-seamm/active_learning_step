@@ -15,8 +15,8 @@ The errors are the force RMSE over the atoms (``err_forces``, eV/A, the RMS of t
 force-vector error), the energy per atom (``err_energy``, eV) and, for cells, the
 atomic and molecular pressures (``err_pressure``, ``err_pressure_molecular``, atm).
 The label's molecular pressure is computed from its stress and forces with
-:func:`~active_learning_step.committee.molecular_pressure`, as in the water campaign.
-Alongside, the worst-member errors of Sina's definition (:func:`worst_error`:
+:func:`~active_learning_step.committee.molecular_pressure`.
+Alongside, the worst-member errors of Smith et al.'s definition (:func:`worst_error`:
 ``eps_energy`` per sqrt(atom), ``eps_forces``, ``eps_pressure``,
 ``eps_pressure_molecular``) over all members, which ``--calibrate`` uses.
 
@@ -286,7 +286,7 @@ def check_committee(
         Where the labels are (info / arrays); by default ``REF_*``.
     dispersion : bool, optional
         Add the checkpoints' recorded dispersion (for labels that include it); by
-        default ``False``, for route-B labels.
+        default ``False``, for labels with the dispersion removed.
     device, dtype : optional
         As in ``seamm-al score``.
     checkpoint : str, optional
@@ -352,7 +352,7 @@ def check_committee(
             periodic = s["cell"] is not None
             n = len(atoms)
             g = collate([structure_to_graph(s, com.cutoff)]).to(device)
-            lab = g.pos.dtype  # the labels' tensors, as the water campaign
+            lab = g.pos.dtype  # the labels' tensors in the graph's dtype
             mol = mas = None
             if periodic:
                 mol = torch.as_tensor(molecules(s), device=device)
@@ -583,10 +583,9 @@ def val_history(mdir):
     """A member's validation losses per epoch and the file they came from.
 
     Reads ``history.json`` (``seamm-al train``'s, with ``val`` a list of metric
-    dicts, or a list of numbers as the water campaign's ``train_member.py`` and
-    mlff's trainer write), failing that any ``*history*.json`` in the member
-    directory, and failing that xnn 0.13's ``metrics.csv`` (``val/loss`` per
-    epoch).
+    dicts, or a list of numbers as other trainers write), failing that any
+    ``*history*.json`` in the member directory, and failing that xnn 0.13's
+    ``metrics.csv`` (``val/loss`` per epoch).
 
     Returns
     -------
@@ -648,8 +647,8 @@ def member_losses(mdir):
     """A member's final and best validation loss, from its history if there is one.
 
     Reads ``history.json`` (``seamm-al train``'s, with ``val`` a list of metric
-    dicts, or a list of numbers as the water campaign's ``train_member.py``
-    writes) or, failing that, any ``*history*.json`` in the member directory.
+    dicts, or a list of numbers as other trainers write) or, failing that, any
+    ``*history*.json`` in the member directory.
 
     Returns
     -------

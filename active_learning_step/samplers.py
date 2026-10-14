@@ -2,9 +2,8 @@
 
 """Batch samplers for training committee members: one kind per batch, a set cell share.
 
-From the water campaign (Sina Mostafanejad): ``pipeline/homogeneous.py`` and
-``al/cell_share.py``, with the kinds named as in ``scores.csv`` (``cell`` and
-``cluster``).
+Adapted from code by Sina Mostafanejad, with the kinds named as in ``scores.csv``
+(``cell`` and ``cluster``).
 
 * :class:`KindBatchSampler` never mixes clusters and periodic cells in a batch, and
   gives each kind its own batch size: a cell holds about 20 times the atoms and
@@ -27,10 +26,7 @@ Only torch is needed.
 
 import torch
 
-__all__ = ["G7_CELL_SHARE", "KindBatchSampler", "ShareBatchSampler", "kinds_of"]
-
-#: The cell share of the G7 water model: 46 cell batches of 309.
-G7_CELL_SHARE = 46 / 309
+__all__ = ["KindBatchSampler", "ShareBatchSampler", "kinds_of"]
 
 
 def kinds_of(structures):
@@ -129,16 +125,13 @@ class ShareBatchSampler(KindBatchSampler):
     ----------
     kinds, batch_sizes, shuffle, seed
         As in :class:`KindBatchSampler` (single process only).
-    share : float, optional
-        The share of an epoch's batches that are cell batches, in (0, 1); by
-        default :data:`G7_CELL_SHARE`.
+    share : float
+        The share of an epoch's batches that are cell batches, in (0, 1).
     cell_kind : str, optional
         The kind that is cells, by default ``"cell"``.
     """
 
-    def __init__(
-        self, kinds, batch_sizes, shuffle, seed=0, share=G7_CELL_SHARE, cell_kind="cell"
-    ):
+    def __init__(self, kinds, batch_sizes, shuffle, seed=0, *, share, cell_kind="cell"):
         super().__init__(kinds, batch_sizes, shuffle, seed, 0, 1)
         if not 0.0 < share < 1.0:
             raise ValueError(f"share must lie in (0, 1), got {share}")

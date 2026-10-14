@@ -61,7 +61,7 @@ __all__ = [
 #: The oldest xnn that ``seamm-al train`` trains with: 0.13 chooses ``best.pt``,
 #: drives the plateau learning rate and logs on dataset-averaged epoch metrics, takes
 #: batch samplers (``set_epoch`` every epoch) and has the callback API used here.
-#: Sina (xnn's author): older releases come with no guarantees. Inference (score,
+#: xnn's author advises 0.13 or later for training. Inference (score,
 #: check, engine) works with older releases.
 MIN_TRAIN_XNN = (0, 13, 0)
 
@@ -329,7 +329,7 @@ def train_committee(
         Seed of the fold permutation, by default 0.
     init_seed : int, optional
         Member ``l`` is initialised (and its batches shuffled) with ``init_seed + l``;
-        by default 1000, as in the water campaign.
+        by default 1000.
     cell_share : float, optional
         Cell batches as this share of every epoch; by default one pass over the
         cells.
@@ -343,8 +343,8 @@ def train_committee(
         xnn-style ``a.b=value`` overrides of the config.
     stratify : str, optional
         ``"kind"`` (the default) splits clusters and cells separately, so every
-        fold holds out its share of each; ``"none"`` is the water campaign's plain
-        k-fold, exactly.
+        fold holds out its share of each; ``"none"`` is a plain k-fold
+        (:func:`~active_learning_step.thresholds.kfold_indices`).
     stratify_columns : sequence of str, optional
         ``info`` keys whose values also define strata (combined with the kind
         unless ``stratify="none"``), e.g. ``liquid``.
@@ -514,7 +514,7 @@ def train_committee(
         extra = cfg.model.extra if cfg.model.extra is not None else {}
         avg_nn = None
         if extra.get("avg_num_neighbors") == "auto":
-            # as the water campaign: the mean neighbour count of the training set
+            # the mean neighbour count of the member's own training set
             edges = sum(ds_tr[i].num_edges for i in range(len(ds_tr)))
             nodes = sum(ds_tr[i].num_nodes for i in range(len(ds_tr)))
             avg_nn = float(edges / nodes)
@@ -523,7 +523,9 @@ def train_committee(
         if cell_share is None or "cell" not in tr_kinds:
             sampler = KindBatchSampler(tr_kinds, batch_sizes, True, seed)
         else:
-            sampler = ShareBatchSampler(tr_kinds, batch_sizes, True, seed, cell_share)
+            sampler = ShareBatchSampler(
+                tr_kinds, batch_sizes, True, seed, share=cell_share
+            )
         val_sampler = KindBatchSampler(va_kinds, batch_sizes, False, seed)
         per_epoch = len(sampler)
         if steps is not None:

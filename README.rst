@@ -38,9 +38,8 @@ Features
 --------
 
 * ``active_learning_step.committee``: a committee of xnn potentials and its spreads
-  (energy, force, per-atom force, atomic and molecular pressure), ported from the
-  water campaign's module and generalised to molecules found from bonds, ions and
-  charged systems.
+  (energy, force, per-atom force, atomic and molecular pressure), for molecules,
+  ions and charged systems.
 * ``seamm-al score``: the committee's spreads for every frame of extxyz or SDF pools.
 * ``seamm-al select``: rank the frames and take them within a core-hour budget, with
   caps per group and exclusions, writing the chosen frames as a verbatim subset of

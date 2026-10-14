@@ -2,7 +2,7 @@
 
 """The numpy-only parts of query by committee: data folds and thresholds.
 
-From the water campaign's ``campaign/committee.py`` (Sina Mostafanejad), unchanged
+Adapted from code by Sina Mostafanejad, unchanged
 except for being split off so that selection runs without torch or xnn. They are
 re-exported by :mod:`active_learning_step.committee`, which keeps his API.
 """

@@ -55,8 +55,7 @@ as subtracted is not added back (``--dispersion false``): it is the same in ever
 member and adds nothing to the spreads. ``--atoms frames.extxyz`` writes every frame
 with its per-atom force spread.
 
-The models are served in the dtype of their weights, usually float32, as the water
-campaign scored. Float32 reductions on CPUs are not reproducible from run to run: the
+The models are served in the dtype of their weights, usually float32. Float32 reductions on CPUs are not reproducible from run to run: the
 same frame scored twice can differ by about 1e-5 relative in the pressure spreads (and
 much less in the energy and force spreads), which cannot change a ranking.
 ``--dtype float64`` gives reproducible numbers at about twice the cost.
@@ -75,7 +74,7 @@ the seeds and the batching. The labelled frames are cut into ``k`` folds with th
 seed (``--data-seed``, default 0), splitting clusters and cells separately so that
 every fold holds out its share of each (``--stratify kind``, the default; within a
 stratum the folds' counts differ by at most one). ``--stratify-column liquid`` adds an
-info key to the strata, and ``--stratify none`` is the water campaign's plain k-fold.
+info key to the strata, and ``--stratify none`` is a plain k-fold.
 Member ``l`` trains on the other folds, validates on
 fold ``l`` and is initialised from seed ``1000 + l`` (``--init-seed``). Batches never
 mix clusters and cells: clusters use the recipe's ``data.batch_size`` and cells
@@ -143,7 +142,7 @@ Checking a committee
 ``seamm-al check`` asks whether the committee's spread predicts its real error, on
 labelled frames::
 
-    seamm-al check committee wave1_labels.extxyz --tag-key frame \
+    seamm-al check committee labelled.extxyz --tag-key frame \
         --calibrate rho_forces:0.14 --calibrate rho_pressure_molecular:1500:0.9
 
 For each frame it gives the spreads and the **out-of-fold** errors: the error of the one
@@ -204,7 +203,7 @@ the largest difference between the forces served and the mean of the members' fo
 spread reaches a value to ``--flagged`` with their step, spreads and per-atom force
 spread, ready for ``seamm-al score`` or labelling; ``--frames`` writes every frame
 recorded. ``--drop-member K`` leaves a member out and ``--no-dispersion`` serves the
-route-B energy.
+energy without the dispersion the checkpoints record as subtracted from their labels.
 
 LAMMPS runs the engine with ``atom_style atomic``, which reads only the ``Atoms``,
 ``Velocities``, ``Masses`` and pair-coefficient sections of a data file. Check a data

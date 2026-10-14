@@ -32,10 +32,8 @@ scores structures.
 
 Origin and changes
 ------------------
-Ported from the water campaign's ``campaign/committee.py`` (Sina Mostafanejad,
-2026-10, written against xnn 0.8.0), which he agreed should live in this
-plug-in. The API and the formulas are his; the changes generalise it beyond
-water:
+Adapted from code by Sina Mostafanejad, written for liquid water and xnn 0.8.0.
+The API and the formulas are his; the changes generalise it to other systems:
 
 * the molecules come from a covalent bond graph (:func:`molecules`, in
   :mod:`active_learning_step.molecules`) rather than ``atom index // 3``; ions

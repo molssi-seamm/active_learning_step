@@ -92,7 +92,8 @@ def parser():
         "--dispersion",
         type=_bool,
         default=False,
-        help="add the recorded dispersion back (default false: route B, as Sina)",
+        help="add the recorded dispersion back (default false: it is the same in every "
+        "member, so it adds nothing to the spreads)",
     )
     s.add_argument("--device", default="cpu", help="torch device (default cpu)")
     s.add_argument(
@@ -268,7 +269,7 @@ def parser():
         "--combine",
         choices=("any", "all"),
         default="any",
-        help="with several thresholds, any (default, Sina's rule) or all must be met",
+        help="with several thresholds, any (default, Smith et al.) or all must be met",
     )
     t.add_argument(
         "--cap",

@@ -11,8 +11,9 @@ The candidates are put in order and taken until the budget is spent:
   divided by its largest possible value, so the best cell and the best cluster come
   first together.
 * **Thresholds** (``--threshold``): only frames with a spread at least the threshold
-  are candidates (Sina's rule; with several thresholds any one suffices, or all with
-  ``--combine all``). The candidates are then ordered by ranking as above.
+  are candidates (the rule of Smith et al.; with several thresholds any one
+  suffices, or all with ``--combine all``). The candidates are then ordered by
+  ranking as above.
 
 Frames are taken in that order. ``--cap COLUMN=N`` allows at most ``N`` frames per
 value of a column; ``--exclude FILE`` drops configurations already labelled. A frame
@@ -193,7 +194,7 @@ def choose(
     thresholds : dict, optional
         From :func:`parse_thresholds`; turns on threshold mode.
     combine : str, optional
-        ``"any"`` (Sina's rule) or ``"all"`` of the thresholds must be met.
+        ``"any"`` (the rule of Smith et al.) or ``"all"`` of the thresholds must be met.
     caps : dict, optional
         Most frames per value of a column.
     exclude : set of str, optional

@@ -3,7 +3,7 @@
 """``seamm-al engine``: a committee's mean as one MDI engine, with its spreads.
 
 The committee mean is served to an MDI driver (LAMMPS, ``fix mdi/qm``) as a single
-potential, from the water campaign's ``campaign/liquid.py`` (Sina Mostafanejad): the
+potential, adapted from code by Sina Mostafanejad: the
 mean of the members' short-range cores is one
 :class:`~xnn.common.models.InteratomicPotential` (:class:`CommitteeMeanCore`); the
 dispersion recorded in the checkpoints is added once on top (the same term in every
@@ -197,7 +197,8 @@ def committee_mean_potential(
     dispersion : dict, str, bool or None, optional
         The term added once on top of the mean, resolved against the
         checkpoints' record as :func:`~xnn.common.models.registry.resolve_dispersion`
-        does: ``None`` adds the recorded term, ``False`` none (the route-B space).
+        does: ``None`` adds the recorded term, ``False`` none (the energy the
+        labels had).
     eeq_reuse : bool, optional
         Carry the D4 EEQ solve between steps (molecular dynamics).
     compute_stress : bool, optional
@@ -233,7 +234,7 @@ def committee_mean_potential(
         )
     else:
         model = core
-        logger.info(f"committee mean of {core.size} members, no dispersion (route B)")
+        logger.info(f"committee mean of {core.size} members, no dispersion added")
     potential = ForceStressOutput(
         model, compute_forces=True, compute_stress=compute_stress
     ).to(serve_dtype)
@@ -491,7 +492,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     p.add_argument(
         "--no-dispersion",
         action="store_true",
-        help="serve the route-B energy without the recorded dispersion",
+        help="serve the energy without the dispersion recorded as subtracted",
     )
     p.add_argument(
         "--eeq-reuse", action="store_true", help="carry the D4 EEQ solve between steps"
