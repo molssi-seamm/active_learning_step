@@ -44,9 +44,13 @@ rho_pressure_molecular      spread of the molecular pressure, atm (cells)
 energy_mean, pressure_mean  the committee average; also pressure_molecular_mean
 =========================== ==========================================================
 
-Molecules are found from a covalent bond graph (alkali and alkaline-earth ions are
-never bonded), and the total charge is read from ``total_charge`` in the extxyz info
-or from SEAMM's net charge in an SDF. By default the dispersion the checkpoints record
+Molecules are found with SEAMM's own rule, that of molsystem's ``perceive_bonds``:
+atoms closer than 1.2 times the sum of their (Pyykkö) covalent radii are bonded, the
+alkali and alkaline-earth metals never are, and a hydrogen has at most one bond. The
+rule is applied to the coordinates, so it gives the same molecules as SEAMM without
+needing SEAMM; for a SEAMM structure that has bonds of its own, those are used. The
+total charge is read from ``total_charge`` in the extxyz info or from SEAMM's net
+charge in an SDF. By default the dispersion the checkpoints record
 as subtracted is not added back (``--dispersion false``): it is the same in every
 member and adds nothing to the spreads. ``--atoms frames.extxyz`` writes every frame
 with its per-atom force spread.

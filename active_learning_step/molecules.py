@@ -1,37 +1,60 @@
 # -*- coding: utf-8 -*-
 
-"""Molecules of a structure from its covalent bond graph.
+"""Molecules of a structure from its covalent bonds, with molsystem's rule.
 
 The committee's molecular pressure removes the intramolecular virial, so it needs to
-know which atoms form each molecule. For water that was ``atom index // 3``; for
-electrolytes it is found here from the geometry:
+know which atoms form each molecule. SEAMM defines molecules through bonds:
+``molsystem``'s ``Configuration.perceive_bonds()`` and ``find_molecules()``. This
+module applies **the same rule** to coordinates alone, so that the command line runs in
+an MLFF environment that has neither SEAMM nor molsystem, and gives the same molecules:
 
-* two atoms are bonded when their distance is at most ``scale`` times the sum of their
-  covalent radii (ASE's table), using the minimum image in periodic cells (ASE's
-  neighbour list);
-* alkali and alkaline-earth atoms (Li, Na, K, Mg, Ca, ...) are never bonded, so each
-  cation is a molecule of its own; halide anions come out as single atoms naturally;
-* the molecules are the connected components of the bond graph, numbered in the order
-  of their first atom, so ``O H H O H H ...`` water gives ``index // 3``.
+* two atoms are bonded when ``min_distance < d < tolerance * (r_i + r_j)``, with the
+  Pyykkö covalent radii molsystem uses (:mod:`~active_learning_step.covalent_radii`)
+  and ``tolerance`` 1.2, using every periodic image (ASE's neighbour list);
+* the alkali and alkaline-earth metals (:data:`IONIC_ELEMENTS`) are never bonded, so
+  each cation is a molecule of its own; halide anions come out as single atoms;
+* an atom has at most ``max_bonds`` bonds by element (H: 1), the shortest kept;
+* the molecules are the connected components, numbered in the order of their first
+  atom, so ``O H H O H H ...`` water gives ``index // 3``.
 
-Only ASE and numpy are needed, so this works in a SEAMM environment as well as in an
-MLFF one.
+Inside SEAMM, :func:`molecules_of_configuration` uses a configuration's own bonds when
+it has them. The test suite checks this module against molsystem wherever molsystem is
+installed, so the two cannot drift apart.
+
+Only ASE and numpy are needed.
 """
 
 import numpy as np
 
 from ase import Atoms
-from ase.data import atomic_masses, covalent_radii
+from ase.data import atomic_masses, chemical_symbols
 from ase.neighborlist import neighbor_list
 
-__all__ = ["IONS", "BOND_SCALE", "molecules", "masses", "as_atoms"]
+from .covalent_radii import COVALENT_RADII
 
-#: Atomic numbers never bonded: the alkali (Li to Fr) and alkaline-earth (Be to Ra)
-#: metals, which are present as cations in electrolytes.
-IONS = frozenset((3, 11, 19, 37, 55, 87, 4, 12, 20, 38, 56, 88))
+__all__ = [
+    "IONIC_ELEMENTS",
+    "MAX_BONDS",
+    "BOND_TOLERANCE",
+    "MIN_DISTANCE",
+    "molecules",
+    "molecules_of_configuration",
+    "masses",
+    "as_atoms",
+]
 
-#: Bonds are distances up to this multiple of the sum of the covalent radii.
-BOND_SCALE = 1.2
+#: Elements never bonded: the alkali and alkaline-earth metals, ions in molecular
+#: systems (as ``molsystem.topology.IONIC_ELEMENTS``).
+IONIC_ELEMENTS = ("Li", "Na", "K", "Rb", "Cs", "Fr", "Be", "Mg", "Ca", "Sr", "Ba", "Ra")
+
+#: The most bonds an atom of an element may have (as ``molsystem.topology.MAX_BONDS``).
+MAX_BONDS = {"H": 1}
+
+#: Bonds are distances below this multiple of the sum of the covalent radii.
+BOND_TOLERANCE = 1.2
+
+#: Pairs closer than this (Å) are ignored rather than bonded.
+MIN_DISTANCE = 0.4
 
 
 def as_atoms(structure):
@@ -61,44 +84,8 @@ def as_atoms(structure):
     )
 
 
-def molecules(structure, scale=BOND_SCALE, ions=IONS):
-    """The molecule index of every atom: connected components of the bond graph.
-
-    Parameters
-    ----------
-    structure : ase.Atoms or dict
-        The structure (an xnn structure dict is accepted too). Periodic directions
-        use the minimum image.
-    scale : float, optional
-        Two atoms are bonded when closer than ``scale * (r_i + r_j)``, the covalent
-        radii from :data:`ase.data.covalent_radii`; by default 1.2.
-    ions : collection of int, optional
-        Atomic numbers that are never bonded, by default :data:`IONS`.
-
-    Returns
-    -------
-    numpy.ndarray of int
-        ``(N,)`` molecule index per atom, numbered 0, 1, ... in the order of each
-        molecule's first atom.
-    """
-    atoms = as_atoms(structure)
-    n = len(atoms)
-    if n == 0:
-        return np.zeros(0, dtype=np.int64)
-    z = atoms.numbers
-    radii = scale * covalent_radii[z]
-    # an ion gets a zero radius; it still bonds to nothing because of the mask below
-    is_ion = np.isin(z, list(ions))
-    radii = np.where(is_ion, 0.0, radii)
-    if not atoms.pbc.any():
-        # neighbor_list needs a cell large enough to hold a non-periodic structure
-        atoms = atoms.copy()
-        atoms.set_cell(np.eye(3))
-    i, j = neighbor_list("ij", atoms, radii, self_interaction=False)
-    keep = ~(is_ion[i] | is_ion[j])
-    i, j = i[keep], j[keep]
-
-    # union-find over the bonds
+def _components(n, i, j):
+    """Molecule index per atom from bonds (i, j): first-atom order."""
     parent = np.arange(n)
 
     def root(a):
@@ -107,15 +94,169 @@ def molecules(structure, scale=BOND_SCALE, ions=IONS):
             a = parent[a]
         return a
 
-    for a, b in zip(i.tolist(), j.tolist()):
+    for a, b in zip(i, j):
         ra, rb = root(a), root(b)
         if ra != rb:
             parent[max(ra, rb)] = min(ra, rb)
     roots = np.array([root(a) for a in range(n)])
-    # renumber in the order of each molecule's first atom
     _, first, inverse = np.unique(roots, return_index=True, return_inverse=True)
     order = np.argsort(np.argsort(first))
     return order[inverse].astype(np.int64)
+
+
+def bonds(
+    structure,
+    tolerance=BOND_TOLERANCE,
+    radii=None,
+    max_bonds=None,
+    exclude=IONIC_ELEMENTS,
+    min_distance=MIN_DISTANCE,
+):
+    """The bonded pairs of a structure, by molsystem's ``perceive_bonds`` rule.
+
+    Parameters are those of ``molsystem``'s ``Configuration.perceive_bonds``:
+    ``tolerance`` times the sum of the covalent radii, ``radii`` overriding them by
+    element symbol, ``max_bonds`` by element symbol (over the default H: 1),
+    ``exclude`` the elements never bonded, ``min_distance`` the closest pair bonded.
+
+    Returns
+    -------
+    (numpy.ndarray, numpy.ndarray, numpy.ndarray)
+        Atom indices ``i`` and ``j`` of every bond (``i <= j``; one entry per
+        bond, through whichever periodic image) and their lengths.
+    """
+    atoms = as_atoms(structure)
+    n = len(atoms)
+    if n == 0:
+        empty = np.zeros(0, dtype=int)
+        return empty, empty, np.zeros(0)
+    symbols = atoms.get_chemical_symbols()
+    radius = {s: COVALENT_RADII[atoms.numbers[k]] for k, s in enumerate(symbols)}
+    if radii is not None:
+        radius.update({k: float(v) for k, v in radii.items()})
+    for s, r in radius.items():
+        if r is None:
+            raise ValueError(f"No covalent radius available for {s}")
+    limits = dict(MAX_BONDS)
+    if max_bonds is not None:
+        limits.update(max_bonds)
+    excluded = set(exclude) if exclude is not None else set()
+
+    r_atom = np.array([radius[s] for s in symbols])
+    active = np.array([s not in excluded for s in symbols])
+    if not active.any():
+        empty = np.zeros(0, dtype=int)
+        return empty, empty, np.zeros(0)
+    if not atoms.pbc.any():
+        # neighbor_list needs a cell to hold a non-periodic structure
+        atoms = atoms.copy()
+        atoms.set_cell(np.eye(3))
+    # every pair within the largest possible bond, then molsystem's criterion
+    cutoff = tolerance * 2.0 * r_atom[active].max()
+    i, j, d, shift = neighbor_list("ijdS", atoms, cutoff, self_interaction=False)
+    # each pair appears twice (i, j) and (j, i); keep one, as molsystem's pair list
+    one = (i < j) | ((i == j) & _positive(shift))
+    i, j, d = i[one], j[one], d[one]
+    keep = (
+        active[i]
+        & active[j]
+        & (d > min_distance)
+        & (d < tolerance * (r_atom[i] + r_atom[j]))
+    )
+    i, j, d = i[keep], j[keep], d[keep]
+
+    # the per-element limits, keeping the shortest bonds
+    order = np.argsort(d, kind="stable")
+    count = np.zeros(n, dtype=int)
+    limit = np.array([limits.get(s, 10**9) for s in symbols])
+    out = []
+    for k in order:
+        a, b = int(i[k]), int(j[k])
+        if a == b:
+            if count[a] + 2 > limit[a]:
+                continue
+            count[a] += 2
+        else:
+            if count[a] >= limit[a] or count[b] >= limit[b]:
+                continue
+            count[a] += 1
+            count[b] += 1
+        out.append(k)
+    out = np.array(out, dtype=int)
+    return i[out], j[out], d[out]
+
+
+def _positive(shift):
+    """Whether each cell shift is the 'positive' one of its pair (first nonzero > 0)."""
+    s = np.asarray(shift)
+    first = np.argmax(s != 0, axis=1)
+    return s[np.arange(len(s)), first] > 0
+
+
+def molecules(structure, **rule):
+    """The molecule index of every atom: connected components of the bonds.
+
+    Parameters
+    ----------
+    structure : ase.Atoms or dict
+        The structure (an xnn structure dict is accepted too). Periodic directions
+        use every image.
+    **rule
+        ``tolerance``, ``radii``, ``max_bonds``, ``exclude``, ``min_distance``, as
+        in :func:`bonds` (molsystem's ``perceive_bonds``).
+
+    Returns
+    -------
+    numpy.ndarray of int
+        ``(N,)`` molecule index per atom, numbered 0, 1, ... in the order of each
+        molecule's first atom.
+    """
+    n = len(as_atoms(structure))
+    if n == 0:
+        return np.zeros(0, dtype=np.int64)
+    i, j, _ = bonds(structure, **rule)
+    return _components(n, i.tolist(), j.tolist())
+
+
+def molecules_of_configuration(configuration, **rule):
+    """The molecule index of every atom of a SEAMM (molsystem) configuration.
+
+    Uses the configuration's own bonds when it has any (``find_molecules``), so a
+    structure keeps the molecules SEAMM gave it. Otherwise the bonds are perceived
+    with molsystem's rule (:func:`bonds`), without adding them to the configuration.
+
+    Parameters
+    ----------
+    configuration : molsystem configuration
+        The structure.
+    **rule
+        Options of :func:`bonds`, used only when the configuration has no bonds.
+
+    Returns
+    -------
+    numpy.ndarray of int
+        ``(N,)`` molecule index per atom, in the order of each molecule's first atom.
+    """
+    n = configuration.atoms.n_atoms
+    if n == 0:
+        return np.zeros(0, dtype=np.int64)
+    if configuration.bonds.n_bonds > 0:
+        label = np.empty(n, dtype=np.int64)
+        groups = sorted(configuration.find_molecules(as_indices=True), key=min)
+        for k, members in enumerate(groups):
+            label[list(members)] = k
+        return label
+    xyz = np.asarray(
+        configuration.atoms.get_coordinates(fractionals=False), dtype=float
+    )
+    numbers = np.array([chemical_symbols.index(s) for s in configuration.atoms.symbols])
+    structure = {"pos": xyz, "atomic_numbers": numbers}
+    if configuration.periodicity == 3:
+        structure["cell"] = np.asarray(configuration.cell.vectors(), dtype=float)
+        structure["pbc"] = [True, True, True]
+    elif configuration.periodicity != 0:
+        raise ValueError("only molecular and 3-D periodic configurations are handled")
+    return molecules(structure, **rule)
 
 
 def masses(structure):

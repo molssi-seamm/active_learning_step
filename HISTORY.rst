@@ -9,8 +9,9 @@ History
       library and the command line; the SEAMM flowchart step is a placeholder.
     * seamm-al score: the committee's spreads (energy, forces, the largest per-atom
       force spread, atomic and molecular pressure) for every frame of extxyz or SEAMM
-      SDF pools, with molecules found from the covalent bond graph (ions on their own)
-      and the total charge passed to the models.
+      SDF pools, with the total charge passed to the models. Molecules follow SEAMM's
+      own rule (molsystem's bond perception, ions on their own), applied without
+      SEAMM in MLFF environments, or a SEAMM structure's own bonds.
     * seamm-al select: rank the frames, or keep those past thresholds, and take them
       within a core-hour budget, with costs per kind or group, caps per column and
       exclusions; or draw at random (optionally stratified) before any committee
