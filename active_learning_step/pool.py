@@ -10,6 +10,8 @@ SEAMM header keys), and the labelling flowcharts read these files directly.
 * extxyz: a record is the atom-count line, the comment line and that many atom lines.
 * SDF: a record runs through its ``$$$$`` line; everything is kept, including the
   blank line that ends each property.
+* Either may be gzipped (``.extxyz.gz``, ``.sdf.gz``); the records are the
+  uncompressed bytes.
 
 Each record is also turned into an :class:`ase.Atoms` with an ``info`` dictionary
 holding the configuration name and the total charge:
@@ -24,6 +26,7 @@ holding the configuration name and the total charge:
 Nothing here needs torch or xnn.
 """
 
+import gzip
 import io
 import json
 from pathlib import Path
@@ -43,6 +46,9 @@ __all__ = [
 def pool_format(path):
     """The format of a pool file from its suffix: ``"extxyz"`` or ``"sdf"``.
 
+    A ``.gz`` suffix (``trajectory.extxyz.gz``) is ignored: such files are read
+    through gzip.
+
     Parameters
     ----------
     path : str or pathlib.Path
@@ -57,12 +63,17 @@ def pool_format(path):
     ValueError
         For any other suffix.
     """
-    suffix = Path(path).suffix.lower()
+    path = Path(path)
+    suffix = path.suffix.lower()
+    if suffix == ".gz":
+        suffix = Path(path.stem).suffix.lower()
     if suffix in (".extxyz", ".xyz"):
         return "extxyz"
     if suffix in (".sdf", ".sd", ".mol"):
         return "sdf"
-    raise ValueError(f"unknown pool format for {path}: use .extxyz or .sdf")
+    raise ValueError(
+        f"unknown pool format for {path}: use .extxyz or .sdf, optionally gzipped"
+    )
 
 
 def _xyz_records(fh):
@@ -114,7 +125,8 @@ def iter_records(path):
         One record per frame.
     """
     fmt = pool_format(path)
-    with open(path, "rb") as fh:
+    opener = gzip.open if str(path).lower().endswith(".gz") else open
+    with opener(path, "rb") as fh:
         if fmt == "extxyz":
             yield from _xyz_records(fh)
         else:

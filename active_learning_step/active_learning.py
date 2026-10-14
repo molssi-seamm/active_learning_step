@@ -3,9 +3,8 @@
 """Non-graphical part of the Active Learning step in a SEAMM flowchart"""
 
 import logging
-from pathlib import Path
 import importlib.resources
-import pprint  # noqa: F401
+import sys
 
 import active_learning_step
 import molsystem
@@ -35,7 +34,7 @@ if path.exists():
 
 class ActiveLearning(seamm.Node):
     """
-    The non-graphical part of a Active Learning step in a flowchart.
+    The non-graphical part of an Active Learning step in a flowchart.
 
     Attributes
     ----------
@@ -59,7 +58,12 @@ class ActiveLearning(seamm.Node):
     """
 
     def __init__(
-        self, flowchart=None, title="Active Learning", extension=None, logger=logger
+        self,
+        flowchart=None,
+        title="Active Learning",
+        namespace="org.molssi.seamm.active_learning",
+        extension=None,
+        logger=logger,
     ):
         """A step for Active Learning in a SEAMM flowchart.
 
@@ -73,6 +77,8 @@ class ActiveLearning(seamm.Node):
 
         title: str
             The name displayed in the flowchart.
+        namespace : str
+            The namespace for the plug-ins of the subflowchart
         extension: None
             Not yet implemented
         logger : Logger = logger
@@ -83,6 +89,9 @@ class ActiveLearning(seamm.Node):
         None
         """
         logger.debug(f"Creating Active Learning {self}")
+        self.subflowchart = seamm.Flowchart(
+            parent=self, name="Active Learning", namespace=namespace
+        )  # yapf: disable
 
         super().__init__(
             flowchart=flowchart,
@@ -93,7 +102,6 @@ class ActiveLearning(seamm.Node):
         )  # yapf: disable
 
         self._metadata = active_learning_step.metadata
-        self.parameters = active_learning_step.ActiveLearningParameters()
 
     @property
     def version(self):
@@ -104,6 +112,15 @@ class ActiveLearning(seamm.Node):
     def git_revision(self):
         """The git version of this module."""
         return active_learning_step.__git_revision__
+
+    def set_id(self, node_id):
+        """Set the id for node to a given tuple"""
+        self._id = node_id
+
+        # and set our subnodes
+        self.subflowchart.set_ids(self._id)
+
+        return self.next()
 
     def description_text(self, P=None):
         """Create the text description of what this step will do.
@@ -120,71 +137,51 @@ class ActiveLearning(seamm.Node):
         str
             A description of the current step.
         """
-        if not P:
-            P = self.parameters.values_to_dict()
+        self.subflowchart.root_directory = self.flowchart.root_directory
 
-        text = (
-            "Please replace this with a short summary of the "
-            "Active Learning step, including key parameters."
-        )
+        # Get the first real node
+        node = self.subflowchart.get_node("1").next()
 
-        return self.header + "\n" + __(text, **P, indent=4 * " ").__str__()
+        text = self.header + "\n\n"
+        while node is not None:
+            try:
+                text += __(node.description_text(), indent=3 * " ").__str__()
+            except Exception as e:
+                print(f"Error describing active_learning flowchart: {e} in {node}")
+                logger.critical(
+                    f"Error describing active_learning flowchart: {e} in {node}"
+                )
+                raise
+            except:  # noqa: E722
+                print(
+                    "Unexpected error describing active_learning flowchart: "
+                    f"{sys.exc_info()[0]} in {str(node)}"
+                )
+                self.logger.critical(
+                    "Unexpected error describing active_learning flowchart: "
+                    f"{sys.exc_info()[0]} in {str(node)}"
+                )
+                raise
+            text += "\n"
+            node = node.next()
+
+        return text
 
     def run(self):
-        """Run a Active Learning step.
-
-        Parameters
-        ----------
-        None
+        """Run the Active Learning step: each sub-step in turn runs itself.
 
         Returns
         -------
         seamm.Node
-            The next node object in the flowchart.
+            The next node in the flowchart, after this step.
         """
         next_node = super().run(printer)
-        # Get the values of the parameters, dereferencing any variables
-        P = self.parameters.current_values_to_dict(
-            context=seamm.flowchart_variables._data
-        )
 
-        # Print what we are doing
-        printer.important(__(self.description_text(P), indent=self.indent))
+        self.subflowchart.root_directory = self.flowchart.root_directory
 
-        directory = Path(self.directory)
-        directory.mkdir(parents=True, exist_ok=True)
-
-        # Get the current system and configuration (ignoring the system...)
-        _, configuration = self.get_system_configuration(None)
-
-        # Results data
-        data = {}
-
-        # Temporary code just to print the parameters. You will need to change
-        # this!
-        for key in P:
-            print("{:>15s} = {}".format(key, P[key]))
-            printer.normal(
-                __(
-                    "{key:>15s} = {value}",
-                    key=key,
-                    value=P[key],
-                    indent=4 * " ",
-                    wrap=False,
-                    dedent=False,
-                )
-            )
-
-        # Analyze the results
-        self.analyze()
-        # Put any requested results into variables or tables
-        self.store_results(
-            configuration=configuration,
-            data=data,
-        )
-        # Add other citations here or in the appropriate place in the code.
-        # Add the bibtex to data/references.bib, and add a self.reference.cite
-        # similar to the above to actually add the citation to the references.
+        node = self.subflowchart.get_node("1").next()
+        while node is not None:
+            node = node.run()
 
         return next_node
 
@@ -199,11 +196,15 @@ class ActiveLearning(seamm.Node):
         indent: str
             An extra indentation for the output
         """
-        printer.normal(
-            __(
-                "This is a placeholder for the results from the Active Learning step",
-                indent=4 * " ",
-                wrap=True,
-                dedent=False,
-            )
-        )
+        # Get the first real node
+        node = self.subflowchart.get_node("1").next()
+
+        # Loop over the subnodes, asking them to do their analysis
+        while node is not None:
+            for value in node.description:
+                printer.important(value)
+                printer.important(" ")
+
+            node.analyze()
+
+            node = node.next()

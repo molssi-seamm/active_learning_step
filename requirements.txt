@@ -1,5 +1,9 @@
 ase
+molsystem
 numpy
 seamm
+seamm-exec
 seamm-util
 seamm-widgets
+tabulate
+xnn-step
