@@ -6,9 +6,11 @@ field. A committee of models, each trained on a different part of the data, disa
 where the model is likely to be wrong; the ``seamm-al`` command scores candidate
 structures by that disagreement, selects the most useful ones within a computing
 budget, trains the committees, checks that their disagreement tracks the real error,
-and runs molecular dynamics with the committee to find new candidates. This first
-release provides the library and the command line; the SEAMM flowchart step is still
-a placeholder.
+and runs molecular dynamics with the committee to find new candidates. In SEAMM
+flowcharts, the Active Learning step does the same with its sub-steps Train
+Committee, Check Committee, Score Pool and Select Frames, and a trained committee is
+a model chemistry of the xnn plug-in, for molecular dynamics that records where its
+members disagree.
 
 .. grid:: 1 1 2 2
 

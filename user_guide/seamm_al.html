@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Command line: seamm-al &#8212; SEAMM Active Learning Plug-in 2026.10.14 documentation</title>
+    <title>Command line: seamm-al &#8212; SEAMM Active Learning Plug-in 2026.10.14.1 documentation</title>
   
   
   
@@ -40,7 +40,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="../_static/documentation_options.js?v=c92e1e03"></script>
+    <script src="../_static/documentation_options.js?v=f0c00ab5"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -51,11 +51,11 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Developer Documentation" href="../developer_guide/index.html" />
-    <link rel="prev" title="User Guide" href="index.html" />
+    <link rel="prev" title="In a flowchart: Active Learning step" href="flowcharts.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="2026.10.14" />
+  <meta name="docsearch:version" content="2026.10.14.1" />
   
     
     <script src="../_static/searchtools.js"></script>
@@ -454,6 +454,7 @@
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="flowcharts.html">In a flowchart: Active Learning step</a></li>
 <li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">Command line: <code class="docutils literal notranslate"><span class="pre">seamm-al</span></code></a></li>
 </ul>
 </div>
@@ -543,7 +544,8 @@ JobServer or none.</p>
     <span class="o">-</span><span class="n">o</span> <span class="n">scores</span><span class="o">.</span><span class="n">csv</span> <span class="o">--</span><span class="n">carry</span> <span class="n">temperature</span> <span class="n">pool</span><span class="o">.</span><span class="n">extxyz</span>
 </pre></div>
 </div>
-<p>The pools are extxyz files or SDF files written by SEAMM. <code class="docutils literal notranslate"><span class="pre">scores.csv</span></code> has one row
+<p>The pools are extxyz files or SDF files written by SEAMM, either of them
+optionally gzipped (<code class="docutils literal notranslate"><span class="pre">trajectory.extxyz.gz</span></code>). <code class="docutils literal notranslate"><span class="pre">scores.csv</span></code> has one row
 per frame:</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
@@ -758,12 +760,12 @@ and spreads every 10 steps add about 11 %.</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="index.html"
+       href="flowcharts.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">User Guide</p>
+        <p class="prev-next-title">In a flowchart: Active Learning step</p>
       </div>
     </a>
     <a class="right-next"

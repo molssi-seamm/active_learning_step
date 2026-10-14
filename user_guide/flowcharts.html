@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>In a flowchart: Active Learning step &#8212; SEAMM Active Learning Plug-in 2026.10.14.1 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=c224919a" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
+
+    <script src="../_static/documentation_options.js?v=f0c00ab5"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'user_guide/flowcharts';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Command line: seamm-al" href="seamm_al.html" />
+    <link rel="prev" title="User Guide" href="index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="2026.10.14.1" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/SEAMM logo.png" class="logo__image only-light" alt=""/>
+    <img src="../_static/SEAMM Inverted 288x181.png" class="logo__image only-dark pst-js-only" alt=""/>
+  
+  
+    <p class="title logo__title">Active Learning</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../getting_started/index.html">
+    Getting Started
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../developer_guide/index.html">
+    Developer Documentation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../api/index.html">
+    API Documentation
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../authors.html">
+    Development Team
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../history.html">
+    History
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-external" href="https://molssi-seamm.github.io">
+    Main SEAMM documentation
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-external" href="https://molssi-seamm.github.io">
+    SEAMM Documentation
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-external" href="https://molssi.org">
+    MolSSI
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/molssi-seamm/geometry_analysis_step" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://twitter.com/MolSSI_NSF" title="Twitter" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-twitter fa-lg" aria-hidden="true"></i><span class="visually-hidden">Twitter</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button type="button" class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../getting_started/index.html">
+    Getting Started
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../developer_guide/index.html">
+    Developer Documentation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../api/index.html">
+    API Documentation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../authors.html">
+    Development Team
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../history.html">
+    History
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://molssi-seamm.github.io">
+    Main SEAMM documentation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://molssi-seamm.github.io">
+    SEAMM Documentation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://molssi.org">
+    MolSSI
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/molssi-seamm/geometry_analysis_step" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://twitter.com/MolSSI_NSF" title="Twitter" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-twitter fa-lg" aria-hidden="true"></i><span class="visually-hidden">Twitter</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item pst-sidebar-collapse"><button type="button" id="pst-collapse-sidebar-button" aria-expanded="true" aria-controls="pst-primary-sidebar">
+  <svg class="pst-icon" role="img" aria-hidden="true" focusable="false" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+    <path fill="currentColor" d="M3 15.5C2.36232 15.5 1.74874 15.2564 1.28478 14.8189C0.820828 14.3815 0.541576 13.7832 0.504167 13.1467L0.5 13L0.5 3C0.499965 2.36232 0.743605 1.74874 1.18107 1.28478C1.61854 0.820828 2.21676 0.541576 2.85333 0.504167L3 0.5L13 0.5C13.6377 0.499965 14.2513 0.743605 14.7152 1.18107C15.1792 1.61854 15.4584 2.21676 15.4958 2.85333L15.5 3L15.5 13C15.5 13.6377 15.2564 14.2513 14.8189 14.7152C14.3815 15.1792 13.7832 15.4584 13.1467 15.4958L13 15.5L3 15.5ZM3 13.8333L10.5 13.8333L10.5 2.16667L3 2.16667C2.79589 2.16669 2.59889 2.24163 2.44636 2.37726C2.29383 2.5129 2.19638 2.69979 2.1725 2.9025L2.16667 3L2.16667 13C2.16669 13.2041 2.24163 13.4011 2.37726 13.5536C2.5129 13.7062 2.69979 13.8036 2.9025 13.8275L3 13.8333ZM6.65583 10.325L6.5775 10.2558L4.91083 8.58917C4.76735 8.44567 4.68116 8.25476 4.66843 8.05223C4.65569 7.84971 4.71729 7.6495 4.84167 7.48917L4.91083 7.41083L6.5775 5.74417C6.72747 5.59471 6.9287 5.50794 7.14032 5.50148C7.35194 5.49502 7.55809 5.56935 7.7169 5.70937C7.8757 5.8494 7.97525 6.04463 7.99533 6.25539C8.01541 6.46616 7.95451 6.67667 7.825 6.84417L7.75583 6.9225L6.67917 8L7.75583 9.0775C7.89931 9.22099 7.98551 9.41191 7.99824 9.61443C8.01097 9.81695 7.94938 10.0172 7.825 10.1775L7.75583 10.2558C7.61234 10.3993 7.42142 10.4855 7.2189 10.4982C7.01638 10.511 6.81617 10.4494 6.65583 10.325Z"/>
+  </svg>
+  <span class="pst-collapse-sidebar-label">Collapse Sidebar</span>
+  <span class="pst-expand-sidebar-label">Expand Sidebar</span>
+</button></div>
+        <div class="sidebar-primary-item">
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">In a flowchart: Active Learning step</a></li>
+<li class="toctree-l1"><a class="reference internal" href="seamm_al.html">Command line: <code class="docutils literal notranslate"><span class="pre">seamm-al</span></code></a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">User Guide</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">In a flowchart: Active Learning step</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="in-a-flowchart-active-learning-step">
+<h1>In a flowchart: Active Learning step<a class="headerlink" href="#in-a-flowchart-active-learning-step" title="Link to this heading">#</a></h1>
+<p>The Active Learning step brings query by committee into SEAMM flowcharts. It holds
+four sub-steps, used in any order and combination:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>sub-step</p></th>
+<th class="head"><p>what it does</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Train Committee</p></td>
+<td><p>trains a committee of xnn models, each on all but one fold of the
+labelled data (<code class="docutils literal notranslate"><span class="pre">seamm-al</span> <span class="pre">train</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Check Committee</p></td>
+<td><p>checks that the members’ spread predicts their error on frames
+they never saw, flags members that trained badly and calibrates
+thresholds of the spreads (<code class="docutils literal notranslate"><span class="pre">seamm-al</span> <span class="pre">check</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p>Score Pool</p></td>
+<td><p>scores candidate structures by how much the members disagree on
+them (<code class="docutils literal notranslate"><span class="pre">seamm-al</span> <span class="pre">score</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Select Frames</p></td>
+<td><p>selects the structures to label, by spread or at random, within
+a budget (<code class="docutils literal notranslate"><span class="pre">seamm-al</span> <span class="pre">select</span></code>)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>A round of active learning might be one flowchart: Train Committee and Check
+Committee, then molecular dynamics with the new committee to make candidates (see
+<a class="reference internal" href="#committees-as-model-chemistries">Committees as model chemistries</a>), then Score Pool and Select Frames, and the
+labelling of the selected structures. The first round, before there is a committee,
+is Score Pool with the committee set to <code class="docutils literal notranslate"><span class="pre">none</span></code> and Select Frames drawing at random.</p>
+<section id="what-the-sub-steps-share">
+<h2>What the sub-steps share<a class="headerlink" href="#what-the-sub-steps-share" title="Link to this heading">#</a></h2>
+<p>Each sub-step can use what an earlier one made in the same job, so the defaults chain
+them together:</p>
+<ul class="simple">
+<li><p>the committee (<code class="docutils literal notranslate"><span class="pre">previous</span></code>) is the last one trained, checked or used to score;</p></li>
+<li><p>the scores (<code class="docutils literal notranslate"><span class="pre">previous</span></code>) are those of the last Score Pool;</p></li>
+<li><p>the thresholds (<code class="docutils literal notranslate"><span class="pre">from</span> <span class="pre">Check</span> <span class="pre">Committee</span></code>) are those calibrated by the last Check
+Committee.</p></li>
+</ul>
+<p>This holds across Active Learning steps too: a flowchart can train a committee in one,
+run molecular dynamics, and score and select in another. Any of them can instead be
+given explicitly: a committee’s directory (holding the members <code class="docutils literal notranslate"><span class="pre">m0</span></code>, <code class="docutils literal notranslate"><span class="pre">m1</span></code>, …),
+or scores files.</p>
+</section>
+<section id="where-they-run">
+<h2>Where they run<a class="headerlink" href="#where-they-run" title="Link to this heading">#</a></h2>
+<p>Training, checking and scoring need torch and xnn. They run in the MLFF environment of
+the xnn plug-in, the one named in the installation’s <code class="docutils literal notranslate"><span class="pre">xnn.ini</span></code>, as a task of the job
+like any other code, with the job’s cores (<code class="docutils literal notranslate"><span class="pre">--ncores</span></code> limits them). Nothing has to be
+installed there: the step copies this package into <code class="docutils literal notranslate"><span class="pre">_code/</span></code> in its directory and puts
+it on that environment’s <code class="docutils literal notranslate"><span class="pre">PYTHONPATH</span></code>, so the code that runs is the code of the SEAMM
+installation. Training needs xnn 0.13 or later (see <a class="reference external" href="seamm_al.html#environments">Environments</a>). Select Frames needs neither and runs in SEAMM itself.</p>
+<p>The device is chosen in each sub-step: by default the one in <code class="docutils literal notranslate"><span class="pre">xnn.ini</span></code> for checking
+and scoring, and the recipe’s for training.</p>
+<p>Each sub-step leaves everything <code class="docutils literal notranslate"><span class="pre">seamm-al</span></code> wrote in its directory, with the command
+in <code class="docutils literal notranslate"><span class="pre">step.out</span></code> and its output in <code class="docutils literal notranslate"><span class="pre">stdout.txt</span></code> and <code class="docutils literal notranslate"><span class="pre">stderr.txt</span></code>.</p>
+</section>
+<section id="train-committee">
+<h2>Train Committee<a class="headerlink" href="#train-committee" title="Link to this heading">#</a></h2>
+<p>Give the labelled structures, as extended XYZ files with the reference energies and
+forces (names or patterns such as <code class="docutils literal notranslate"><span class="pre">data/*.extxyz</span></code>), and the xnn recipe: the YAML
+configuration of the model and its training. The committee is written to
+<code class="docutils literal notranslate"><span class="pre">committee/</span></code> in the step’s directory, with a manifest of the folds, seeds, code and
+data, and is printed with each member’s validation losses.</p>
+<ul class="simple">
+<li><p><strong>Number of members</strong> is also the number of folds. <strong>Members to train</strong> trains only
+some of them, so a large committee can be trained by several jobs into the same
+directory.</p></li>
+<li><p><strong>Folds</strong> split clusters and periodic cells separately by default, so every fold
+has its share of both; <strong>Also balance by</strong> adds keys of the structures’ info, such
+as the temperature.</p></li>
+<li><p><strong>Share of cell batches</strong> and <strong>Cells per batch</strong> control how often periodic cells
+are drawn when they are far fewer, or far more costly, than clusters.</p></li>
+<li><p><strong>Changes to the recipe</strong> override recipe settings, e.g. <code class="docutils literal notranslate"><span class="pre">optim.lr=0.005</span></code>.</p></li>
+<li><p><strong>Save as the model</strong> copies the members into your xnn models, so that the Model
+Chemistry step offers the committee as <code class="docutils literal notranslate"><span class="pre">xnn:MLFF&#64;&lt;name&gt;</span></code>.</p></li>
+</ul>
+</section>
+<section id="check-committee">
+<h2>Check Committee<a class="headerlink" href="#check-committee" title="Link to this heading">#</a></h2>
+<p>By default the committee is checked on its own training data: each member is judged
+on the fold it never saw, which is what makes the check honest without new labels.
+New labelled structures that no member saw can be given instead. The step prints:</p>
+<ul class="simple">
+<li><p>the rank correlation (Spearman) of each spread with the corresponding error, which
+should be clearly positive for the spread to be a useful guide;</p></li>
+<li><p>each member’s health: its validation losses and errors, and whether it inflates the
+spreads; a member whose final validation loss is well above the others’ is
+flagged, and can be left out with <strong>Leave out members</strong> in Score Pool;</p></li>
+<li><p>for each <code class="docutils literal notranslate"><span class="pre">NAME:ERROR[:CAPTURE]</span></code> in <strong>Calibrate thresholds</strong>, the threshold of the
+spread that catches the fraction CAPTURE (0.98 by default) of the structures whose
+error is above ERROR. For example <code class="docutils literal notranslate"><span class="pre">rho_forces:0.15</span></code> calibrates the force spread
+against force errors above 0.15 eV/Å.</p></li>
+</ul>
+</section>
+<section id="score-pool">
+<h2>Score Pool<a class="headerlink" href="#score-pool" title="Link to this heading">#</a></h2>
+<p>The candidates are either structures in the job’s database, chosen with the usual
+system and configuration selection, or extended XYZ or SDF files (gzipped ones too,
+such as the <code class="docutils literal notranslate"><span class="pre">trajectory.extxyz.gz</span></code> the LAMMPS step writes). Structures from the
+database are written to <code class="docutils literal notranslate"><span class="pre">pool.extxyz</span></code> with their system and configuration ids, so
+that a selection can be traced back to them.</p>
+<p><code class="docutils literal notranslate"><span class="pre">scores.csv</span></code> has a row per candidate with its spreads (see <a class="reference external" href="seamm_al.html#scoring">Scoring</a>); the step prints their median and largest values by kind,
+and the candidates with the largest force spreads. <strong>Keep info keys</strong> copies keys of
+the candidates’ info into the scores, to set costs by or to balance a random draw
+over. With the committee set to <code class="docutils literal notranslate"><span class="pre">none</span></code>, the candidates are only listed, for a
+random draw.</p>
+</section>
+<section id="select-frames">
+<h2>Select Frames<a class="headerlink" href="#select-frames" title="Link to this heading">#</a></h2>
+<p>By default the candidates the committee disagrees on most are selected: ranked by the
+spreads of their kind (the molecular pressure and force spreads for cells, the force
+spread for clusters), and, with <strong>Thresholds</strong>, only those whose spread reaches one,
+as calibrated by Check Committee or given. <strong>Select</strong> <code class="docutils literal notranslate"><span class="pre">random</span></code> draws them at random
+instead, optionally spread evenly over columns of the scores.</p>
+<p>The <strong>budget</strong> is in core-hours, with the <strong>cost per structure</strong> given by kind (and
+group, for structures of one kind that cost differently); without costs each
+structure counts one, and the budget is a number of structures. <strong>Already labelled</strong>
+files of configuration names keep structures from being selected twice, and <strong>At most
+per value</strong> caps how many come from, for example, one trajectory.</p>
+<p>The selected structures are copied, byte for byte, from the candidates’ files into
+<code class="docutils literal notranslate"><span class="pre">selected.extxyz</span></code> (or <code class="docutils literal notranslate"><span class="pre">.sdf</span></code>), with <code class="docutils literal notranslate"><span class="pre">selection.csv</span></code> listing them and why, and
+<code class="docutils literal notranslate"><span class="pre">rejected.csv</span></code> the others and why not. When the candidates came from the database,
+the selected configurations are also put in a variable (<code class="docutils literal notranslate"><span class="pre">selected_configurations</span></code>
+by default), which later steps can take as their structures, and, if asked, copied
+into a new system.</p>
+</section>
+<section id="committees-as-model-chemistries">
+<h2>Committees as model chemistries<a class="headerlink" href="#committees-as-model-chemistries" title="Link to this heading">#</a></h2>
+<p>A committee – a directory of members <code class="docutils literal notranslate"><span class="pre">m0/best.pt</span></code>, <code class="docutils literal notranslate"><span class="pre">m1/best.pt</span></code>, … – is a model
+like any other for the xnn plug-in. Saved with Train Committee’s <strong>Save as the model</strong>,
+or placed in one of the model directories of <code class="docutils literal notranslate"><span class="pre">xnn.ini</span></code>, it is offered by the Model
+Chemistry step as <code class="docutils literal notranslate"><span class="pre">xnn:MLFF&#64;&lt;name&gt;</span></code>; its directory can also be given as the Model
+Chemistry step’s <strong>Checkpoint</strong>, for example <code class="docutils literal notranslate"><span class="pre">$committee</span></code>, the result of a Train
+Committee earlier in the job. A <code class="docutils literal notranslate"><span class="pre">committee.json</span></code> in the directory, such as
+<code class="docutils literal notranslate"><span class="pre">{&quot;members&quot;:</span> <span class="pre">[&quot;m0&quot;,</span> <span class="pre">&quot;m1&quot;,</span> <span class="pre">&quot;m3&quot;]}</span></code>, chooses the members to use.</p>
+<p>Energy, LAMMPS and the other steps that drive a model chemistry then run the
+committee as the committee-mean engine (see <a class="reference external" href="seamm_al.html#committee-molecular-dynamics">Committee molecular dynamics</a>):
+the forces and energy are the members’ mean, and every ten steps their spreads are
+appended to <code class="docutils literal notranslate"><span class="pre">committee_spreads.csv</span></code> in the step’s directory. The Model Chemistry
+step’s <strong>Engine options</strong> go to this engine: <code class="docutils literal notranslate"><span class="pre">--every</span> <span class="pre">20</span></code> changes how often the
+spreads are written, <code class="docutils literal notranslate"><span class="pre">--flag</span> <span class="pre">rho_forces=0.2</span></code> writes the frames whose spread reaches
+the value to <code class="docutils literal notranslate"><span class="pre">flagged.extxyz</span></code>, and <code class="docutils literal notranslate"><span class="pre">--dtype</span> <span class="pre">float32</span></code> and <code class="docutils literal notranslate"><span class="pre">--eeq-reuse</span></code> work as
+for a single model. The engine is about the members’ cost together, so expect molecular
+dynamics several times slower than with one model on a CPU, and about twice as slow on
+a GPU. Without a free GPU the LAMMPS step (2026.10.14.1 or later) runs the engine on
+the CPU with the job’s cores, which is practical for boxes of a few hundred atoms.</p>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">User Guide</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="seamm_al.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Command line: <code class="docutils literal notranslate"><span class="pre">seamm-al</span></code></p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-the-sub-steps-share">What the sub-steps share</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#where-they-run">Where they run</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#train-committee">Train Committee</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#check-committee">Check Committee</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#score-pool">Score Pool</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#select-frames">Select Frames</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#committees-as-model-chemistries">Committees as model chemistries</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="../_sources/user_guide/flowcharts.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.23.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>active_learning_step.tk_active_learning &#8212; SEAMM Active Learning Plug-in 2026.10.14 documentation</title>
+    <title>active_learning_step.tk_active_learning &#8212; SEAMM Active Learning Plug-in 2026.10.14.1 documentation</title>
   
   
   
@@ -39,7 +39,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="../../_static/documentation_options.js?v=c92e1e03"></script>
+    <script src="../../_static/documentation_options.js?v=f0c00ab5"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -52,7 +52,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="2026.10.14" />
+  <meta name="docsearch:version" content="2026.10.14.1" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -493,7 +493,7 @@
   <h1>Source code for active_learning_step.tk_active_learning</h1><div class="highlight"><pre>
 <span></span><span class="c1"># -*- coding: utf-8 -*-</span>
 
-<span class="sd">"""The graphical part of a Active Learning step"""</span>
+<span class="sd">"""The graphical part of an Active Learning step"""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">pprint</span>  <span class="c1"># noqa: F401</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">tkinter</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">tk</span>  <span class="c1"># noqa: F401</span>
@@ -501,14 +501,13 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">active_learning_step</span>  <span class="c1"># noqa: F401</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">seamm</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">seamm_util</span><span class="w"> </span><span class="kn">import</span> <span class="n">ureg</span><span class="p">,</span> <span class="n">Q_</span><span class="p">,</span> <span class="n">units_class</span>  <span class="c1"># noqa: F401</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">seamm_widgets</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sw</span>
 
 
 <div class="viewcode-block" id="TkActiveLearning">
 <a class="viewcode-back" href="../../api/active_learning_step.html#active_learning_step.tk_active_learning.TkActiveLearning">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">TkActiveLearning</span><span class="p">(</span><span class="n">seamm</span><span class="o">.</span><span class="n">TkNode</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""</span>
-<span class="sd">    The graphical part of a Active Learning step in a flowchart.</span>
+<span class="sd">    The graphical part of an Active Learning step in a flowchart.</span>
 
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
@@ -516,10 +515,6 @@
 <span class="sd">        The flowchart that we belong to.</span>
 <span class="sd">    node : Node = None</span>
 <span class="sd">        The corresponding node of the non-graphical flowchart</span>
-<span class="sd">    namespace : str</span>
-<span class="sd">        The namespace of the current step.</span>
-<span class="sd">    tk_subflowchart : TkFlowchart</span>
-<span class="sd">        A graphical Flowchart representing a subflowchart</span>
 <span class="sd">    canvas: tkCanvas = None</span>
 <span class="sd">        The Tk Canvas to draw on</span>
 <span class="sd">    dialog : Dialog</span>
@@ -546,6 +541,7 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">tk_flowchart</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">node</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">namespace</span><span class="o">=</span><span class="s2">"org.molssi.seamm.active_learning.tk"</span><span class="p">,</span>
         <span class="n">canvas</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">x</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -578,6 +574,7 @@
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
 <span class="sd">        """</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">namespace</span> <span class="o">=</span> <span class="n">namespace</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dialog</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
@@ -589,6 +586,7 @@
             <span class="n">w</span><span class="o">=</span><span class="n">w</span><span class="p">,</span>
             <span class="n">h</span><span class="o">=</span><span class="n">h</span><span class="p">,</span>
         <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">create_dialog</span><span class="p">()</span>
 
 <div class="viewcode-block" id="TkActiveLearning.create_dialog">
 <a class="viewcode-back" href="../../api/active_learning_step.html#active_learning_step.tk_active_learning.TkActiveLearning.create_dialog">[docs]</a>
@@ -612,79 +610,20 @@
 <span class="sd">        """</span>
 
         <span class="n">frame</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">create_dialog</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">"Active Learning"</span><span class="p">)</span>
-        <span class="c1"># Shortcut for parameters</span>
-        <span class="n">P</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">node</span><span class="o">.</span><span class="n">parameters</span>
+        <span class="c1"># make it large!</span>
+        <span class="n">screen_w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dialog</span><span class="o">.</span><span class="n">winfo_screenwidth</span><span class="p">()</span>
+        <span class="n">screen_h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dialog</span><span class="o">.</span><span class="n">winfo_screenheight</span><span class="p">()</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">0.9</span> <span class="o">*</span> <span class="n">screen_w</span><span class="p">)</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">0.8</span> <span class="o">*</span> <span class="n">screen_h</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">0.05</span> <span class="o">*</span> <span class="n">screen_w</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">0.1</span> <span class="o">*</span> <span class="n">screen_h</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
 
-        <span class="c1"># Then create the widgets</span>
-        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">P</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">key</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">"_"</span> <span class="ow">and</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span>
-                <span class="s2">"results"</span><span class="p">,</span>
-                <span class="s2">"extra keywords"</span><span class="p">,</span>
-                <span class="s2">"create tables"</span><span class="p">,</span>
-            <span class="p">):</span>
-                <span class="bp">self</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">P</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">widget</span><span class="p">(</span><span class="n">frame</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dialog</span><span class="o">.</span><span class="n">geometry</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">w</span><span class="si">}</span><span class="s2">x</span><span class="si">{</span><span class="n">h</span><span class="si">}</span><span class="s2">+</span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s2">+</span><span class="si">{</span><span class="n">y</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
-        <span class="c1"># and lay them out</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">reset_dialog</span><span class="p">()</span></div>
-
-
-<div class="viewcode-block" id="TkActiveLearning.reset_dialog">
-<a class="viewcode-back" href="../../api/active_learning_step.html#active_learning_step.tk_active_learning.TkActiveLearning.reset_dialog">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">reset_dialog</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">"""Layout the widgets in the dialog.</span>
-
-<span class="sd">        The widgets are chosen by default from the information in</span>
-<span class="sd">        Active Learning_parameter.</span>
-
-<span class="sd">        This function simply lays them out row by row with</span>
-<span class="sd">        aligned labels. You may wish a more complicated layout that</span>
-<span class="sd">        is controlled by values of some of the control parameters.</span>
-<span class="sd">        If so, edit or override this method</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        widget : Tk Widget = None</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        None</span>
-
-<span class="sd">        See Also</span>
-<span class="sd">        --------</span>
-<span class="sd">        TkActiveLearning.create_dialog</span>
-<span class="sd">        """</span>
-
-        <span class="c1"># Remove any widgets previously packed</span>
-        <span class="n">frame</span> <span class="o">=</span> <span class="bp">self</span><span class="p">[</span><span class="s2">"frame"</span><span class="p">]</span>
-        <span class="k">for</span> <span class="n">slave</span> <span class="ow">in</span> <span class="n">frame</span><span class="o">.</span><span class="n">grid_slaves</span><span class="p">():</span>
-            <span class="n">slave</span><span class="o">.</span><span class="n">grid_forget</span><span class="p">()</span>
-
-        <span class="c1"># Shortcut for parameters</span>
-        <span class="n">P</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">node</span><span class="o">.</span><span class="n">parameters</span>
-
-        <span class="c1"># keep track of the row in a variable, so that the layout is flexible</span>
-        <span class="c1"># if e.g. rows are skipped to control such as "method" here</span>
-        <span class="n">row</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">widgets</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">P</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">key</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">"_"</span> <span class="ow">and</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span>
-                <span class="s2">"results"</span><span class="p">,</span>
-                <span class="s2">"extra keywords"</span><span class="p">,</span>
-                <span class="s2">"create tables"</span><span class="p">,</span>
-            <span class="p">):</span>
-                <span class="bp">self</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="n">row</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">EW</span><span class="p">)</span>
-                <span class="n">widgets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
-                <span class="n">row</span> <span class="o">+=</span> <span class="mi">1</span>
-
-        <span class="c1"># Align the labels</span>
-        <span class="n">sw</span><span class="o">.</span><span class="n">align_labels</span><span class="p">(</span><span class="n">widgets</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">E</span><span class="p">)</span>
-
-        <span class="c1"># Setup the results if there are any</span>
-        <span class="n">have_results</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="s2">"results"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">node</span><span class="o">.</span><span class="n">metadata</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">node</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">"results"</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tk_subflowchart</span> <span class="o">=</span> <span class="n">seamm</span><span class="o">.</span><span class="n">TkFlowchart</span><span class="p">(</span>
+            <span class="n">master</span><span class="o">=</span><span class="n">frame</span><span class="p">,</span> <span class="n">flowchart</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">node</span><span class="o">.</span><span class="n">subflowchart</span><span class="p">,</span> <span class="n">namespace</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">namespace</span>
         <span class="p">)</span>
-        <span class="k">if</span> <span class="n">have_results</span> <span class="ow">and</span> <span class="s2">"results"</span> <span class="ow">in</span> <span class="n">P</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">setup_results</span><span class="p">()</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tk_subflowchart</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="TkActiveLearning.right_click">

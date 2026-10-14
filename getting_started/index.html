@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Getting Started &#8212; SEAMM Active Learning Plug-in 2026.10.14 documentation</title>
+    <title>Getting Started &#8212; SEAMM Active Learning Plug-in 2026.10.14.1 documentation</title>
   
   
   
@@ -40,7 +40,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="../_static/documentation_options.js?v=c92e1e03"></script>
+    <script src="../_static/documentation_options.js?v=f0c00ab5"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -55,7 +55,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="2026.10.14" />
+  <meta name="docsearch:version" content="2026.10.14.1" />
   
     
     <script src="../_static/searchtools.js"></script>
@@ -540,6 +540,16 @@ values of a column of the pool:</p>
     <span class="o">--</span><span class="n">cost</span> <span class="n">cluster</span><span class="o">=</span><span class="mi">4</span> <span class="o">--</span><span class="nb">max</span><span class="o">-</span><span class="n">frames</span> <span class="mi">50</span>
 </pre></div>
 </div>
+</section>
+<section id="in-a-seamm-flowchart">
+<h2>In a SEAMM flowchart<a class="headerlink" href="#in-a-seamm-flowchart" title="Link to this heading">#</a></h2>
+<p>Add an Active Learning step and, inside it, the sub-steps: for example Score Pool,
+taking the candidates from the job’s database or from files, then Select Frames with
+a budget. The sub-steps that need torch run in the MLFF environment of the xnn
+plug-in, set in the installation’s <code class="docutils literal notranslate"><span class="pre">xnn.ini</span></code>; nothing has to be installed there.
+Train Committee trains a committee and can save it as an xnn model, which the Model
+Chemistry step then offers for molecular dynamics that records where the members
+disagree. See <a class="reference internal" href="../user_guide/flowcharts.html"><span class="doc">In a flowchart: Active Learning step</span></a>.</p>
 <p>That should be enough to get started. For more detail, see the
 <a class="reference internal" href="../user_guide/index.html#user-guide"><span class="std std-ref">User Guide</span></a>.</p>
 </section>
@@ -594,6 +604,7 @@ values of a column of the pool:</p>
     <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">Installation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-first-selection">A first selection</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#in-a-seamm-flowchart">In a SEAMM flowchart</a></li>
 </ul>
   </nav></div>
 

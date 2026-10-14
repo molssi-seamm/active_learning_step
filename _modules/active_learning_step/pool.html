@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>active_learning_step.pool &#8212; SEAMM Active Learning Plug-in 2026.10.14 documentation</title>
+    <title>active_learning_step.pool &#8212; SEAMM Active Learning Plug-in 2026.10.14.1 documentation</title>
   
   
   
@@ -39,7 +39,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="../../_static/documentation_options.js?v=c92e1e03"></script>
+    <script src="../../_static/documentation_options.js?v=f0c00ab5"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -52,7 +52,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="2026.10.14" />
+  <meta name="docsearch:version" content="2026.10.14.1" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -503,6 +503,8 @@
 <span class="sd">* extxyz: a record is the atom-count line, the comment line and that many atom lines.</span>
 <span class="sd">* SDF: a record runs through its ``$$$$`` line; everything is kept, including the</span>
 <span class="sd">  blank line that ends each property.</span>
+<span class="sd">* Either may be gzipped (``.extxyz.gz``, ``.sdf.gz``); the records are the</span>
+<span class="sd">  uncompressed bytes.</span>
 
 <span class="sd">Each record is also turned into an :class:`ase.Atoms` with an ``info`` dictionary</span>
 <span class="sd">holding the configuration name and the total charge:</span>
@@ -517,6 +519,7 @@
 <span class="sd">Nothing here needs torch or xnn.</span>
 <span class="sd">"""</span>
 
+<span class="kn">import</span><span class="w"> </span><span class="nn">gzip</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">io</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
@@ -538,6 +541,9 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">pool_format</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""The format of a pool file from its suffix: ``"extxyz"`` or ``"sdf"``.</span>
 
+<span class="sd">    A ``.gz`` suffix (``trajectory.extxyz.gz``) is ignored: such files are read</span>
+<span class="sd">    through gzip.</span>
+
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    path : str or pathlib.Path</span>
@@ -552,12 +558,17 @@
 <span class="sd">    ValueError</span>
 <span class="sd">        For any other suffix.</span>
 <span class="sd">    """</span>
-    <span class="n">suffix</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">suffix</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="n">suffix</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">suffix</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">suffix</span> <span class="o">==</span> <span class="s2">".gz"</span><span class="p">:</span>
+        <span class="n">suffix</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">stem</span><span class="p">)</span><span class="o">.</span><span class="n">suffix</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">suffix</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">".extxyz"</span><span class="p">,</span> <span class="s2">".xyz"</span><span class="p">):</span>
         <span class="k">return</span> <span class="s2">"extxyz"</span>
     <span class="k">if</span> <span class="n">suffix</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">".sdf"</span><span class="p">,</span> <span class="s2">".sd"</span><span class="p">,</span> <span class="s2">".mol"</span><span class="p">):</span>
         <span class="k">return</span> <span class="s2">"sdf"</span>
-    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"unknown pool format for </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">: use .extxyz or .sdf"</span><span class="p">)</span></div>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">"unknown pool format for </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">: use .extxyz or .sdf, optionally gzipped"</span>
+    <span class="p">)</span></div>
 
 
 
@@ -612,7 +623,8 @@
 <span class="sd">        One record per frame.</span>
 <span class="sd">    """</span>
     <span class="n">fmt</span> <span class="o">=</span> <span class="n">pool_format</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">"rb"</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
+    <span class="n">opener</span> <span class="o">=</span> <span class="n">gzip</span><span class="o">.</span><span class="n">open</span> <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">".gz"</span><span class="p">)</span> <span class="k">else</span> <span class="nb">open</span>
+    <span class="k">with</span> <span class="n">opener</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">"rb"</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">fmt</span> <span class="o">==</span> <span class="s2">"extxyz"</span><span class="p">:</span>
             <span class="k">yield from</span> <span class="n">_xyz_records</span><span class="p">(</span><span class="n">fh</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
