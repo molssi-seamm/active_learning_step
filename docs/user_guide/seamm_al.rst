@@ -202,5 +202,13 @@ spread, ready for ``seamm-al score`` or labelling; ``--frames`` writes every fra
 recorded. ``--drop-member K`` leaves a member out and ``--no-dispersion`` serves the
 route-B energy.
 
+LAMMPS runs the engine with ``atom_style atomic``, which reads only the ``Atoms``,
+``Velocities``, ``Masses`` and pair-coefficient sections of a data file. Check a data
+file before submitting, and strip what it cannot read (a ``Molecules`` or ``Bonds``
+section, bond counts in the header) into a copy::
+
+    seamm-al data water512.data                      # exit status 1 on a problem
+    seamm-al data water512.data --strip water512_atomic.data
+
 On a CPU (8 threads, 64 waters, five MACE members) the mean costs five times one model,
 and spreads every 10 steps add about 11 %.

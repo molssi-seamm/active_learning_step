@@ -222,6 +222,17 @@ def parser():
         help="NAME:FAIL_LEVEL[:CAPTURE], e.g. rho_forces:0.15 (repeatable)",
     )
 
+    d = sub.add_parser(
+        "data", help="check a LAMMPS data file for atom_style atomic (the engine's)"
+    )
+    d.add_argument("file", help="the LAMMPS data file")
+    d.add_argument(
+        "--strip",
+        default=None,
+        metavar="OUT",
+        help="write a copy without what atom_style atomic cannot read",
+    )
+
     t = sub.add_parser(
         "select", help="choose frames from scores within a core-hour budget"
     )
@@ -377,6 +388,21 @@ def main(argv=None):
             print(f"seamm-al check: {e}", file=sys.stderr)
             return 2
         print_summary(summary)
+    elif args.command == "data":
+        from .lammps_data import check_data, strip_data
+
+        found, problems = check_data(args.file)
+        print(f"{args.file}: sections {', '.join(found) or 'none'}")
+        if args.strip:
+            for item in strip_data(args.file, args.strip):
+                print(f"  removed {item}")
+            found, problems = check_data(args.strip)
+            print(f"{args.strip}: sections {', '.join(found)}")
+        for p in problems:
+            print(f"  PROBLEM: {p}")
+        if problems:
+            return 1
+        print("  readable with atom_style atomic")
     elif args.command == "train":
         from .train import train_committee
 
