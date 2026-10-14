@@ -295,7 +295,7 @@ class ScorePool(active_learning_step.Substep):
 
         top = sorted(rows, key=lambda r: -_float(r.get("rho_forces")))[:10]
         table = {
-            "Structure": [r["configuration"] for r in top],
+            "Structure": [_name(r) for r in top],
             "Kind": [r["kind"] for r in top],
             "Atoms": [r["n_atoms"] for r in top],
             "rho_forces": [f"{_float(r.get('rho_forces')):.4g}" for r in top],
@@ -324,6 +324,13 @@ SPREADS = (
 
 #: The keys that tie a scored frame to its configuration in the database
 POOL_KEYS = ("system_id", "configuration_id")
+
+
+def _name(row):
+    """A scored frame's name, or its file and index if it has none."""
+    if row.get("configuration"):
+        return row["configuration"]
+    return f"{Path(row['file']).name} #{row['index']}"
 
 
 def _float(value):

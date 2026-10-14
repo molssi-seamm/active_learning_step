@@ -265,7 +265,9 @@ class Substep(seamm.Node):
 
         # torch's threads: the cores of the job, or fewer if SEAMM is told so
         ce = seamm_exec.computational_environment()
-        n_cores = int(ce.get("NTASKS", 1) or 1)
+        # one process: the cores of this node (a scheduler's tasks x their CPUs)
+        per_node = ce.get("NTASKS_PER_NODE", ce.get("NTASKS", 1))
+        n_cores = int(per_node or 1) * int(ce.get("CPUS_PER_TASK", 1) or 1)
         ncores = self.global_options.get("ncores", "available")
         if ncores != "available":
             n_cores = min(n_cores, int(ncores))
