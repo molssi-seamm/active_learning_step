@@ -4,16 +4,14 @@
 User Guide
 **********
 
-..
-    <remove the dots above and this line and unindent the toctree to expose it>
-    Contents:
+Contents:
 
-    .. toctree::
-       :glob:
-       :maxdepth: 2
-       :titlesonly:
+.. toctree::
+   :glob:
+   :maxdepth: 2
+   :titlesonly:
 
-       *
+   *
 
 Indices and tables
 ==================

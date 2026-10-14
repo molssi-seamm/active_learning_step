@@ -4,28 +4,33 @@ Getting Started
 
 Installation
 ============
-The Active Learning step is probably already installed in your SEAMM
-environment, but if not or if you wish to check, follow the directions for the `SEAMM
-Installer`_. The graphical installer is the easiest to use. In the SEAMM conda
-environment, simply type:: 
+Install the package with pip into the environment where you will use it::
 
-  seamm-installer
+    pip install active-learning-step
 
-or use the shortcut if you installed one. Switch to the second tab, `Components`, and
-check for `active-learning-step`. If it is not installed, or
-can be updated, check the box next to it and click `Install selected` or `Update
-selected` as appropriate.
+``seamm-al select`` and ``seamm-al data`` need nothing more. Scoring, training,
+checking and the committee engine need torch and xnn 0.13 or later: run them in the
+MLFF environment SEAMM itself uses (see :ref:`user-guide`).
 
-The non-graphical installer is also straightforward::
+A first selection
+=================
+Score a pool of candidate structures with a committee of five models, then choose the
+most uncertain within a budget of core-hours::
 
-  seamm-installer install --update active-learning-step
+    seamm-al score -m m0/best.pt m1/best.pt m2/best.pt m3/best.pt m4/best.pt \
+        -o scores.csv candidates.extxyz
+    seamm-al select scores.csv --budget 5000 --cost cluster=4 --cost cell=2800
 
-will ensure both that it is installed and up-to-date.
+``selection.csv`` lists the frames chosen, with each one's rank and the running cost,
+and ``selected.extxyz`` holds them, copied unchanged from the pool, ready for
+labelling.
 
-.. _SEAMM Installer: https://molssi-seamm.github.io/installation/index.html
+Before any committee exists, draw the first round at random instead, spread over the
+values of a column of the pool::
 
-Replace this!
-=============
-Put an example or two here....
+    seamm-al score --no-models --carry source -o pool.csv candidates.extxyz
+    seamm-al select pool.csv --random 1 --stratify-column source \
+        --cost cluster=4 --max-frames 50
 
-That should be enough to get started. For more detail about the functionality in this plug-in, see the :ref:`User Guide <user-guide>`.
+That should be enough to get started. For more detail, see the
+:ref:`User Guide <user-guide>`.

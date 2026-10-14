@@ -70,7 +70,7 @@ class ActiveLearningParameters(seamm.Parameters):
 
     See Also
     --------
-    ActiveLearning, TkActiveLearning, ActiveLearning ActiveLearningParameters, Active LearningStep
+    ActiveLearning, TkActiveLearning, ActiveLearningParameters, ActiveLearningStep
     """
 
     parameters = {

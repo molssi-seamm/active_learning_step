@@ -26,7 +26,9 @@ SEAMM Active Learning Plug-in
    :target: https://pypi.python.org/pypi/active_learning_step
    :alt: PyPi VERSION
 
-A SEAMM plug-in for Active Learning
+A SEAMM plug-in for query-by-committee active learning of machine-learned force
+fields: a committee of models trained on different folds of the data disagrees where
+the model is likely wrong, so only the frames it flags need labelling.
 
 * Free software: BSD-3-Clause
 * Documentation: https://molssi-seamm.github.io/active_learning_step/index.html
@@ -35,7 +37,13 @@ A SEAMM plug-in for Active Learning
 Features
 --------
 
-* Please edit this section!
+* ``active_learning_step.committee``: a committee of xnn potentials and its spreads
+  (energy, force, per-atom force, atomic and molecular pressure), for molecules,
+  ions and charged systems.
+* ``seamm-al score``: the committee's spreads for every frame of extxyz or SDF pools.
+* ``seamm-al select``: rank the frames and take them within a core-hour budget, with
+  caps per group and exclusions, writing the chosen frames as a verbatim subset of
+  the input files.
 
 Acknowledgements
 ----------------

@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
-"""Non-graphical part of the Active Learning step in a SEAMM flowchart
-"""
+"""Non-graphical part of the Active Learning step in a SEAMM flowchart"""
 
 import logging
 from pathlib import Path
@@ -60,11 +59,7 @@ class ActiveLearning(seamm.Node):
     """
 
     def __init__(
-        self,
-        flowchart=None,
-        title="Active Learning",
-        extension=None,
-        logger=logger
+        self, flowchart=None, title="Active Learning", extension=None, logger=logger
     ):
         """A step for Active Learning in a SEAMM flowchart.
 

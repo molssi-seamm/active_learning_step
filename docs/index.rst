@@ -1,7 +1,14 @@
 Welcome to the documentation for the Active Learning SEAMM plug-in
 ==================================================================
 
-Active Learning <does what? replace this text>
+Active Learning chooses what to label next when training a machine-learned force
+field. A committee of models, each trained on a different part of the data, disagrees
+where the model is likely to be wrong; the ``seamm-al`` command scores candidate
+structures by that disagreement, selects the most useful ones within a computing
+budget, trains the committees, checks that their disagreement tracks the real error,
+and runs molecular dynamics with the committee to find new candidates. This first
+release provides the library and the command line; the SEAMM flowchart step is still
+a placeholder.
 
 .. grid:: 1 1 2 2
 
