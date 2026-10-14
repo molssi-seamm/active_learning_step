@@ -1,0 +1,1352 @@
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>active_learning_step.committee &#8212; SEAMM Active Learning Plug-in 2026.10.14 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=c224919a" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../../_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
+
+    <script src="../../_static/documentation_options.js?v=c92e1e03"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/active_learning_step/committee';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="2026.10.14" />
+  
+    
+    <script src="../../_static/searchtools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/SEAMM logo.png" class="logo__image only-light" alt=""/>
+    <img src="../../_static/SEAMM Inverted 288x181.png" class="logo__image only-dark pst-js-only" alt=""/>
+  
+  
+    <p class="title logo__title">Active Learning</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../getting_started/index.html">
+    Getting Started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../user_guide/index.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../developer_guide/index.html">
+    Developer Documentation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/index.html">
+    API Documentation
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../authors.html">
+    Development Team
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../history.html">
+    History
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-external" href="https://molssi-seamm.github.io">
+    Main SEAMM documentation
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-external" href="https://molssi-seamm.github.io">
+    SEAMM Documentation
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-external" href="https://molssi.org">
+    MolSSI
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/molssi-seamm/geometry_analysis_step" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://twitter.com/MolSSI_NSF" title="Twitter" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-twitter fa-lg" aria-hidden="true"></i><span class="visually-hidden">Twitter</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../getting_started/index.html">
+    Getting Started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../user_guide/index.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../developer_guide/index.html">
+    Developer Documentation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/index.html">
+    API Documentation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../authors.html">
+    Development Team
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../history.html">
+    History
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://molssi-seamm.github.io">
+    Main SEAMM documentation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://molssi-seamm.github.io">
+    SEAMM Documentation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://molssi.org">
+    MolSSI
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/molssi-seamm/geometry_analysis_step" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://twitter.com/MolSSI_NSF" title="Twitter" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-twitter fa-lg" aria-hidden="true"></i><span class="visually-hidden">Twitter</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">active_learning_step.committee</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for active_learning_step.committee</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""Query-by-committee tools: ensembles of potentials, disagreement, thresholds.</span>
+
+<span class="sd">The active-learning recipe of Smith *et al.* (J. Chem. Phys. 148, 241733,</span>
+<span class="sd">2018): a committee of ``L`` potentials trained on different folds of the same</span>
+<span class="sd">data with different initialisations; a structure ``i`` is uncertain when the</span>
+<span class="sd">spread of the committee's energies</span>
+
+<span class="sd">.. math:: \\rho_i = \\sigma_i / \\sqrt{N_i}</span>
+
+<span class="sd">(their eq 1; :math:`\\sigma_i` the standard deviation of the ``L`` energies,</span>
+<span class="sd">:math:`N_i` the atom count) exceeds a threshold :math:`\\hat\\rho`. The</span>
+<span class="sd">threshold is calibrated on a labelled benchmark (their fig 1): it is the value</span>
+<span class="sd">that captures a chosen fraction (98 %) of the structures whose largest</span>
+<span class="sd">per-member error :math:`\\epsilon_i = \\max_l |E_l - E_{ref}| / \\sqrt{N_i}`</span>
+<span class="sd">exceeds a failure level. The mean of the ``L`` predictions is the committee's</span>
+<span class="sd">prediction (their sec II E).</span>
+
+<span class="sd">Condensed phases need more than the energy. In liquid water the energy error</span>
+<span class="sd">of clusters never predicted the pressure of the bulk, so force and pressure</span>
+<span class="sd">spreads are provided alongside, calibrated the same way:</span>
+
+<span class="sd">* :math:`\\rho_F`: the root mean square over the atoms of the committee</span>
+<span class="sd">  standard deviation of the force (eV/A);</span>
+<span class="sd">* :math:`\\rho_P`: the committee standard deviation of the pressure (atm),</span>
+<span class="sd">  atomic (from the stress) or molecular (the intramolecular virial removed,</span>
+<span class="sd">  the pressure a rigid-molecule barostat feels).</span>
+
+<span class="sd">Nothing here trains. The members are trained by the</span>
+<span class="sd">:class:`~xnn.common.train.Trainer`, one run per member, on the folds of</span>
+<span class="sd">:func:`kfold_indices`; :class:`Committee` loads the resulting checkpoints and</span>
+<span class="sd">scores structures.</span>
+
+<span class="sd">Origin and changes</span>
+<span class="sd">------------------</span>
+<span class="sd">Adapted from code by Sina Mostafanejad, written for liquid water and xnn 0.8.0.</span>
+<span class="sd">The API and the formulas are his; the changes generalise it to other systems:</span>
+
+<span class="sd">* the molecules come from a covalent bond graph (:func:`molecules`, in</span>
+<span class="sd">  :mod:`active_learning_step.molecules`) rather than ``atom index // 3``; ions</span>
+<span class="sd">  such as Li+ are molecules of their own, and the masses come from the</span>
+<span class="sd">  elements (:func:`masses`);</span>
+<span class="sd">* a structure's ``total_charge`` reaches the models (:func:`structure_from_atoms`</span>
+<span class="sd">  puts it in the structure dict that xnn's graph builder reads);</span>
+<span class="sd">* :meth:`Committee.from_checkpoints` refuses members that record different</span>
+<span class="sd">  subtracted dispersions, as well as different cutoffs;</span>
+<span class="sd">* the numpy-only functions (:func:`kfold_indices`, :func:`calibrate_threshold`,</span>
+<span class="sd">  :func:`split_statistics`, :func:`select`) live in</span>
+<span class="sd">  :mod:`active_learning_step.thresholds`, so that selecting needs no torch; they</span>
+<span class="sd">  are re-exported here unchanged;</span>
+<span class="sd">* besides ``rho_forces``, :func:`disagreement` returns the per-atom spread</span>
+<span class="sd">  ``rho_forces_atom`` and its maximum ``rho_forces_max_atom``, because one bad</span>
+<span class="sd">  ion environment is diluted in the RMS over a large cell.</span>
+
+<span class="sd">xnn interface</span>
+<span class="sd">-------------</span>
+<span class="sd">Written for xnn 0.11.x. The xnn names used, all public:</span>
+
+<span class="sd">* ``xnn.common.data``: ``AtomicDataset``, ``AtomicGraph``, ``collate``;</span>
+<span class="sd">* ``xnn.common.models.hub``: ``load_checkpoint``, ``build_potential``</span>
+<span class="sd">  (in :meth:`Committee.from_checkpoints`);</span>
+<span class="sd">* the checkpoint's ``Config.subtracted_dispersion`` attribute, read with a</span>
+<span class="sd">  default as ``xnn.common.models.registry.recorded_dispersion`` does;</span>
+<span class="sd">* members are ``xnn.common.models.ForceStressOutput`` objects, as</span>
+<span class="sd">  ``build_potential`` returns them.</span>
+<span class="sd">"""</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tensor</span><span class="p">,</span> <span class="n">nn</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">xnn.common.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">AtomicDataset</span><span class="p">,</span> <span class="n">AtomicGraph</span><span class="p">,</span> <span class="n">collate</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">.molecules</span><span class="w"> </span><span class="kn">import</span> <span class="n">masses</span><span class="p">,</span> <span class="n">molecules</span>  <span class="c1"># noqa: F401</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.thresholds</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">calibrate_threshold</span><span class="p">,</span>
+    <span class="n">kfold_indices</span><span class="p">,</span>
+    <span class="n">select</span><span class="p">,</span>
+    <span class="n">split_statistics</span><span class="p">,</span>
+<span class="p">)</span>  <span class="c1"># noqa: F401</span>
+
+<span class="c1">#: atm per eV/A^3 (CODATA 2018 electronvolt, 101 325 Pa per atm).</span>
+<span class="n">ATM_PER_EV_A3</span> <span class="o">=</span> <span class="mf">1.602176634e6</span> <span class="o">/</span> <span class="mf">1.01325</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">"ATM_PER_EV_A3"</span><span class="p">,</span>
+    <span class="s2">"Committee"</span><span class="p">,</span>
+    <span class="s2">"kfold_indices"</span><span class="p">,</span>
+    <span class="s2">"pressure"</span><span class="p">,</span>
+    <span class="s2">"molecular_virial"</span><span class="p">,</span>
+    <span class="s2">"molecular_pressure"</span><span class="p">,</span>
+    <span class="s2">"disagreement"</span><span class="p">,</span>
+    <span class="s2">"worst_error"</span><span class="p">,</span>
+    <span class="s2">"calibrate_threshold"</span><span class="p">,</span>
+    <span class="s2">"split_statistics"</span><span class="p">,</span>
+    <span class="s2">"select"</span><span class="p">,</span>
+    <span class="s2">"molecules"</span><span class="p">,</span>
+    <span class="s2">"masses"</span><span class="p">,</span>
+    <span class="s2">"structure_from_atoms"</span><span class="p">,</span>
+<span class="p">]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">read_checkpoint</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""``xnn.common.models.hub.load_checkpoint``, with a clear error across releases.</span>
+
+<span class="sd">    A trainer checkpoint pickles its config, so one written by a newer xnn (for</span>
+<span class="sd">    example a 0.13 ``TrainerConfig``) cannot be unpickled by an older one; the</span>
+<span class="sd">    error then names both releases rather than a missing attribute.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        When the checkpoint needs a different xnn release.</span>
+<span class="sd">    """</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">xnn</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">xnn.common.models.hub</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_checkpoint</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">load_checkpoint</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="k">except</span> <span class="p">(</span><span class="ne">AttributeError</span><span class="p">,</span> <span class="ne">ModuleNotFoundError</span><span class="p">,</span> <span class="ne">ImportError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"cannot read </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2"> with xnn </span><span class="si">{</span><span class="n">xnn</span><span class="o">.</span><span class="n">__version__</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">); "</span>
+            <span class="s2">"it was probably written by a newer xnn: use that release's environment"</span>
+        <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
+
+
+<div class="viewcode-block" id="structure_from_atoms">
+<a class="viewcode-back" href="../../api/active_learning_step.html#active_learning_step.committee.structure_from_atoms">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">structure_from_atoms</span><span class="p">(</span><span class="n">atoms</span><span class="p">,</span> <span class="n">total_charge</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""The xnn structure dict of an ASE Atoms, for scoring.</span>
+
+<span class="sd">    Only the geometry and the total charge are taken: no labels, so nothing in</span>
+<span class="sd">    the frame's ``info`` or ``arrays`` can change what the models see.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    atoms : ase.Atoms</span>
+<span class="sd">        The structure. It is periodic when any direction is.</span>
+<span class="sd">    total_charge : float, optional</span>
+<span class="sd">        The net charge; by default ``atoms.info["total_charge"]`` (or</span>
+<span class="sd">        ``"charge"``), and none (neutral to the models) when absent.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dict</span>
+<span class="sd">        ``pos``, ``atomic_numbers``, ``cell`` and ``pbc`` (both ``None`` for a</span>
+<span class="sd">        non-periodic structure) and ``total_charge`` when known.</span>
+<span class="sd">    """</span>
+    <span class="n">periodic</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">atoms</span><span class="o">.</span><span class="n">pbc</span><span class="o">.</span><span class="n">any</span><span class="p">())</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">"pos"</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">atoms</span><span class="o">.</span><span class="n">get_positions</span><span class="p">(),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">),</span>
+        <span class="s2">"atomic_numbers"</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">atoms</span><span class="o">.</span><span class="n">get_atomic_numbers</span><span class="p">()),</span>
+        <span class="s2">"cell"</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">atoms</span><span class="o">.</span><span class="n">get_cell</span><span class="p">()[:],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span> <span class="k">if</span> <span class="n">periodic</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">"pbc"</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">atoms</span><span class="o">.</span><span class="n">pbc</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span> <span class="k">if</span> <span class="n">periodic</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="n">total_charge</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"total_charge"</span><span class="p">,</span> <span class="s2">"charge"</span><span class="p">):</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">atoms</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">total_charge</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                <span class="k">break</span>
+    <span class="k">if</span> <span class="n">total_charge</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">s</span><span class="p">[</span><span class="s2">"total_charge"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">total_charge</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">s</span></div>
+
+
+
+<div class="viewcode-block" id="pressure">
+<a class="viewcode-back" href="../../api/active_learning_step.html#active_learning_step.committee.pressure">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">pressure</span><span class="p">(</span><span class="n">stress</span><span class="p">:</span> <span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tensor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""The isotropic pressure of a stress tensor, ``-tr(sigma) / 3``.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    stress : Tensor</span>
+<span class="sd">        Stress of shape ``(..., 3, 3)`` in eV/A^3 with the ASE / xnn sign</span>
+<span class="sd">        (``sigma = -P`` under hydrostatic pressure).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Tensor</span>
+<span class="sd">        Pressure of shape ``(...)`` in eV/A^3 (multiply by</span>
+<span class="sd">        :data:`ATM_PER_EV_A3` for atm).</span>
+<span class="sd">    """</span>
+    <span class="k">return</span> <span class="o">-</span><span class="n">stress</span><span class="o">.</span><span class="n">diagonal</span><span class="p">(</span><span class="n">dim1</span><span class="o">=-</span><span class="mi">2</span><span class="p">,</span> <span class="n">dim2</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mf">3.0</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_first_atom</span><span class="p">(</span><span class="n">molecule</span><span class="p">:</span> <span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tensor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Index of the first atom of each molecule, indexed by molecule id."""</span>
+    <span class="n">n_mol</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">molecule</span><span class="o">.</span><span class="n">max</span><span class="p">())</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">first</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">full</span><span class="p">(</span>
+        <span class="p">(</span><span class="n">n_mol</span><span class="p">,),</span> <span class="n">molecule</span><span class="o">.</span><span class="n">numel</span><span class="p">(),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">long</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">molecule</span><span class="o">.</span><span class="n">device</span>
+    <span class="p">)</span>
+    <span class="n">idx</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">molecule</span><span class="o">.</span><span class="n">numel</span><span class="p">(),</span> <span class="n">device</span><span class="o">=</span><span class="n">molecule</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+    <span class="n">first</span><span class="o">.</span><span class="n">scatter_reduce_</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">molecule</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="n">reduce</span><span class="o">=</span><span class="s2">"amin"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">first</span>
+
+
+<div class="viewcode-block" id="molecular_virial">
+<a class="viewcode-back" href="../../api/active_learning_step.html#active_learning_step.committee.molecular_virial">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">molecular_virial</span><span class="p">(</span>
+    <span class="n">pos</span><span class="p">:</span> <span class="n">Tensor</span><span class="p">,</span>
+    <span class="n">forces</span><span class="p">:</span> <span class="n">Tensor</span><span class="p">,</span>
+    <span class="n">batch</span><span class="p">:</span> <span class="n">Tensor</span><span class="p">,</span>
+    <span class="n">molecule</span><span class="p">:</span> <span class="n">Tensor</span><span class="p">,</span>
+    <span class="n">cell</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tensor</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">pbc</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tensor</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">masses</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tensor</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">n_structures</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tensor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""The intramolecular virial ``sum_i (x_i - R_m) . F_i`` per structure.</span>
+
+<span class="sd">    Each molecule is made whole by the minimum image of every atom with respect</span>
+<span class="sd">    to its first atom (periodic structures only), ``R_m`` is its centre of mass</span>
+<span class="sd">    (its geometric centre without ``masses``), and the trace of the virial is</span>
+<span class="sd">    summed over the molecules of each structure.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pos : Tensor</span>
+<span class="sd">        Positions ``(N, 3)`` in A.</span>
+<span class="sd">    forces : Tensor</span>
+<span class="sd">        Forces ``(N, 3)`` in eV/A.</span>
+<span class="sd">    batch : Tensor</span>
+<span class="sd">        Structure index per atom ``(N,)``.</span>
+<span class="sd">    molecule : Tensor</span>
+<span class="sd">        Molecule index per atom ``(N,)``, unique across the batch.</span>
+<span class="sd">    cell : Tensor, optional</span>
+<span class="sd">        Lattice vectors as rows ``(B, 3, 3)``; needed for the minimum image.</span>
+<span class="sd">    pbc : Tensor, optional</span>
+<span class="sd">        Periodic flags ``(B, 3)``; a structure is wrapped only when all three</span>
+<span class="sd">        are set. ``None`` with a cell means every structure is periodic.</span>
+<span class="sd">    masses : Tensor, optional</span>
+<span class="sd">        Atomic masses ``(N,)`` for the centre of mass. ``None`` uses the</span>
+<span class="sd">        geometric centre.</span>
+<span class="sd">    n_structures : int, optional</span>
+<span class="sd">        Number of structures ``B``; by default ``batch.max() + 1``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Tensor</span>
+<span class="sd">        The virial trace ``(B,)`` in eV.</span>
+<span class="sd">    """</span>
+    <span class="n">n_b</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">batch</span><span class="o">.</span><span class="n">max</span><span class="p">())</span> <span class="o">+</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">n_structures</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">n_structures</span>
+    <span class="n">first</span> <span class="o">=</span> <span class="n">_first_atom</span><span class="p">(</span><span class="n">molecule</span><span class="p">)</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">pos</span> <span class="o">-</span> <span class="n">pos</span><span class="p">[</span><span class="n">first</span><span class="p">[</span><span class="n">molecule</span><span class="p">]]</span>
+    <span class="k">if</span> <span class="n">cell</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">periodic</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n_b</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">bool</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">pos</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">pbc</span> <span class="ow">is</span> <span class="kc">None</span>
+            <span class="k">else</span> <span class="n">pbc</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="nb">bool</span><span class="p">(</span><span class="n">periodic</span><span class="o">.</span><span class="n">any</span><span class="p">()):</span>
+            <span class="n">inv</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
+            <span class="n">inv</span><span class="p">[</span><span class="n">periodic</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">cell</span><span class="p">[</span><span class="n">periodic</span><span class="p">])</span>
+            <span class="n">frac</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"ni,nij-&gt;nj"</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">inv</span><span class="p">[</span><span class="n">batch</span><span class="p">])</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="n">d</span> <span class="o">-</span> <span class="n">torch</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"ni,nij-&gt;nj"</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">frac</span><span class="p">),</span> <span class="n">cell</span><span class="p">[</span><span class="n">batch</span><span class="p">])</span>
+    <span class="n">whole</span> <span class="o">=</span> <span class="n">pos</span><span class="p">[</span><span class="n">first</span><span class="p">[</span><span class="n">molecule</span><span class="p">]]</span> <span class="o">+</span> <span class="n">d</span>
+    <span class="n">n_mol</span> <span class="o">=</span> <span class="n">first</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">pos</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">pos</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">pos</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">masses</span> <span class="ow">is</span> <span class="kc">None</span>
+        <span class="k">else</span> <span class="n">masses</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">pos</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">wsum</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_mol</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">pos</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">pos</span><span class="o">.</span><span class="n">device</span><span class="p">)</span><span class="o">.</span><span class="n">index_add_</span><span class="p">(</span>
+        <span class="mi">0</span><span class="p">,</span> <span class="n">molecule</span><span class="p">,</span> <span class="n">w</span>
+    <span class="p">)</span>
+    <span class="n">com</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_mol</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">pos</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">pos</span><span class="o">.</span><span class="n">device</span><span class="p">)</span><span class="o">.</span><span class="n">index_add_</span><span class="p">(</span>
+        <span class="mi">0</span><span class="p">,</span> <span class="n">molecule</span><span class="p">,</span> <span class="n">whole</span> <span class="o">*</span> <span class="n">w</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span>
+    <span class="p">)</span>
+    <span class="n">com</span> <span class="o">=</span> <span class="n">com</span> <span class="o">/</span> <span class="n">wsum</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span>
+    <span class="n">per_atom</span> <span class="o">=</span> <span class="p">((</span><span class="n">whole</span> <span class="o">-</span> <span class="n">com</span><span class="p">[</span><span class="n">molecule</span><span class="p">])</span> <span class="o">*</span> <span class="n">forces</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_b</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">pos</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">pos</span><span class="o">.</span><span class="n">device</span><span class="p">)</span><span class="o">.</span><span class="n">index_add_</span><span class="p">(</span>
+        <span class="mi">0</span><span class="p">,</span> <span class="n">batch</span><span class="p">,</span> <span class="n">per_atom</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="molecular_pressure">
+<a class="viewcode-back" href="../../api/active_learning_step.html#active_learning_step.committee.molecular_pressure">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">molecular_pressure</span><span class="p">(</span>
+    <span class="n">stress</span><span class="p">:</span> <span class="n">Tensor</span><span class="p">,</span>
+    <span class="n">pos</span><span class="p">:</span> <span class="n">Tensor</span><span class="p">,</span>
+    <span class="n">forces</span><span class="p">:</span> <span class="n">Tensor</span><span class="p">,</span>
+    <span class="n">cell</span><span class="p">:</span> <span class="n">Tensor</span><span class="p">,</span>
+    <span class="n">batch</span><span class="p">:</span> <span class="n">Tensor</span><span class="p">,</span>
+    <span class="n">molecule</span><span class="p">:</span> <span class="n">Tensor</span><span class="p">,</span>
+    <span class="n">pbc</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tensor</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">masses</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tensor</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tensor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""The molecular pressure ``P_atom - tr(W_intra) / (3 V)`` per structure.</span>
+
+<span class="sd">    The pressure of a rigid-molecule description of the same structure: the</span>
+<span class="sd">    atomic pressure of the stress with the intramolecular virial of</span>
+<span class="sd">    :func:`molecular_virial` removed. It is what the labelling pipeline of the</span>
+<span class="sd">    water work reports and the quantity the committee spread is taken over in</span>
+<span class="sd">    :func:`disagreement` when molecules are given.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    stress : Tensor</span>
+<span class="sd">        Stress ``(B, 3, 3)`` in eV/A^3.</span>
+<span class="sd">    pos, forces, cell, batch, molecule, pbc, masses</span>
+<span class="sd">        As in :func:`molecular_virial`.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Tensor</span>
+<span class="sd">        Molecular pressure ``(B,)`` in eV/A^3. Non-periodic structures of a</span>
+<span class="sd">        mixed batch get ``nan``.</span>
+<span class="sd">    """</span>
+    <span class="n">n_b</span> <span class="o">=</span> <span class="n">stress</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">volume</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">det</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">molecular_virial</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">forces</span><span class="p">,</span> <span class="n">batch</span><span class="p">,</span> <span class="n">molecule</span><span class="p">,</span> <span class="n">cell</span><span class="p">,</span> <span class="n">pbc</span><span class="p">,</span> <span class="n">masses</span><span class="p">,</span> <span class="n">n_b</span><span class="p">)</span>
+    <span class="n">periodic</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n_b</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">bool</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">pos</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">pbc</span> <span class="ow">is</span> <span class="kc">None</span>
+        <span class="k">else</span> <span class="n">pbc</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">pressure</span><span class="p">(</span><span class="n">stress</span><span class="p">)</span> <span class="o">-</span> <span class="n">w</span> <span class="o">/</span> <span class="p">(</span><span class="mf">3.0</span> <span class="o">*</span> <span class="n">volume</span><span class="o">.</span><span class="n">clamp_min</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="n">volume</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span><span class="o">.</span><span class="n">tiny</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">periodic</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="s2">"nan"</span><span class="p">)))</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_scatter_mean</span><span class="p">(</span><span class="n">values</span><span class="p">:</span> <span class="n">Tensor</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="n">Tensor</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tensor</span><span class="p">:</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">values</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">values</span><span class="o">.</span><span class="n">device</span><span class="p">)</span><span class="o">.</span><span class="n">index_add_</span><span class="p">(</span>
+        <span class="mi">0</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">values</span>
+    <span class="p">)</span>
+    <span class="n">cnt</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">values</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">values</span><span class="o">.</span><span class="n">device</span><span class="p">)</span><span class="o">.</span><span class="n">index_add_</span><span class="p">(</span>
+        <span class="mi">0</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">out</span> <span class="o">/</span> <span class="n">cnt</span><span class="o">.</span><span class="n">clamp_min</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="disagreement">
+<a class="viewcode-back" href="../../api/active_learning_step.html#active_learning_step.committee.disagreement">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">disagreement</span><span class="p">(</span>
+    <span class="n">energy</span><span class="p">:</span> <span class="n">Tensor</span><span class="p">,</span>
+    <span class="n">forces</span><span class="p">:</span> <span class="n">Tensor</span><span class="p">,</span>
+    <span class="n">n_atoms</span><span class="p">:</span> <span class="n">Tensor</span><span class="p">,</span>
+    <span class="n">batch</span><span class="p">:</span> <span class="n">Tensor</span><span class="p">,</span>
+    <span class="n">pressures</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tensor</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tensor</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""The committee spreads of a batch of structures.</span>
+
+<span class="sd">    The standard deviations are population ones (``ddof = 0``), as in the</span>
+<span class="sd">    reference implementation of Smith *et al.*</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    energy : Tensor</span>
+<span class="sd">        Member energies ``(L, B)`` in eV.</span>
+<span class="sd">    forces : Tensor</span>
+<span class="sd">        Member forces ``(L, N, 3)`` in eV/A.</span>
+<span class="sd">    n_atoms : Tensor</span>
+<span class="sd">        Atoms per structure ``(B,)``.</span>
+<span class="sd">    batch : Tensor</span>
+<span class="sd">        Structure index per atom ``(N,)``.</span>
+<span class="sd">    pressures : dict of str to Tensor, optional</span>
+<span class="sd">        Named member pressures ``(L, B)`` in atm, for example</span>
+<span class="sd">        ``{"pressure": ..., "pressure_molecular": ...}``; each adds a</span>
+<span class="sd">        ``rho_&lt;name&gt;`` entry.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dict of str to Tensor</span>
+<span class="sd">        ``rho_energy`` ``(B,)`` in eV: :math:`\\sigma_E / \\sqrt{N}`;</span>
+<span class="sd">        ``rho_forces`` ``(B,)`` in eV/A: the RMS over atoms of the per-atom</span>
+<span class="sd">        standard deviation of the force vector; ``rho_forces_atom`` ``(N,)``</span>
+<span class="sd">        in eV/A: that per-atom standard deviation, ``sqrt(sum_xyz var)``;</span>
+<span class="sd">        ``rho_forces_max_atom`` ``(B,)``: its largest value in each</span>
+<span class="sd">        structure; and ``rho_&lt;name&gt;`` ``(B,)`` per pressure given, in atm.</span>
+<span class="sd">    """</span>
+    <span class="n">n_b</span> <span class="o">=</span> <span class="n">energy</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">"rho_energy"</span><span class="p">:</span> <span class="n">energy</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">unbiased</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">/</span> <span class="n">n_atoms</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">energy</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()</span>
+    <span class="p">}</span>
+    <span class="n">var_f</span> <span class="o">=</span> <span class="n">forces</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">unbiased</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># (N,)</span>
+    <span class="n">out</span><span class="p">[</span><span class="s2">"rho_forces"</span><span class="p">]</span> <span class="o">=</span> <span class="n">_scatter_mean</span><span class="p">(</span><span class="n">var_f</span><span class="p">,</span> <span class="n">batch</span><span class="p">,</span> <span class="n">n_b</span><span class="p">)</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()</span>
+    <span class="n">sd_f</span> <span class="o">=</span> <span class="n">var_f</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()</span>
+    <span class="n">out</span><span class="p">[</span><span class="s2">"rho_forces_atom"</span><span class="p">]</span> <span class="o">=</span> <span class="n">sd_f</span>
+    <span class="n">out</span><span class="p">[</span><span class="s2">"rho_forces_max_atom"</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
+        <span class="n">n_b</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">sd_f</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">sd_f</span><span class="o">.</span><span class="n">device</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">scatter_reduce_</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">batch</span><span class="p">,</span> <span class="n">sd_f</span><span class="p">,</span> <span class="n">reduce</span><span class="o">=</span><span class="s2">"amax"</span><span class="p">,</span> <span class="n">include_self</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">p</span> <span class="ow">in</span> <span class="p">(</span><span class="n">pressures</span> <span class="ow">or</span> <span class="p">{})</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">out</span><span class="p">[</span><span class="sa">f</span><span class="s2">"rho_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">"</span><span class="p">]</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">unbiased</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">out</span></div>
+
+
+
+<div class="viewcode-block" id="worst_error">
+<a class="viewcode-back" href="../../api/active_learning_step.html#active_learning_step.committee.worst_error">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">worst_error</span><span class="p">(</span>
+    <span class="n">energy</span><span class="p">:</span> <span class="n">Tensor</span><span class="p">,</span>
+    <span class="n">forces</span><span class="p">:</span> <span class="n">Tensor</span><span class="p">,</span>
+    <span class="n">n_atoms</span><span class="p">:</span> <span class="n">Tensor</span><span class="p">,</span>
+    <span class="n">batch</span><span class="p">:</span> <span class="n">Tensor</span><span class="p">,</span>
+    <span class="n">energy_ref</span><span class="p">:</span> <span class="n">Tensor</span><span class="p">,</span>
+    <span class="n">forces_ref</span><span class="p">:</span> <span class="n">Tensor</span><span class="p">,</span>
+    <span class="n">pressures</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tensor</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">pressures_ref</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tensor</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tensor</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""The largest per-member error of each structure (the paper's epsilon).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    energy, forces, n_atoms, batch, pressures</span>
+<span class="sd">        As in :func:`disagreement`.</span>
+<span class="sd">    energy_ref : Tensor</span>
+<span class="sd">        Reference energies ``(B,)``.</span>
+<span class="sd">    forces_ref : Tensor</span>
+<span class="sd">        Reference forces ``(N, 3)``.</span>
+<span class="sd">    pressures_ref : dict of str to Tensor, optional</span>
+<span class="sd">        Reference pressures ``(B,)`` per name in ``pressures``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dict of str to Tensor</span>
+<span class="sd">        ``eps_energy`` ``(B,)``: :math:`\\max_l |E_l - E_{ref}| / \\sqrt{N}`;</span>
+<span class="sd">        ``eps_forces`` ``(B,)``: the largest over members of the RMS force</span>
+<span class="sd">        error of the structure; ``eps_&lt;name&gt;`` ``(B,)``: the largest absolute</span>
+<span class="sd">        pressure error.</span>
+<span class="sd">    """</span>
+    <span class="n">n_b</span> <span class="o">=</span> <span class="n">energy</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">"eps_energy"</span><span class="p">:</span> <span class="p">(</span><span class="n">energy</span> <span class="o">-</span> <span class="n">energy_ref</span><span class="p">)</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
+        <span class="o">/</span> <span class="n">n_atoms</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">energy</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()</span>
+    <span class="p">}</span>
+    <span class="n">err</span> <span class="o">=</span> <span class="p">((</span><span class="n">forces</span> <span class="o">-</span> <span class="n">forces_ref</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># (L, N)</span>
+    <span class="n">rms</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">_scatter_mean</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">batch</span><span class="p">,</span> <span class="n">n_b</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">err</span><span class="p">])</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()</span>
+    <span class="n">out</span><span class="p">[</span><span class="s2">"eps_forces"</span><span class="p">]</span> <span class="o">=</span> <span class="n">rms</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
+    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">p</span> <span class="ow">in</span> <span class="p">(</span><span class="n">pressures</span> <span class="ow">or</span> <span class="p">{})</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">out</span><span class="p">[</span><span class="sa">f</span><span class="s2">"eps_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">p</span> <span class="o">-</span> <span class="n">pressures_ref</span><span class="p">[</span><span class="n">name</span><span class="p">])</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
+    <span class="k">return</span> <span class="n">out</span></div>
+
+
+
+<span class="c1">#: Entries of :func:`disagreement` with one value per atom rather than per structure.</span>
+<span class="n">_PER_ATOM</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"rho_forces_atom"</span><span class="p">,)</span>
+
+
+<div class="viewcode-block" id="Committee">
+<a class="viewcode-back" href="../../api/active_learning_step.html#active_learning_step.committee.Committee">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Committee</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""A committee of potentials evaluated together.</span>
+
+<span class="sd">    Every member sees its own shallow copy of the batch, because the</span>
+<span class="sd">    force / stress wrapper displaces positions and cell by the strain it</span>
+<span class="sd">    differentiates, and returns detached predictions.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    members : sequence of torch.nn.Module</span>
+<span class="sd">        The potentials, each returning ``energy`` ``(B,)``, ``forces``</span>
+<span class="sd">        ``(N, 3)`` and, for periodic batches, ``stress`` ``(B, 3, 3)`` (a</span>
+<span class="sd">        :class:`~xnn.common.models.ForceStressOutput` built with</span>
+<span class="sd">        ``compute_stress=True``). They must share one cutoff, since one</span>
+<span class="sd">        neighbour list serves all of them.</span>
+<span class="sd">    subtracted_dispersion : sequence, optional</span>
+<span class="sd">        Each member's ``subtracted_dispersion`` record (what its training</span>
+<span class="sd">        labels had removed); :meth:`from_checkpoints` reads them from the</span>
+<span class="sd">        checkpoints. They must all be equal: members of different label spaces</span>
+<span class="sd">        disagree for a reason that is not uncertainty.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    members : torch.nn.ModuleList</span>
+<span class="sd">        The potentials.</span>
+<span class="sd">    cutoff : float</span>
+<span class="sd">        Their common neighbour-list cutoff.</span>
+<span class="sd">    subtracted_dispersion : dict, str or None</span>
+<span class="sd">        The members' common record (``None`` when not given or not recorded).</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        With fewer than two members, with differing cutoffs, or with differing</span>
+<span class="sd">        subtracted dispersions.</span>
+<span class="sd">    """</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">members</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">],</span>
+        <span class="n">subtracted_dispersion</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Sequence</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">members</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"a committee needs at least two members"</span><span class="p">)</span>
+        <span class="n">cutoffs</span> <span class="o">=</span> <span class="p">{</span><span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="s2">"cutoff"</span><span class="p">)),</span> <span class="mi">9</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">members</span><span class="p">}</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">cutoffs</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"members must share one cutoff; got </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">cutoffs</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="n">records</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="nb">list</span><span class="p">(</span><span class="n">subtracted_dispersion</span><span class="p">)</span> <span class="k">if</span> <span class="n">subtracted_dispersion</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">subtracted_dispersion</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">records</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">members</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">records</span><span class="p">)</span><span class="si">}</span><span class="s2"> dispersion records for </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">members</span><span class="p">)</span><span class="si">}</span><span class="s2"> members"</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">r</span> <span class="o">!=</span> <span class="n">records</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">records</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"the members record different subtracted dispersions: </span><span class="si">{</span><span class="n">records</span><span class="si">}</span><span class="s2">"</span>
+            <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">members</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">ModuleList</span><span class="p">(</span><span class="n">members</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cutoff</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">cutoffs</span><span class="o">.</span><span class="n">pop</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">subtracted_dispersion</span> <span class="o">=</span> <span class="n">records</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Committee.from_checkpoints">
+<a class="viewcode-back" href="../../api/active_learning_step.html#active_learning_step.committee.Committee.from_checkpoints">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_checkpoints</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">paths</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="n">device</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">dtype</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">dispersion</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">compute_stress</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">build_options</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Committee"</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Load the members from trainer checkpoints or model directories.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        paths : iterable of str</span>
+<span class="sd">            Anything :func:`~xnn.common.models.hub.load_checkpoint` reads.</span>
+<span class="sd">        device : torch.device or str, optional</span>
+<span class="sd">            Where to serve the members.</span>
+<span class="sd">        dtype : torch.dtype or str, optional</span>
+<span class="sd">            Dtype to serve in; by default that of each checkpoint's weights.</span>
+<span class="sd">        dispersion : dict, str, bool or None, optional</span>
+<span class="sd">            Passed to :func:`~xnn.common.models.hub.build_potential`. By</span>
+<span class="sd">            default ``False``: a recorded subtracted dispersion is a term</span>
+<span class="sd">            shared by every member, so it adds nothing to the spread and is</span>
+<span class="sd">            left out. Pass ``None`` to serve the full energy.</span>
+<span class="sd">        compute_stress : bool, optional</span>
+<span class="sd">            Build the stress head (needed for the pressure spread), by</span>
+<span class="sd">            default ``True``.</span>
+<span class="sd">        **build_options</span>
+<span class="sd">            Further keywords of :func:`~xnn.common.models.hub.build_potential`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Committee</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            When the checkpoints record different subtracted dispersions or</span>
+<span class="sd">            the members differ in cutoff.</span>
+<span class="sd">        """</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">xnn.common.models.hub</span><span class="w"> </span><span class="kn">import</span> <span class="n">build_potential</span>
+
+        <span class="n">members</span><span class="p">,</span> <span class="n">records</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">paths</span><span class="p">:</span>
+            <span class="n">ck</span> <span class="o">=</span> <span class="n">read_checkpoint</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+            <span class="c1"># as xnn.common.models.registry.recorded_dispersion: older configs lack it</span>
+            <span class="n">records</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">ck</span><span class="o">.</span><span class="n">config</span><span class="p">,</span> <span class="s2">"subtracted_dispersion"</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+            <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">r</span> <span class="o">!=</span> <span class="n">records</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">records</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">"the members record different subtracted dispersions: </span><span class="si">{</span><span class="n">records</span><span class="si">}</span><span class="s2">"</span>
+                <span class="p">)</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="n">build_potential</span><span class="p">(</span>
+                <span class="n">ck</span><span class="o">.</span><span class="n">config</span><span class="p">,</span>
+                <span class="n">ck</span><span class="o">.</span><span class="n">state_dict</span><span class="p">,</span>
+                <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">,</span>
+                <span class="n">dispersion</span><span class="o">=</span><span class="n">dispersion</span><span class="p">,</span>
+                <span class="n">compute_forces</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">compute_stress</span><span class="o">=</span><span class="n">compute_stress</span><span class="p">,</span>
+                <span class="n">label</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">p</span><span class="p">),</span>
+                <span class="o">**</span><span class="n">build_options</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">members</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span> <span class="k">if</span> <span class="n">device</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">m</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">members</span><span class="p">,</span> <span class="n">subtracted_dispersion</span><span class="o">=</span><span class="n">records</span><span class="p">)</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">size</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Number of members ``L``."""</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">members</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Committee.forward">
+<a class="viewcode-back" href="../../api/active_learning_step.html#active_learning_step.committee.Committee.forward">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">AtomicGraph</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tensor</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">"""Every member's prediction of a batch.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        data : AtomicGraph</span>
+<span class="sd">            A structure or batch on the members' device.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict of str to Tensor</span>
+<span class="sd">            ``energy`` ``(L, B)``, ``forces`` ``(L, N, 3)`` and ``stress``</span>
+<span class="sd">            ``(L, B, 3, 3)`` (``None`` when the batch has no cell), detached.</span>
+<span class="sd">        """</span>
+        <span class="n">energies</span><span class="p">,</span> <span class="n">forces</span><span class="p">,</span> <span class="n">stresses</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>
+        <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">enable_grad</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">members</span><span class="p">:</span>
+                <span class="n">out</span> <span class="o">=</span> <span class="n">m</span><span class="p">(</span><span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+                <span class="n">energies</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">out</span><span class="p">[</span><span class="s2">"energy"</span><span class="p">]</span><span class="o">.</span><span class="n">detach</span><span class="p">())</span>
+                <span class="n">forces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">out</span><span class="p">[</span><span class="s2">"forces"</span><span class="p">]</span><span class="o">.</span><span class="n">detach</span><span class="p">())</span>
+                <span class="n">stresses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">out</span><span class="p">[</span><span class="s2">"stress"</span><span class="p">]</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span> <span class="k">if</span> <span class="n">out</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"stress"</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+                <span class="p">)</span>
+        <span class="n">stress</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">s</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">stresses</span><span class="p">)</span> <span class="k">else</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">stresses</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">"energy"</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">energies</span><span class="p">),</span>
+            <span class="s2">"forces"</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">forces</span><span class="p">),</span>
+            <span class="s2">"stress"</span><span class="p">:</span> <span class="n">stress</span><span class="p">,</span>
+        <span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="Committee.predict">
+<a class="viewcode-back" href="../../api/active_learning_step.html#active_learning_step.committee.Committee.predict">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">AtomicGraph</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tensor</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">"""The committee's prediction: the mean over the members.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        data : AtomicGraph</span>
+<span class="sd">            A structure or batch on the members' device.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict of str to Tensor</span>
+<span class="sd">            ``energy`` ``(B,)``, ``forces`` ``(N, 3)``, ``stress``</span>
+<span class="sd">            ``(B, 3, 3)`` or ``None``.</span>
+<span class="sd">        """</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">out</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span></div>
+
+
+<div class="viewcode-block" id="Committee.disagreement">
+<a class="viewcode-back" href="../../api/active_learning_step.html#active_learning_step.committee.Committee.disagreement">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">disagreement</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">data</span><span class="p">:</span> <span class="n">AtomicGraph</span><span class="p">,</span>
+        <span class="n">molecule</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tensor</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">masses</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tensor</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tensor</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">"""The spreads of a batch, with the members' and the mean prediction.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        data : AtomicGraph</span>
+<span class="sd">            A structure or batch on the members' device.</span>
+<span class="sd">        molecule : Tensor, optional</span>
+<span class="sd">            Molecule index per atom ``(N,)``, unique across the batch. When</span>
+<span class="sd">            given and the batch has a cell, the molecular pressure spread is</span>
+<span class="sd">            added.</span>
+<span class="sd">        masses : Tensor, optional</span>
+<span class="sd">            Atomic masses ``(N,)`` for the molecular centres of mass.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict of str to Tensor</span>
+<span class="sd">            The entries of :func:`disagreement` (``rho_energy``,</span>
+<span class="sd">            ``rho_forces``, and ``rho_pressure`` / ``rho_pressure_molecular``</span>
+<span class="sd">            in atm for periodic batches), the members' ``energy`` ``(L, B)``,</span>
+<span class="sd">            ``forces`` ``(L, N, 3)``, ``stress``, ``pressure`` ``(L, B)`` and</span>
+<span class="sd">            ``pressure_molecular`` ``(L, B)`` in atm, their means under</span>
+<span class="sd">            ``mean_&lt;name&gt;``, and ``n_atoms`` ``(B,)``.</span>
+<span class="sd">        """</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">pressures</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tensor</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">out</span><span class="p">[</span><span class="s2">"stress"</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">pressure</span><span class="p">(</span><span class="n">out</span><span class="p">[</span><span class="s2">"stress"</span><span class="p">])</span> <span class="o">*</span> <span class="n">ATM_PER_EV_A3</span>
+            <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">pbc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">p</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
+                    <span class="n">data</span><span class="o">.</span><span class="n">pbc</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)[</span><span class="kc">None</span><span class="p">],</span> <span class="n">p</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="s2">"nan"</span><span class="p">))</span>
+                <span class="p">)</span>
+            <span class="n">pressures</span><span class="p">[</span><span class="s2">"pressure"</span><span class="p">]</span> <span class="o">=</span> <span class="n">p</span>
+            <span class="k">if</span> <span class="n">molecule</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">pressures</span><span class="p">[</span><span class="s2">"pressure_molecular"</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span>
+                    <span class="p">[</span>
+                        <span class="n">molecular_pressure</span><span class="p">(</span>
+                            <span class="n">s</span><span class="p">,</span>
+                            <span class="n">data</span><span class="o">.</span><span class="n">pos</span><span class="o">.</span><span class="n">detach</span><span class="p">(),</span>
+                            <span class="n">f</span><span class="p">,</span>
+                            <span class="n">data</span><span class="o">.</span><span class="n">cell</span><span class="o">.</span><span class="n">detach</span><span class="p">(),</span>
+                            <span class="n">data</span><span class="o">.</span><span class="n">batch</span><span class="p">,</span>
+                            <span class="n">molecule</span><span class="p">,</span>
+                            <span class="n">data</span><span class="o">.</span><span class="n">pbc</span><span class="p">,</span>
+                            <span class="n">masses</span><span class="p">,</span>
+                        <span class="p">)</span>
+                        <span class="o">*</span> <span class="n">ATM_PER_EV_A3</span>
+                        <span class="k">for</span> <span class="n">s</span><span class="p">,</span> <span class="n">f</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">out</span><span class="p">[</span><span class="s2">"stress"</span><span class="p">],</span> <span class="n">out</span><span class="p">[</span><span class="s2">"forces"</span><span class="p">])</span>
+                    <span class="p">]</span>
+                <span class="p">)</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">disagreement</span><span class="p">(</span>
+            <span class="n">out</span><span class="p">[</span><span class="s2">"energy"</span><span class="p">],</span> <span class="n">out</span><span class="p">[</span><span class="s2">"forces"</span><span class="p">],</span> <span class="n">data</span><span class="o">.</span><span class="n">n_atoms</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">batch</span><span class="p">,</span> <span class="n">pressures</span>
+        <span class="p">)</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">pressures</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"energy"</span><span class="p">,</span> <span class="s2">"forces"</span><span class="p">,</span> <span class="s2">"stress"</span><span class="p">,</span> <span class="o">*</span><span class="n">pressures</span><span class="p">):</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="n">res</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+            <span class="n">res</span><span class="p">[</span><span class="sa">f</span><span class="s2">"mean_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">"</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="n">res</span><span class="p">[</span><span class="s2">"n_atoms"</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">n_atoms</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+
+
+    <span class="nd">@torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">()</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">score</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">structures</span><span class="p">,</span>
+        <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span>
+        <span class="n">molecule</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="nb">dict</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">masses</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="nb">dict</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">device</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">keys</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">"rho_energy"</span><span class="p">,</span>
+            <span class="s2">"rho_forces"</span><span class="p">,</span>
+            <span class="s2">"rho_forces_max_atom"</span><span class="p">,</span>
+            <span class="s2">"rho_pressure"</span><span class="p">,</span>
+            <span class="s2">"rho_pressure_molecular"</span><span class="p">,</span>
+            <span class="s2">"mean_energy"</span><span class="p">,</span>
+            <span class="s2">"mean_pressure"</span><span class="p">,</span>
+            <span class="s2">"mean_pressure_molecular"</span><span class="p">,</span>
+            <span class="s2">"n_atoms"</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Score many structures: per-structure spreads as numpy arrays.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        structures : AtomicDataset or list of dict</span>
+<span class="sd">            The structures; a list is wrapped in an</span>
+<span class="sd">            :class:`~xnn.common.data.AtomicDataset` at the committee's cutoff.</span>
+<span class="sd">        batch_size : int, optional</span>
+<span class="sd">            Structures per batch, by default 8.</span>
+<span class="sd">        molecule : callable, optional</span>
+<span class="sd">            ``f(structure) -&gt; (n_i,)`` molecule index per atom of one</span>
+<span class="sd">            structure, in general :func:`molecules` (or, for OHH waters only,</span>
+<span class="sd">            ``lambda s: np.arange(len(s["pos"])) // 3``). Enables the</span>
+<span class="sd">            molecular pressure spread.</span>
+<span class="sd">        masses : callable, optional</span>
+<span class="sd">            ``f(structure) -&gt; (n_i,)`` atomic masses, with ``molecule``; in</span>
+<span class="sd">            general the module's :func:`masses`.</span>
+<span class="sd">        device : torch.device or str, optional</span>
+<span class="sd">            Where the batches go; by default the first member's device.</span>
+<span class="sd">        keys : sequence of str, optional</span>
+<span class="sd">            Which entries of :meth:`disagreement` to collect: per-structure</span>
+<span class="sd">            ones by default; add ``"rho_forces_atom"`` for the per-atom spread.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict of str to ndarray</span>
+<span class="sd">            Each requested key present in the output, concatenated over the</span>
+<span class="sd">            structures in order: ``(n_structures,)`` for the per-structure</span>
+<span class="sd">            entries, ``(total atoms,)`` for ``rho_forces_atom`` (split it with</span>
+<span class="sd">            ``n_atoms``). Pressure keys are absent when no structure has a</span>
+<span class="sd">            cell, and ``nan`` for the structures of batches without one.</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">structures</span><span class="p">,</span> <span class="n">AtomicDataset</span><span class="p">):</span>
+            <span class="n">ds</span><span class="p">,</span> <span class="n">raw</span> <span class="o">=</span> <span class="n">structures</span><span class="p">,</span> <span class="n">structures</span><span class="o">.</span><span class="n">structures</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">raw</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">structures</span><span class="p">)</span>
+            <span class="n">ds</span> <span class="o">=</span> <span class="n">AtomicDataset</span><span class="p">(</span><span class="n">raw</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cutoff</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">device</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">device</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span><span class="o">.</span><span class="n">device</span>
+        <span class="n">cols</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">batches</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">start</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">ds</span><span class="p">),</span> <span class="n">batch_size</span><span class="p">):</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">start</span> <span class="o">+</span> <span class="n">batch_size</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">ds</span><span class="p">)))</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">collate</span><span class="p">([</span><span class="n">ds</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">idx</span><span class="p">])</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+            <span class="n">mol</span> <span class="o">=</span> <span class="n">mas</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">if</span> <span class="n">molecule</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">parts</span><span class="p">,</span> <span class="n">offset</span> <span class="o">=</span> <span class="p">[],</span> <span class="mi">0</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">idx</span><span class="p">:</span>
+                    <span class="n">m</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">molecule</span><span class="p">(</span><span class="n">raw</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+                    <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">m</span> <span class="o">+</span> <span class="n">offset</span><span class="p">)</span>
+                    <span class="n">offset</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">max</span><span class="p">())</span> <span class="o">+</span> <span class="mi">1</span>
+                <span class="n">mol</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">as_tensor</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">parts</span><span class="p">),</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">masses</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">mas</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">as_tensor</span><span class="p">(</span>
+                        <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span>
+                            <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">masses</span><span class="p">(</span><span class="n">raw</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">idx</span><span class="p">]</span>
+                        <span class="p">),</span>
+                        <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span>
+                    <span class="p">)</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">disagreement</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">mol</span><span class="p">,</span> <span class="n">mas</span><span class="p">)</span>
+            <span class="n">batches</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">idx</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">num_nodes</span><span class="p">)))</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">res</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">cols</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="p">{})[</span><span class="nb">len</span><span class="p">(</span><span class="n">batches</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                        <span class="n">res</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+                    <span class="p">)</span>
+        <span class="c1"># A batch without cells has no pressures; fill those structures with nan</span>
+        <span class="c1"># so every key stays aligned with the structures. (The original dropped</span>
+        <span class="c1"># them, misaligning mixed pools scored in several batches.)</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">parts</span> <span class="ow">in</span> <span class="n">cols</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">per_atom</span> <span class="o">=</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">_PER_ATOM</span>
+            <span class="n">out</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span>
+                <span class="p">[</span>
+                    <span class="n">parts</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">n_atoms</span> <span class="k">if</span> <span class="n">per_atom</span> <span class="k">else</span> <span class="n">n_structs</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">))</span>
+                    <span class="k">for</span> <span class="n">b</span><span class="p">,</span> <span class="p">(</span><span class="n">n_structs</span><span class="p">,</span> <span class="n">n_atoms</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">batches</span><span class="p">)</span>
+                <span class="p">]</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">out</span></div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.23.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

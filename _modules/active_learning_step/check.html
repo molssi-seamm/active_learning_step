@@ -1,0 +1,1482 @@
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>active_learning_step.check &#8212; SEAMM Active Learning Plug-in 2026.10.14 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=c224919a" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../../_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
+
+    <script src="../../_static/documentation_options.js?v=c92e1e03"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/active_learning_step/check';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="2026.10.14" />
+  
+    
+    <script src="../../_static/searchtools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/SEAMM logo.png" class="logo__image only-light" alt=""/>
+    <img src="../../_static/SEAMM Inverted 288x181.png" class="logo__image only-dark pst-js-only" alt=""/>
+  
+  
+    <p class="title logo__title">Active Learning</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../getting_started/index.html">
+    Getting Started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../user_guide/index.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../developer_guide/index.html">
+    Developer Documentation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/index.html">
+    API Documentation
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../authors.html">
+    Development Team
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../history.html">
+    History
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-external" href="https://molssi-seamm.github.io">
+    Main SEAMM documentation
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-external" href="https://molssi-seamm.github.io">
+    SEAMM Documentation
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-external" href="https://molssi.org">
+    MolSSI
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/molssi-seamm/geometry_analysis_step" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://twitter.com/MolSSI_NSF" title="Twitter" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-twitter fa-lg" aria-hidden="true"></i><span class="visually-hidden">Twitter</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../getting_started/index.html">
+    Getting Started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../user_guide/index.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../developer_guide/index.html">
+    Developer Documentation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/index.html">
+    API Documentation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../authors.html">
+    Development Team
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../history.html">
+    History
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://molssi-seamm.github.io">
+    Main SEAMM documentation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://molssi-seamm.github.io">
+    SEAMM Documentation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://molssi.org">
+    MolSSI
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/molssi-seamm/geometry_analysis_step" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://twitter.com/MolSSI_NSF" title="Twitter" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-twitter fa-lg" aria-hidden="true"></i><span class="visually-hidden">Twitter</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">active_learning_step.check</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for active_learning_step.check</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="sd">"""``seamm-al check``: does the committee's spread predict its real error?</span>
+
+<span class="sd">For a trained committee and labelled frames, every frame gets its committee spreads</span>
+<span class="sd">(``rho_*``, as ``seamm-al score``) and its **out-of-fold** errors, the errors of the</span>
+<span class="sd">members that never trained on it:</span>
+
+<span class="sd">* a frame held out by one member (its fold): that member's error;</span>
+<span class="sd">* a frame no member trained on (a common validation or test set): the mean of the</span>
+<span class="sd">  members' errors;</span>
+<span class="sd">* a frame every member trained on is ``trained`` and left out of the statistics.</span>
+
+<span class="sd">The errors are the force RMSE over the atoms (``err_forces``, eV/A, the RMS of the</span>
+<span class="sd">force-vector error), the energy per atom (``err_energy``, eV) and, for cells, the</span>
+<span class="sd">atomic and molecular pressures (``err_pressure``, ``err_pressure_molecular``, atm).</span>
+<span class="sd">The label's molecular pressure is computed from its stress and forces with</span>
+<span class="sd">:func:`~active_learning_step.committee.molecular_pressure`.</span>
+<span class="sd">Alongside, the worst-member errors of Smith et al.'s definition (:func:`worst_error`:</span>
+<span class="sd">``eps_energy`` per sqrt(atom), ``eps_forces``, ``eps_pressure``,</span>
+<span class="sd">``eps_pressure_molecular``) over all members, which ``--calibrate`` uses.</span>
+
+<span class="sd">The committee directory is either one made by ``seamm-al train`` (``manifest.json``</span>
+<span class="sd">and ``frames.csv``: frame ``i`` is held out by member ``fold[i]``, matched by</span>
+<span class="sd">configuration name) or one with a ``fold_manifest.json`` per member, listing tags under</span>
+<span class="sd">``held_out``, ``validation`` and ``test`` (mlff's layout). ``tag_key`` names the info</span>
+<span class="sd">key holding a frame's tag; by default its configuration name.</span>
+
+<span class="sd">Outputs: a CSV with one row per frame, and the Spearman correlations of each spread</span>
+<span class="sd">with its error, per kind, over all out-of-fold frames and over the held-out ones only.</span>
+<span class="sd">"""</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">csv</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">.pool</span><span class="w"> </span><span class="kn">import</span> <span class="n">configuration_name</span><span class="p">,</span> <span class="n">iter_frames</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"PAIRS"</span><span class="p">,</span> <span class="s2">"spearman"</span><span class="p">,</span> <span class="s2">"read_folds"</span><span class="p">,</span> <span class="s2">"check_committee"</span><span class="p">]</span>
+
+<span class="c1">#: The spread and error compared, per kind.</span>
+<span class="n">PAIRS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"cluster"</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">(</span><span class="s2">"rho_forces"</span><span class="p">,</span> <span class="s2">"err_forces"</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">"rho_forces_max_atom"</span><span class="p">,</span> <span class="s2">"err_forces"</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">"rho_energy"</span><span class="p">,</span> <span class="s2">"err_energy"</span><span class="p">),</span>
+    <span class="p">],</span>
+    <span class="s2">"cell"</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">(</span><span class="s2">"rho_forces"</span><span class="p">,</span> <span class="s2">"err_forces"</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">"rho_forces_max_atom"</span><span class="p">,</span> <span class="s2">"err_forces"</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">"rho_energy"</span><span class="p">,</span> <span class="s2">"err_energy"</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">"rho_pressure_molecular"</span><span class="p">,</span> <span class="s2">"err_pressure_molecular"</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">"rho_pressure"</span><span class="p">,</span> <span class="s2">"err_pressure"</span><span class="p">),</span>
+    <span class="p">],</span>
+<span class="p">}</span>
+
+<span class="c1">#: The worst-member error that calibrates each spread (Smith et al., fig 1).</span>
+<span class="n">EPS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"rho_energy"</span><span class="p">:</span> <span class="s2">"eps_energy"</span><span class="p">,</span>
+    <span class="s2">"rho_forces"</span><span class="p">:</span> <span class="s2">"eps_forces"</span><span class="p">,</span>
+    <span class="s2">"rho_forces_max_atom"</span><span class="p">:</span> <span class="s2">"eps_forces"</span><span class="p">,</span>
+    <span class="s2">"rho_pressure"</span><span class="p">:</span> <span class="s2">"eps_pressure"</span><span class="p">,</span>
+    <span class="s2">"rho_pressure_molecular"</span><span class="p">:</span> <span class="s2">"eps_pressure_molecular"</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">COLUMNS</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s2">"tag"</span><span class="p">,</span>
+    <span class="s2">"file"</span><span class="p">,</span>
+    <span class="s2">"index"</span><span class="p">,</span>
+    <span class="s2">"kind"</span><span class="p">,</span>
+    <span class="s2">"n_atoms"</span><span class="p">,</span>
+    <span class="s2">"role"</span><span class="p">,</span>
+    <span class="s2">"oof_members"</span><span class="p">,</span>
+    <span class="s2">"rho_energy"</span><span class="p">,</span>
+    <span class="s2">"rho_forces"</span><span class="p">,</span>
+    <span class="s2">"rho_forces_max_atom"</span><span class="p">,</span>
+    <span class="s2">"rho_pressure"</span><span class="p">,</span>
+    <span class="s2">"rho_pressure_molecular"</span><span class="p">,</span>
+    <span class="s2">"err_energy"</span><span class="p">,</span>
+    <span class="s2">"err_forces"</span><span class="p">,</span>
+    <span class="s2">"err_pressure"</span><span class="p">,</span>
+    <span class="s2">"err_pressure_molecular"</span><span class="p">,</span>
+    <span class="s2">"mean_error_pressure_molecular"</span><span class="p">,</span>
+    <span class="s2">"eps_energy"</span><span class="p">,</span>
+    <span class="s2">"eps_forces"</span><span class="p">,</span>
+    <span class="s2">"eps_pressure"</span><span class="p">,</span>
+    <span class="s2">"eps_pressure_molecular"</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_ranks</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Ranks from 1, ties given their average rank."""</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">order</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">"mergesort"</span><span class="p">)</span>
+    <span class="n">ranks</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+    <span class="n">sorted_x</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">order</span><span class="p">]</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="n">j</span> <span class="o">=</span> <span class="n">i</span>
+        <span class="k">while</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="ow">and</span> <span class="n">sorted_x</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">sorted_x</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+            <span class="n">j</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">ranks</span><span class="p">[</span><span class="n">order</span><span class="p">[</span><span class="n">i</span> <span class="p">:</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">j</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">ranks</span>
+
+
+<div class="viewcode-block" id="spearman">
+<a class="viewcode-back" href="../../api/active_learning_step.html#active_learning_step.check.spearman">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">spearman</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Spearman's rank correlation and its two-sided p-value.</span>
+
+<span class="sd">    The coefficient is the Pearson correlation of the ranks (ties averaged), as</span>
+<span class="sd">    ``scipy.stats.spearmanr``; the p-value is scipy's when scipy is there, else</span>
+<span class="sd">    from the t distribution's normal approximation.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    (float, float, int)</span>
+<span class="sd">        The coefficient, the p-value and the number of pairs (nan with fewer</span>
+<span class="sd">        than 3 finite pairs).</span>
+<span class="sd">    """</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">ok</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">ok</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">ok</span><span class="p">]</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="s2">"nan"</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="s2">"nan"</span><span class="p">),</span> <span class="n">n</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="kn">import</span> <span class="n">spearmanr</span>
+
+        <span class="n">r</span> <span class="o">=</span> <span class="n">spearmanr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">statistic</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">pvalue</span><span class="p">),</span> <span class="n">n</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="n">rx</span><span class="p">,</span> <span class="n">ry</span> <span class="o">=</span> <span class="n">_ranks</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">_ranks</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+    <span class="n">rho</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">(</span><span class="n">rx</span><span class="p">,</span> <span class="n">ry</span><span class="p">)[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+    <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">rho</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mf">1.0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">rho</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">n</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">rho</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">n</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">rho</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">rho</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">erfc</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">))),</span> <span class="n">n</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">member_dirs</span><span class="p">(</span><span class="n">directory</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""The member directories ``m&lt;k&gt;`` of a committee, in order of ``k``."""</span>
+    <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span>
+        <span class="p">(</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">Path</span><span class="p">(</span><span class="n">directory</span><span class="p">)</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">"m*"</span><span class="p">)</span> <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">is_dir</span><span class="p">()</span> <span class="ow">and</span> <span class="n">p</span><span class="o">.</span><span class="n">name</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()),</span>
+        <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">p</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">name</span><span class="p">[</span><span class="mi">1</span><span class="p">:]),</span>
+    <span class="p">)</span>
+
+
+<div class="viewcode-block" id="read_folds">
+<a class="viewcode-back" href="../../api/active_learning_step.html#active_learning_step.check.read_folds">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">read_folds</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">checkpoint</span><span class="o">=</span><span class="s2">"best.pt"</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="p">()):</span>
+<span class="w">    </span><span class="sd">"""The members of a committee and which frames each never trained on.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    directory : str</span>
+<span class="sd">        A ``seamm-al train`` directory, or one with ``m&lt;k&gt;/fold_manifest.json``.</span>
+<span class="sd">    checkpoint : str, optional</span>
+<span class="sd">        The members' checkpoint file, by default ``best.pt``.</span>
+<span class="sd">    drop : sequence of int, optional</span>
+<span class="sd">        Members to leave out (the ``k`` of ``m&lt;k&gt;``). The frames a dropped member</span>
+<span class="sd">        held out were trained on by all the others, so they become ``trained``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    (list of str, dict, str, list of int)</span>
+<span class="sd">        The kept members' checkpoints, in order; for each tag either</span>
+<span class="sd">        ``("held", [i])`` or ``("unseen", [i, ...])`` with ``i`` the position in</span>
+<span class="sd">        that list; the layout, ``"train"`` or ``"fold_manifest"``; and the kept</span>
+<span class="sd">        members' ``k``.</span>
+<span class="sd">    """</span>
+    <span class="n">directory</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">directory</span><span class="p">)</span>
+    <span class="n">every</span> <span class="o">=</span> <span class="n">member_dirs</span><span class="p">(</span><span class="n">directory</span><span class="p">)</span>
+    <span class="n">unknown</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">drop</span><span class="p">)</span> <span class="o">-</span> <span class="p">{</span><span class="nb">int</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">name</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">every</span><span class="p">})</span>
+    <span class="k">if</span> <span class="n">unknown</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"no member m</span><span class="si">{</span><span class="n">unknown</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> in </span><span class="si">{</span><span class="n">directory</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">mdirs</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">every</span> <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">name</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">drop</span><span class="p">)]</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">mdirs</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">directory</span><span class="si">}</span><span class="s2"> has fewer than two members (after dropping)"</span><span class="p">)</span>
+    <span class="n">paths</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">p</span> <span class="o">/</span> <span class="n">checkpoint</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">mdirs</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">paths</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"no checkpoint </span><span class="si">{</span><span class="n">p</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">members</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">name</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">mdirs</span><span class="p">]</span>
+    <span class="n">roles</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">directory</span> <span class="o">/</span> <span class="s2">"manifest.json"</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span> <span class="ow">and</span> <span class="p">(</span><span class="n">directory</span> <span class="o">/</span> <span class="s2">"frames.csv"</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">directory</span> <span class="o">/</span> <span class="s2">"frames.csv"</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s2">""</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">csv</span><span class="o">.</span><span class="n">DictReader</span><span class="p">(</span><span class="n">fh</span><span class="p">):</span>
+                <span class="n">fold</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">"fold"</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">fold</span> <span class="ow">in</span> <span class="n">members</span><span class="p">:</span>
+                    <span class="n">roles</span><span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="s2">"configuration"</span><span class="p">]]</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"held"</span><span class="p">,</span> <span class="p">[</span><span class="n">members</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">fold</span><span class="p">)])</span>
+        <span class="k">return</span> <span class="n">paths</span><span class="p">,</span> <span class="n">roles</span><span class="p">,</span> <span class="s2">"train"</span><span class="p">,</span> <span class="n">members</span>
+    <span class="n">manifests</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">mdirs</span><span class="p">:</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">p</span> <span class="o">/</span> <span class="s2">"fold_manifest.json"</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">directory</span><span class="si">}</span><span class="s2"> has neither manifest.json nor </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="n">manifests</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">read_text</span><span class="p">()))</span>
+    <span class="n">held</span><span class="p">,</span> <span class="n">unseen</span> <span class="o">=</span> <span class="p">{},</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">manifests</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">m</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"held_out"</span><span class="p">,</span> <span class="p">[]):</span>
+            <span class="n">held</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">tag</span><span class="p">),</span> <span class="p">[])</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"validation"</span><span class="p">,</span> <span class="p">[]))</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"test"</span><span class="p">,</span> <span class="p">[])):</span>
+            <span class="n">unseen</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">tag</span><span class="p">),</span> <span class="p">[])</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">tag</span><span class="p">,</span> <span class="n">ks</span> <span class="ow">in</span> <span class="n">unseen</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">roles</span><span class="p">[</span><span class="n">tag</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"unseen"</span><span class="p">,</span> <span class="n">ks</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">tag</span><span class="p">,</span> <span class="n">ks</span> <span class="ow">in</span> <span class="n">held</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">roles</span><span class="p">[</span><span class="n">tag</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"held"</span><span class="p">,</span> <span class="n">ks</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">paths</span><span class="p">,</span> <span class="n">roles</span><span class="p">,</span> <span class="s2">"fold_manifest"</span><span class="p">,</span> <span class="n">members</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_full_stress</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""A (3, 3) stress from a 9-vector, a Voigt 6-vector or a matrix."""</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">9</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">s</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">6</span><span class="p">:</span>
+        <span class="n">xx</span><span class="p">,</span> <span class="n">yy</span><span class="p">,</span> <span class="n">zz</span><span class="p">,</span> <span class="n">yz</span><span class="p">,</span> <span class="n">xz</span><span class="p">,</span> <span class="n">xy</span> <span class="o">=</span> <span class="n">s</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">xx</span><span class="p">,</span> <span class="n">xy</span><span class="p">,</span> <span class="n">xz</span><span class="p">],</span> <span class="p">[</span><span class="n">xy</span><span class="p">,</span> <span class="n">yy</span><span class="p">,</span> <span class="n">yz</span><span class="p">],</span> <span class="p">[</span><span class="n">xz</span><span class="p">,</span> <span class="n">yz</span><span class="p">,</span> <span class="n">zz</span><span class="p">]])</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"cannot read a stress of </span><span class="si">{</span><span class="n">s</span><span class="o">.</span><span class="n">size</span><span class="si">}</span><span class="s2"> values"</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_labels</span><span class="p">(</span><span class="n">atoms</span><span class="p">,</span> <span class="n">energy_key</span><span class="p">,</span> <span class="n">forces_key</span><span class="p">,</span> <span class="n">stress_key</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Energy, forces and stress of a labelled frame (from info / arrays / calc)."""</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="n">kind</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">"forces"</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">atoms</span><span class="o">.</span><span class="n">arrays</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">atoms</span><span class="o">.</span><span class="n">arrays</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">atoms</span><span class="o">.</span><span class="n">info</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">atoms</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">atoms</span><span class="o">.</span><span class="n">calc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">key</span> <span class="o">==</span> <span class="n">kind</span><span class="p">:</span>
+            <span class="n">getter</span> <span class="o">=</span> <span class="s2">"get_potential_energy"</span> <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">"energy"</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">"get_</span><span class="si">{</span><span class="n">kind</span><span class="si">}</span><span class="s2">"</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">atoms</span><span class="p">,</span> <span class="n">getter</span><span class="p">)()</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="n">energy</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="s2">"energy"</span><span class="p">,</span> <span class="n">energy_key</span><span class="p">)</span>
+    <span class="n">forces</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="s2">"forces"</span><span class="p">,</span> <span class="n">forces_key</span><span class="p">)</span>
+    <span class="n">stress</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="s2">"stress"</span><span class="p">,</span> <span class="n">stress_key</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="kc">None</span> <span class="k">if</span> <span class="n">energy</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">float</span><span class="p">(</span><span class="n">energy</span><span class="p">),</span>
+        <span class="n">forces</span><span class="p">,</span>
+        <span class="kc">None</span> <span class="k">if</span> <span class="n">stress</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">_full_stress</span><span class="p">(</span><span class="n">stress</span><span class="p">),</span>
+    <span class="p">)</span>
+
+
+<div class="viewcode-block" id="check_committee">
+<a class="viewcode-back" href="../../api/active_learning_step.html#active_learning_step.check.check_committee">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">check_committee</span><span class="p">(</span>
+    <span class="n">directory</span><span class="p">,</span>
+    <span class="n">data</span><span class="p">,</span>
+    <span class="n">out_csv</span><span class="o">=</span><span class="s2">"check.csv"</span><span class="p">,</span>
+    <span class="n">tag_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">energy_key</span><span class="o">=</span><span class="s2">"REF_energy"</span><span class="p">,</span>
+    <span class="n">forces_key</span><span class="o">=</span><span class="s2">"REF_forces"</span><span class="p">,</span>
+    <span class="n">stress_key</span><span class="o">=</span><span class="s2">"REF_stress"</span><span class="p">,</span>
+    <span class="n">dispersion</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">device</span><span class="o">=</span><span class="s2">"cpu"</span><span class="p">,</span>
+    <span class="n">dtype</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">checkpoint</span><span class="o">=</span><span class="s2">"best.pt"</span><span class="p">,</span>
+    <span class="n">calibrate</span><span class="o">=</span><span class="p">(),</span>
+    <span class="n">summary_json</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">drop</span><span class="o">=</span><span class="p">(),</span>
+    <span class="n">flag_factor</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span>
+    <span class="n">members_csv</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">threads</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Spreads against out-of-fold errors for every labelled frame.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    directory : str</span>
+<span class="sd">        The committee directory (see the module docstring).</span>
+<span class="sd">    data : sequence of str</span>
+<span class="sd">        Labelled extxyz files.</span>
+<span class="sd">    out_csv : str, optional</span>
+<span class="sd">        The per-frame CSV.</span>
+<span class="sd">    tag_key : str, optional</span>
+<span class="sd">        The info key holding a frame's tag; by default its configuration name.</span>
+<span class="sd">    energy_key, forces_key, stress_key : str, optional</span>
+<span class="sd">        Where the labels are (info / arrays); by default ``REF_*``.</span>
+<span class="sd">    dispersion : bool, optional</span>
+<span class="sd">        Add the checkpoints' recorded dispersion (for labels that include it); by</span>
+<span class="sd">        default ``False``, for labels with the dispersion removed.</span>
+<span class="sd">    device, dtype : optional</span>
+<span class="sd">        As in ``seamm-al score``.</span>
+<span class="sd">    checkpoint : str, optional</span>
+<span class="sd">        The members' checkpoint, by default ``best.pt``.</span>
+<span class="sd">    calibrate : sequence of str, optional</span>
+<span class="sd">        ``NAME:FAIL_LEVEL[:CAPTURE]`` with NAME a spread, e.g.</span>
+<span class="sd">        ``rho_forces:0.15`` (eV/A) or ``rho_pressure_molecular:500:0.9`` (atm).</span>
+<span class="sd">    summary_json : str, optional</span>
+<span class="sd">        Also write the correlations and calibrations here.</span>
+<span class="sd">    drop : sequence of int, optional</span>
+<span class="sd">        Members to leave out of the committee (the ``k`` of ``m&lt;k&gt;``).</span>
+<span class="sd">    flag_factor : float, optional</span>
+<span class="sd">        Flag a member whose loss or error is more than this times the median of</span>
+<span class="sd">        the others', by default 1.5.</span>
+<span class="sd">    threads : int, optional</span>
+<span class="sd">        CPU threads for torch (:func:`~active_learning_step.threads.set_threads`).</span>
+<span class="sd">    members_csv : str, optional</span>
+<span class="sd">        The member-health table; by default next to ``out_csv``</span>
+<span class="sd">        (``&lt;stem&gt;_members.csv``).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    (list of dict, dict)</span>
+<span class="sd">        The per-frame rows and the summary.</span>
+<span class="sd">    """</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">xnn.common.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">collate</span><span class="p">,</span> <span class="n">structure_to_graph</span>
+
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.committee</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+        <span class="n">ATM_PER_EV_A3</span><span class="p">,</span>
+        <span class="n">Committee</span><span class="p">,</span>
+        <span class="n">molecular_pressure</span><span class="p">,</span>
+        <span class="n">pressure</span><span class="p">,</span>
+        <span class="n">structure_from_atoms</span><span class="p">,</span>
+        <span class="n">worst_error</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.molecules</span><span class="w"> </span><span class="kn">import</span> <span class="n">masses</span><span class="p">,</span> <span class="n">molecules</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.thresholds</span><span class="w"> </span><span class="kn">import</span> <span class="n">calibrate_threshold</span><span class="p">,</span> <span class="n">split_statistics</span>
+
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.threads</span><span class="w"> </span><span class="kn">import</span> <span class="n">set_threads</span>
+
+    <span class="n">set_threads</span><span class="p">(</span><span class="n">threads</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dtype</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">dtype</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">torch</span><span class="p">,</span> <span class="n">dtype</span><span class="p">)</span>
+    <span class="n">paths</span><span class="p">,</span> <span class="n">roles</span><span class="p">,</span> <span class="n">layout</span><span class="p">,</span> <span class="n">names</span> <span class="o">=</span> <span class="n">read_folds</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">checkpoint</span><span class="p">,</span> <span class="n">drop</span><span class="p">)</span>
+    <span class="n">com</span> <span class="o">=</span> <span class="n">Committee</span><span class="o">.</span><span class="n">from_checkpoints</span><span class="p">(</span>
+        <span class="n">paths</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">,</span> <span class="n">dispersion</span><span class="o">=</span><span class="kc">None</span> <span class="k">if</span> <span class="n">dispersion</span> <span class="k">else</span> <span class="kc">False</span>
+    <span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">com</span><span class="o">.</span><span class="n">size</span><span class="si">}</span><span class="s2"> members (</span><span class="si">{</span><span class="n">layout</span><span class="si">}</span><span class="s2"> layout), </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">roles</span><span class="p">)</span><span class="si">}</span><span class="s2"> tags with folds"</span><span class="p">)</span>
+    <span class="n">L</span> <span class="o">=</span> <span class="n">com</span><span class="o">.</span><span class="n">size</span>
+
+    <span class="n">rows</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+        <span class="n">fname</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">())</span>
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">atoms</span> <span class="ow">in</span> <span class="n">iter_frames</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+            <span class="n">tag</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">configuration_name</span><span class="p">(</span><span class="n">atoms</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">tag_key</span> <span class="ow">is</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="nb">str</span><span class="p">(</span><span class="n">atoms</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">tag_key</span><span class="p">,</span> <span class="s2">""</span><span class="p">))</span>
+            <span class="p">)</span>
+            <span class="n">role</span><span class="p">,</span> <span class="n">oof</span> <span class="o">=</span> <span class="n">roles</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="p">(</span><span class="s2">"trained"</span><span class="p">,</span> <span class="p">[]))</span>
+            <span class="n">e_ref</span><span class="p">,</span> <span class="n">f_ref</span><span class="p">,</span> <span class="n">s_ref</span> <span class="o">=</span> <span class="n">_labels</span><span class="p">(</span><span class="n">atoms</span><span class="p">,</span> <span class="n">energy_key</span><span class="p">,</span> <span class="n">forces_key</span><span class="p">,</span> <span class="n">stress_key</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">f_ref</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"frame </span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s2"> of </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2"> has no </span><span class="si">{</span><span class="n">forces_key</span><span class="si">!r}</span><span class="s2">"</span><span class="p">)</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="n">structure_from_atoms</span><span class="p">(</span><span class="n">atoms</span><span class="p">)</span>
+            <span class="n">periodic</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="s2">"cell"</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">atoms</span><span class="p">)</span>
+            <span class="n">g</span> <span class="o">=</span> <span class="n">collate</span><span class="p">([</span><span class="n">structure_to_graph</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">com</span><span class="o">.</span><span class="n">cutoff</span><span class="p">)])</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+            <span class="n">lab</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">pos</span><span class="o">.</span><span class="n">dtype</span>  <span class="c1"># the labels' tensors in the graph's dtype</span>
+            <span class="n">mol</span> <span class="o">=</span> <span class="n">mas</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">if</span> <span class="n">periodic</span><span class="p">:</span>
+                <span class="n">mol</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">as_tensor</span><span class="p">(</span><span class="n">molecules</span><span class="p">(</span><span class="n">s</span><span class="p">),</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
+                <span class="n">mas</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">as_tensor</span><span class="p">(</span><span class="n">masses</span><span class="p">(</span><span class="n">s</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">lab</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="n">com</span><span class="o">.</span><span class="n">disagreement</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">mol</span><span class="p">,</span> <span class="n">mas</span><span class="p">)</span>
+            <span class="n">F</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="s2">"forces"</span><span class="p">]</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">double</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span>  <span class="c1"># (L, N, 3)</span>
+            <span class="n">fr</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">as_tensor</span><span class="p">(</span><span class="n">f_ref</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+            <span class="n">per_member_f</span> <span class="o">=</span> <span class="p">((</span><span class="n">F</span> <span class="o">-</span> <span class="n">fr</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()</span>  <span class="c1"># (L,)</span>
+            <span class="n">row</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">"tag"</span><span class="p">:</span> <span class="n">tag</span><span class="p">,</span>
+                <span class="s2">"file"</span><span class="p">:</span> <span class="n">fname</span><span class="p">,</span>
+                <span class="s2">"index"</span><span class="p">:</span> <span class="n">index</span><span class="p">,</span>
+                <span class="s2">"kind"</span><span class="p">:</span> <span class="s2">"cell"</span> <span class="k">if</span> <span class="n">periodic</span> <span class="k">else</span> <span class="s2">"cluster"</span><span class="p">,</span>
+                <span class="s2">"n_atoms"</span><span class="p">:</span> <span class="n">n</span><span class="p">,</span>
+                <span class="s2">"role"</span><span class="p">:</span> <span class="n">role</span><span class="p">,</span>
+                <span class="s2">"oof_members"</span><span class="p">:</span> <span class="s2">";"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">oof</span><span class="p">),</span>
+                <span class="s2">"rho_energy"</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s2">"rho_energy"</span><span class="p">][</span><span class="mi">0</span><span class="p">]),</span>
+                <span class="s2">"rho_forces"</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s2">"rho_forces"</span><span class="p">][</span><span class="mi">0</span><span class="p">]),</span>
+                <span class="s2">"rho_forces_max_atom"</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s2">"rho_forces_max_atom"</span><span class="p">][</span><span class="mi">0</span><span class="p">]),</span>
+            <span class="p">}</span>
+            <span class="n">E</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="s2">"energy"</span><span class="p">]</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">double</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()[:,</span> <span class="mi">0</span><span class="p">]</span>  <span class="c1"># (L,)</span>
+            <span class="k">if</span> <span class="n">e_ref</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">per_member_e</span> <span class="o">=</span> <span class="p">(</span><span class="n">E</span> <span class="o">-</span> <span class="n">e_ref</span><span class="p">)</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span> <span class="o">/</span> <span class="n">n</span>
+            <span class="n">eps</span> <span class="o">=</span> <span class="n">worst_error</span><span class="p">(</span>
+                <span class="n">r</span><span class="p">[</span><span class="s2">"energy"</span><span class="p">]</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">double</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">(),</span>
+                <span class="n">F</span><span class="p">,</span>
+                <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="n">n</span><span class="p">]),</span>
+                <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">long</span><span class="p">),</span>
+                <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="n">e_ref</span> <span class="k">if</span> <span class="n">e_ref</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">float</span><span class="p">(</span><span class="s2">"nan"</span><span class="p">)]),</span>
+                <span class="n">fr</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">e_ref</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">row</span><span class="p">[</span><span class="s2">"eps_energy"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">eps</span><span class="p">[</span><span class="s2">"eps_energy"</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">row</span><span class="p">[</span><span class="s2">"eps_forces"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">eps</span><span class="p">[</span><span class="s2">"eps_forces"</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">periodic</span> <span class="ow">and</span> <span class="n">r</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"pressure"</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">row</span><span class="p">[</span><span class="s2">"rho_pressure"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s2">"rho_pressure"</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+                <span class="n">row</span><span class="p">[</span><span class="s2">"rho_pressure_molecular"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s2">"rho_pressure_molecular"</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+                <span class="n">P</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="s2">"pressure"</span><span class="p">]</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">double</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()[:,</span> <span class="mi">0</span><span class="p">]</span>
+                <span class="n">Pm</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="s2">"pressure_molecular"</span><span class="p">]</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">double</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()[:,</span> <span class="mi">0</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">s_ref</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">st</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">as_tensor</span><span class="p">(</span><span class="n">s_ref</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">lab</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)[</span><span class="kc">None</span><span class="p">]</span>
+                    <span class="n">p_ref</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">pressure</span><span class="p">(</span><span class="n">st</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="n">ATM_PER_EV_A3</span>
+                    <span class="n">pm_ref</span> <span class="o">=</span> <span class="p">(</span>
+                        <span class="nb">float</span><span class="p">(</span>
+                            <span class="n">molecular_pressure</span><span class="p">(</span>
+                                <span class="n">st</span><span class="p">,</span>
+                                <span class="n">g</span><span class="o">.</span><span class="n">pos</span><span class="o">.</span><span class="n">detach</span><span class="p">(),</span>
+                                <span class="n">torch</span><span class="o">.</span><span class="n">as_tensor</span><span class="p">(</span><span class="n">f_ref</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">lab</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">),</span>
+                                <span class="n">g</span><span class="o">.</span><span class="n">cell</span><span class="o">.</span><span class="n">detach</span><span class="p">(),</span>
+                                <span class="n">g</span><span class="o">.</span><span class="n">batch</span><span class="p">,</span>
+                                <span class="n">mol</span><span class="p">,</span>
+                                <span class="n">g</span><span class="o">.</span><span class="n">pbc</span><span class="p">,</span>
+                                <span class="n">mas</span><span class="p">,</span>
+                            <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                        <span class="p">)</span>
+                        <span class="o">*</span> <span class="n">ATM_PER_EV_A3</span>
+                    <span class="p">)</span>
+                    <span class="n">row</span><span class="p">[</span><span class="s2">"eps_pressure"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">((</span><span class="n">P</span> <span class="o">-</span> <span class="n">p_ref</span><span class="p">)</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+                    <span class="n">row</span><span class="p">[</span><span class="s2">"eps_pressure_molecular"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">((</span><span class="n">Pm</span> <span class="o">-</span> <span class="n">pm_ref</span><span class="p">)</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+                    <span class="n">row</span><span class="p">[</span><span class="s2">"mean_error_pressure_molecular"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">Pm</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span> <span class="o">-</span> <span class="n">pm_ref</span>
+            <span class="n">member</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"err_forces"</span><span class="p">:</span> <span class="n">per_member_f</span><span class="o">.</span><span class="n">numpy</span><span class="p">()}</span>
+            <span class="k">if</span> <span class="n">e_ref</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">member</span><span class="p">[</span><span class="s2">"err_energy"</span><span class="p">]</span> <span class="o">=</span> <span class="n">per_member_e</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+            <span class="n">P_</span> <span class="o">=</span> <span class="n">Pm_</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">if</span> <span class="n">periodic</span> <span class="ow">and</span> <span class="n">r</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"pressure"</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">P_</span><span class="p">,</span> <span class="n">Pm_</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">Pm</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">s_ref</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">member</span><span class="p">[</span><span class="s2">"err_pressure"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">P_</span> <span class="o">-</span> <span class="n">p_ref</span><span class="p">)</span>
+                    <span class="n">member</span><span class="p">[</span><span class="s2">"err_pressure_molecular"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">Pm_</span> <span class="o">-</span> <span class="n">pm_ref</span><span class="p">)</span>
+            <span class="n">row</span><span class="p">[</span><span class="s2">"_member"</span><span class="p">]</span> <span class="o">=</span> <span class="n">member</span>
+            <span class="k">if</span> <span class="n">L</span> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">:</span>
+                <span class="n">row</span><span class="p">[</span><span class="s2">"_loo"</span><span class="p">]</span> <span class="o">=</span> <span class="n">_leave_one_out</span><span class="p">(</span><span class="n">E</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">F</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">n</span><span class="p">,</span> <span class="n">P_</span><span class="p">,</span> <span class="n">Pm_</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">oof</span><span class="p">:</span>
+                <span class="n">ks</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">oof</span><span class="p">)</span>
+                <span class="n">row</span><span class="p">[</span><span class="s2">"err_forces"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">per_member_f</span><span class="p">[</span><span class="n">ks</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+                <span class="k">if</span> <span class="n">e_ref</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">row</span><span class="p">[</span><span class="s2">"err_energy"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">per_member_e</span><span class="p">[</span><span class="n">ks</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+                <span class="k">if</span> <span class="n">periodic</span> <span class="ow">and</span> <span class="n">s_ref</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">r</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"pressure"</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">row</span><span class="p">[</span><span class="s2">"err_pressure"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">((</span><span class="n">P</span><span class="p">[</span><span class="n">ks</span><span class="p">]</span> <span class="o">-</span> <span class="n">p_ref</span><span class="p">)</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+                    <span class="n">row</span><span class="p">[</span><span class="s2">"err_pressure_molecular"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span>
+                        <span class="p">(</span><span class="n">Pm</span><span class="p">[</span><span class="n">ks</span><span class="p">]</span> <span class="o">-</span> <span class="n">pm_ref</span><span class="p">)</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+                    <span class="p">)</span>
+            <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">fname</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span><span class="si">}</span><span class="s2"> frames checked"</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">out_csv</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s2">""</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
+        <span class="n">writer</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">DictWriter</span><span class="p">(</span><span class="n">fh</span><span class="p">,</span> <span class="n">fieldnames</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">COLUMNS</span><span class="p">))</span>
+        <span class="n">writer</span><span class="o">.</span><span class="n">writeheader</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">:</span>
+            <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">({</span><span class="n">c</span><span class="p">:</span> <span class="n">_cell</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">c</span><span class="p">))</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">COLUMNS</span><span class="p">})</span>
+
+    <span class="n">summary</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">"members"</span><span class="p">:</span> <span class="n">paths</span><span class="p">,</span>
+        <span class="s2">"member_numbers"</span><span class="p">:</span> <span class="n">names</span><span class="p">,</span>
+        <span class="s2">"dropped"</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">drop</span><span class="p">),</span>
+        <span class="s2">"layout"</span><span class="p">:</span> <span class="n">layout</span><span class="p">,</span>
+        <span class="s2">"roles"</span><span class="p">:</span> <span class="p">{},</span>
+        <span class="s2">"spearman"</span><span class="p">:</span> <span class="p">{},</span>
+    <span class="p">}</span>
+    <span class="n">health</span> <span class="o">=</span> <span class="n">member_health</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">rows</span><span class="p">,</span> <span class="n">flag_factor</span><span class="p">)</span>
+    <span class="n">summary</span><span class="p">[</span><span class="s2">"member_health"</span><span class="p">]</span> <span class="o">=</span> <span class="n">health</span>
+    <span class="k">if</span> <span class="n">members_csv</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">members_csv</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">out_csv</span><span class="p">)</span><span class="o">.</span><span class="n">with_name</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">out_csv</span><span class="p">)</span><span class="o">.</span><span class="n">stem</span> <span class="o">+</span> <span class="s2">"_members.csv"</span><span class="p">))</span>
+    <span class="n">_write_health</span><span class="p">(</span><span class="n">members_csv</span><span class="p">,</span> <span class="n">health</span><span class="p">)</span>
+    <span class="n">summary</span><span class="p">[</span><span class="s2">"members_csv"</span><span class="p">]</span> <span class="o">=</span> <span class="n">members_csv</span>
+    <span class="k">for</span> <span class="n">role</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"held"</span><span class="p">,</span> <span class="s2">"unseen"</span><span class="p">,</span> <span class="s2">"trained"</span><span class="p">):</span>
+        <span class="n">summary</span><span class="p">[</span><span class="s2">"roles"</span><span class="p">][</span><span class="n">role</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">rows</span> <span class="k">if</span> <span class="n">r</span><span class="p">[</span><span class="s2">"role"</span><span class="p">]</span> <span class="o">==</span> <span class="n">role</span><span class="p">)</span>
+    <span class="n">unmatched</span> <span class="o">=</span> <span class="n">summary</span><span class="p">[</span><span class="s2">"roles"</span><span class="p">][</span><span class="s2">"trained"</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">unmatched</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">rows</span><span class="p">):</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+            <span class="s2">"no frame matched a fold: is the tag key right (--tag-key)? "</span>
+            <span class="sa">f</span><span class="s2">"first tag </span><span class="si">{</span><span class="n">rows</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">'tag'</span><span class="p">]</span><span class="si">!r}</span><span class="s2">"</span>
+            <span class="k">if</span> <span class="n">rows</span>
+            <span class="k">else</span> <span class="s2">"no frames"</span>
+        <span class="p">)</span>
+    <span class="k">for</span> <span class="n">kind</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"cluster"</span><span class="p">,</span> <span class="s2">"cell"</span><span class="p">):</span>
+        <span class="n">these</span> <span class="o">=</span> <span class="p">[</span><span class="n">r</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">rows</span> <span class="k">if</span> <span class="n">r</span><span class="p">[</span><span class="s2">"kind"</span><span class="p">]</span> <span class="o">==</span> <span class="n">kind</span> <span class="ow">and</span> <span class="n">r</span><span class="p">[</span><span class="s2">"role"</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">"trained"</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">these</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="k">for</span> <span class="n">subset</span><span class="p">,</span> <span class="n">sel</span> <span class="ow">in</span> <span class="p">(</span>
+            <span class="p">(</span><span class="s2">"all"</span><span class="p">,</span> <span class="n">these</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">"held"</span><span class="p">,</span> <span class="p">[</span><span class="n">r</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">these</span> <span class="k">if</span> <span class="n">r</span><span class="p">[</span><span class="s2">"role"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"held"</span><span class="p">]),</span>
+        <span class="p">):</span>
+            <span class="k">for</span> <span class="n">rho</span><span class="p">,</span> <span class="n">err</span> <span class="ow">in</span> <span class="n">PAIRS</span><span class="p">[</span><span class="n">kind</span><span class="p">]:</span>
+                <span class="n">c</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">spearman</span><span class="p">(</span>
+                    <span class="p">[</span><span class="n">r</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">rho</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">sel</span><span class="p">],</span> <span class="p">[</span><span class="n">r</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">err</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">sel</span><span class="p">]</span>
+                <span class="p">)</span>
+                <span class="n">summary</span><span class="p">[</span><span class="s2">"spearman"</span><span class="p">][</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">kind</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">subset</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">rho</span><span class="si">}</span><span class="s2">~</span><span class="si">{</span><span class="n">err</span><span class="si">}</span><span class="s2">"</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="s2">"rho"</span><span class="p">:</span> <span class="n">c</span><span class="p">,</span>
+                    <span class="s2">"p"</span><span class="p">:</span> <span class="n">p</span><span class="p">,</span>
+                    <span class="s2">"n"</span><span class="p">:</span> <span class="n">n</span><span class="p">,</span>
+                <span class="p">}</span>
+
+    <span class="n">summary</span><span class="p">[</span><span class="s2">"calibration"</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">spec</span> <span class="ow">in</span> <span class="n">calibrate</span><span class="p">:</span>
+        <span class="n">parts</span> <span class="o">=</span> <span class="n">spec</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">":"</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"--calibrate needs NAME:FAIL_LEVEL[:CAPTURE], not </span><span class="si">{</span><span class="n">spec</span><span class="si">!r}</span><span class="s2">"</span>
+            <span class="p">)</span>
+        <span class="n">name</span><span class="p">,</span> <span class="n">fail</span> <span class="o">=</span> <span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">float</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">capture</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span> <span class="k">else</span> <span class="mf">0.98</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">EPS</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"cannot calibrate </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">; one of </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">EPS</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">kind</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"cluster"</span><span class="p">,</span> <span class="s2">"cell"</span><span class="p">):</span>
+            <span class="n">these</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">r</span>
+                <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">rows</span>
+                <span class="k">if</span> <span class="n">r</span><span class="p">[</span><span class="s2">"kind"</span><span class="p">]</span> <span class="o">==</span> <span class="n">kind</span>
+                <span class="ow">and</span> <span class="n">r</span><span class="p">[</span><span class="s2">"role"</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">"trained"</span>
+                <span class="ow">and</span> <span class="n">r</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="ow">and</span> <span class="n">r</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">EPS</span><span class="p">[</span><span class="n">name</span><span class="p">])</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="p">]</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">these</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">rho</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">r</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">these</span><span class="p">])</span>
+            <span class="n">eps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">r</span><span class="p">[</span><span class="n">EPS</span><span class="p">[</span><span class="n">name</span><span class="p">]]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">these</span><span class="p">])</span>
+            <span class="n">n_fail</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">eps</span> <span class="o">&gt;</span> <span class="n">fail</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+            <span class="n">entry</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">"fail_level"</span><span class="p">:</span> <span class="n">fail</span><span class="p">,</span>
+                <span class="s2">"capture"</span><span class="p">:</span> <span class="n">capture</span><span class="p">,</span>
+                <span class="s2">"error"</span><span class="p">:</span> <span class="n">EPS</span><span class="p">[</span><span class="n">name</span><span class="p">],</span>
+                <span class="s2">"n"</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">these</span><span class="p">),</span>
+                <span class="s2">"n_fail"</span><span class="p">:</span> <span class="n">n_fail</span><span class="p">,</span>
+            <span class="p">}</span>
+            <span class="k">if</span> <span class="n">n_fail</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">entry</span><span class="p">[</span><span class="s2">"threshold"</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="n">entry</span><span class="p">[</span><span class="s2">"warning"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"no frame fails; nothing to calibrate"</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">thr</span> <span class="o">=</span> <span class="n">calibrate_threshold</span><span class="p">(</span><span class="n">rho</span><span class="p">,</span> <span class="n">eps</span><span class="p">,</span> <span class="n">fail</span><span class="p">,</span> <span class="n">capture</span><span class="p">)</span>
+                <span class="n">entry</span><span class="p">[</span><span class="s2">"threshold"</span><span class="p">]</span> <span class="o">=</span> <span class="n">thr</span>
+                <span class="n">entry</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">split_statistics</span><span class="p">(</span><span class="n">rho</span><span class="p">,</span> <span class="n">eps</span><span class="p">,</span> <span class="n">thr</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">n_fail</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">:</span>
+                    <span class="n">entry</span><span class="p">[</span><span class="s2">"warning"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">"only </span><span class="si">{</span><span class="n">n_fail</span><span class="si">}</span><span class="s2"> failures: the threshold is not to be trusted"</span>
+                    <span class="p">)</span>
+            <span class="n">summary</span><span class="p">[</span><span class="s2">"calibration"</span><span class="p">][</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">kind</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">"</span><span class="p">]</span> <span class="o">=</span> <span class="n">entry</span>
+    <span class="k">if</span> <span class="n">summary_json</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">Path</span><span class="p">(</span><span class="n">summary_json</span><span class="p">)</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">summary</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">rows</span><span class="p">,</span> <span class="n">summary</span></div>
+
+
+
+<span class="c1">#: The spreads compared with and without each member.</span>
+<span class="n">LOO_RHOS</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s2">"rho_energy"</span><span class="p">,</span>
+    <span class="s2">"rho_forces"</span><span class="p">,</span>
+    <span class="s2">"rho_forces_max_atom"</span><span class="p">,</span>
+    <span class="s2">"rho_pressure"</span><span class="p">,</span>
+    <span class="s2">"rho_pressure_molecular"</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_spreads</span><span class="p">(</span><span class="n">E</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">P</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">Pm</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""The committee spreads of one frame from the members' predictions (numpy)."""</span>
+    <span class="n">sd_atom</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>  <span class="c1"># (N,)</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">"rho_energy"</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">E</span><span class="o">.</span><span class="n">std</span><span class="p">()</span> <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">n</span><span class="p">)),</span>
+        <span class="s2">"rho_forces"</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">sd_atom</span><span class="o">**</span><span class="mi">2</span><span class="p">))),</span>
+        <span class="s2">"rho_forces_max_atom"</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">sd_atom</span><span class="o">.</span><span class="n">max</span><span class="p">()),</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="n">P</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">out</span><span class="p">[</span><span class="s2">"rho_pressure"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">P</span><span class="o">.</span><span class="n">std</span><span class="p">())</span>
+        <span class="n">out</span><span class="p">[</span><span class="s2">"rho_pressure_molecular"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">Pm</span><span class="o">.</span><span class="n">std</span><span class="p">())</span>
+    <span class="k">return</span> <span class="n">out</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_leave_one_out</span><span class="p">(</span><span class="n">E</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">P</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">Pm</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""For each member, the ratio of each spread with it to the spread without it."""</span>
+    <span class="n">full</span> <span class="o">=</span> <span class="n">_spreads</span><span class="p">(</span><span class="n">E</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="n">Pm</span><span class="p">)</span>
+    <span class="n">L</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">E</span><span class="p">)</span>
+    <span class="n">ratios</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">full</span><span class="p">}</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">L</span><span class="p">):</span>
+        <span class="n">keep</span> <span class="o">=</span> <span class="p">[</span><span class="n">j</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">L</span><span class="p">)</span> <span class="k">if</span> <span class="n">j</span> <span class="o">!=</span> <span class="n">k</span><span class="p">]</span>
+        <span class="n">part</span> <span class="o">=</span> <span class="n">_spreads</span><span class="p">(</span>
+            <span class="n">E</span><span class="p">[</span><span class="n">keep</span><span class="p">],</span>
+            <span class="n">F</span><span class="p">[</span><span class="n">keep</span><span class="p">],</span>
+            <span class="n">n</span><span class="p">,</span>
+            <span class="kc">None</span> <span class="k">if</span> <span class="n">P</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">P</span><span class="p">[</span><span class="n">keep</span><span class="p">],</span>
+            <span class="kc">None</span> <span class="k">if</span> <span class="n">Pm</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">Pm</span><span class="p">[</span><span class="n">keep</span><span class="p">],</span>
+        <span class="p">)</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">full</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">part</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">ratios</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span> <span class="o">/</span> <span class="n">part</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">ratios</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">val_history</span><span class="p">(</span><span class="n">mdir</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""A member's validation losses per epoch and the file they came from.</span>
+
+<span class="sd">    Reads ``history.json`` (``seamm-al train``'s, with ``val`` a list of metric</span>
+<span class="sd">    dicts, or a list of numbers as other trainers write), failing that any</span>
+<span class="sd">    ``*history*.json`` in the member directory, and failing that xnn 0.13's</span>
+<span class="sd">    ``metrics.csv`` (``val/loss`` per epoch).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    (list of float, str or None)</span>
+<span class="sd">        The losses (empty when none is found) and the file read.</span>
+<span class="sd">    """</span>
+    <span class="n">mdir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">mdir</span><span class="p">)</span>
+    <span class="n">candidates</span> <span class="o">=</span> <span class="p">[</span><span class="n">mdir</span> <span class="o">/</span> <span class="s2">"history.json"</span><span class="p">]</span> <span class="o">+</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">mdir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">"*history*.json"</span><span class="p">))</span>
+    <span class="n">candidates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mdir</span> <span class="o">/</span> <span class="s2">"metrics.csv"</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">candidates</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s2">".csv"</span><span class="p">:</span>
+            <span class="n">losses</span> <span class="o">=</span> <span class="n">_csv_val_losses</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">losses</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">losses</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+            <span class="k">continue</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">hist</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">read_text</span><span class="p">())</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">OSError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
+            <span class="k">continue</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="n">hist</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"val"</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">hist</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">val</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="n">losses</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">val</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="n">v</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"loss"</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">v</span><span class="p">)):</span>
+                <span class="n">losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">losses</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">losses</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">[],</span> <span class="kc">None</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_csv_val_losses</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Validation losses per epoch from xnn's CSV logger (``metrics.csv``).</span>
+
+<span class="sd">    xnn 0.13's :class:`~xnn.common.train.loggers.CSVLogger` writes a row per log</span>
+<span class="sd">    call, with ``epoch`` and ``val/loss`` on validation epochs (rows of training</span>
+<span class="sd">    steps have neither). The last row of each epoch is kept.</span>
+<span class="sd">    """</span>
+    <span class="n">by_epoch</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s2">""</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">csv</span><span class="o">.</span><span class="n">DictReader</span><span class="p">(</span><span class="n">fh</span><span class="p">):</span>
+                <span class="n">value</span><span class="p">,</span> <span class="n">epoch</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"val/loss"</span><span class="p">),</span> <span class="n">row</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"epoch"</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">value</span> <span class="ow">in</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span> <span class="ow">or</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="s2">""</span><span class="p">):</span>
+                    <span class="k">continue</span>
+                <span class="n">v</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+                    <span class="n">by_epoch</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">epoch</span><span class="p">))]</span> <span class="o">=</span> <span class="n">v</span>
+    <span class="k">except</span> <span class="p">(</span><span class="ne">OSError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[]</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">by_epoch</span><span class="p">[</span><span class="n">e</span><span class="p">]</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">by_epoch</span><span class="p">)]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">member_losses</span><span class="p">(</span><span class="n">mdir</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""A member's final and best validation loss, from its history if there is one.</span>
+
+<span class="sd">    Reads ``history.json`` (``seamm-al train``'s, with ``val`` a list of metric</span>
+<span class="sd">    dicts, or a list of numbers as other trainers write) or, failing that, any</span>
+<span class="sd">    ``*history*.json`` in the member directory.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    (float or None, float or None, str or None, int or None)</span>
+<span class="sd">        The final and the best validation loss, the file read, and the epoch of</span>
+<span class="sd">        convergence: the first from which the loss stays within</span>
+<span class="sd">        :data:`CONVERGED_WITHIN` times its best.</span>
+<span class="sd">    """</span>
+    <span class="n">losses</span><span class="p">,</span> <span class="n">source</span> <span class="o">=</span> <span class="n">val_history</span><span class="p">(</span><span class="n">mdir</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">losses</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+    <span class="n">limit</span> <span class="o">=</span> <span class="n">CONVERGED_WITHIN</span> <span class="o">*</span> <span class="nb">min</span><span class="p">(</span><span class="n">losses</span><span class="p">)</span>
+    <span class="n">converged</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">losses</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="k">while</span> <span class="n">converged</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">losses</span><span class="p">[</span><span class="n">converged</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">limit</span><span class="p">:</span>
+        <span class="n">converged</span> <span class="o">-=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">losses</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="nb">min</span><span class="p">(</span><span class="n">losses</span><span class="p">),</span> <span class="n">source</span><span class="p">,</span> <span class="n">converged</span>
+
+
+<span class="c1">#: Validation losses are smoothed with a running median over this many epochs</span>
+<span class="c1">#: before members are compared, so single-epoch spikes do not count.</span>
+<span class="n">LAG_WINDOW</span> <span class="o">=</span> <span class="mi">9</span>
+
+<span class="c1">#: A member trailing the others for at least this many (smoothed) epochs is noted.</span>
+<span class="n">LAG_MIN_EPOCHS</span> <span class="o">=</span> <span class="mi">5</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_running_median</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">window</span><span class="o">=</span><span class="n">LAG_WINDOW</span><span class="p">):</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="n">window</span> <span class="o">//</span> <span class="mi">2</span>
+    <span class="k">return</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">k</span> <span class="o">-</span> <span class="n">h</span><span class="p">)</span> <span class="p">:</span> <span class="n">k</span> <span class="o">+</span> <span class="n">h</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]))</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">))]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">lag</span><span class="p">(</span><span class="n">histories</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">factor</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""How long member ``i`` trailed the others, epoch by epoch.</span>
+
+<span class="sd">    Each history is smoothed with a running median over :data:`LAG_WINDOW`</span>
+<span class="sd">    epochs; at each epoch the member's smoothed validation loss is compared with</span>
+<span class="sd">    the median of the others' at the same epoch.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    (tuple or None, float or None)</span>
+<span class="sd">        The longest stretch of epochs ``(first, last)`` with the member above</span>
+<span class="sd">        ``factor`` times the others (``None`` if none), and the largest ratio.</span>
+<span class="sd">    """</span>
+    <span class="n">mine</span> <span class="o">=</span> <span class="n">_running_median</span><span class="p">(</span><span class="n">histories</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">if</span> <span class="n">histories</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">else</span> <span class="p">[]</span>
+    <span class="n">others</span> <span class="o">=</span> <span class="p">[</span><span class="n">_running_median</span><span class="p">(</span><span class="n">h</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">h</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">histories</span><span class="p">)</span> <span class="k">if</span> <span class="n">j</span> <span class="o">!=</span> <span class="n">i</span> <span class="ow">and</span> <span class="n">h</span><span class="p">]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">mine</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">others</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+    <span class="n">best</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">peak</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mf">0.0</span>
+    <span class="k">for</span> <span class="n">epoch</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">mine</span><span class="p">):</span>
+        <span class="n">at</span> <span class="o">=</span> <span class="p">[</span><span class="n">h</span><span class="p">[</span><span class="n">epoch</span><span class="p">]</span> <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="n">others</span> <span class="k">if</span> <span class="n">epoch</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">h</span><span class="p">)]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">at</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="n">ratio</span> <span class="o">=</span> <span class="n">value</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">at</span><span class="p">)),</span> <span class="mf">1e-300</span><span class="p">)</span>
+        <span class="n">peak</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">peak</span><span class="p">,</span> <span class="n">ratio</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ratio</span> <span class="o">&gt;</span> <span class="n">factor</span><span class="p">:</span>
+            <span class="n">start</span> <span class="o">=</span> <span class="n">epoch</span> <span class="k">if</span> <span class="n">start</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">start</span>
+            <span class="k">if</span> <span class="n">best</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">epoch</span> <span class="o">-</span> <span class="n">start</span> <span class="o">&gt;</span> <span class="n">best</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">best</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                <span class="n">best</span> <span class="o">=</span> <span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">epoch</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">start</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">return</span> <span class="n">best</span><span class="p">,</span> <span class="n">peak</span>
+
+
+<span class="c1">#: A member has converged from the epoch its validation loss stays within this</span>
+<span class="c1">#: factor of its best.</span>
+<span class="n">CONVERGED_WITHIN</span> <span class="o">=</span> <span class="mf">1.25</span>
+
+<span class="c1">#: The metric that flags a member (more than ``factor`` times the others' median).</span>
+<span class="n">GATE</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"final_val_loss"</span><span class="p">,)</span>
+
+<span class="c1">#: The metrics reported, each compared with the median of the other members; beyond</span>
+<span class="c1">#: the gate, one standing out is noted as information, not flagged.</span>
+<span class="n">HEALTH</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s2">"final_val_loss"</span><span class="p">,</span>
+    <span class="s2">"best_val_loss"</span><span class="p">,</span>
+    <span class="s2">"converged_epoch"</span><span class="p">,</span>
+    <span class="s2">"held_err_forces"</span><span class="p">,</span>
+    <span class="s2">"held_err_pressure_molecular"</span><span class="p">,</span>
+    <span class="s2">"common_err_forces"</span><span class="p">,</span>
+    <span class="s2">"common_err_pressure_molecular"</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">member_health</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">rows</span><span class="p">,</span> <span class="n">factor</span><span class="o">=</span><span class="mf">1.5</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Per member: losses, errors on its held-out and on the common frames, flags.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    directory : str</span>
+<span class="sd">        The committee directory.</span>
+<span class="sd">    names : sequence of int</span>
+<span class="sd">        The kept members' ``k``, in the committee's order.</span>
+<span class="sd">    rows : list of dict</span>
+<span class="sd">        The frames of :func:`check_committee`, with their per-member errors.</span>
+<span class="sd">    factor : float, optional</span>
+<span class="sd">        Flag a metric more than ``factor`` times the median of the other members.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list of dict</span>
+<span class="sd">        One entry per member: the metrics of :data:`HEALTH`, the counts, the</span>
+<span class="sd">        median leave-one-out spread ratios (``loo_&lt;rho&gt;``: the spread with the</span>
+<span class="sd">        member over the spread without it; well above 1 means the member inflates</span>
+<span class="sd">        the spreads), ``flags`` (the gate, :data:`GATE`: the final validation</span>
+<span class="sd">        loss) and ``notes`` (any other metric standing out, as information: a</span>
+<span class="sd">        member that converged late but ended well is noted, not flagged).</span>
+<span class="sd">    """</span>
+    <span class="n">dirs</span> <span class="o">=</span> <span class="p">{</span><span class="nb">int</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">name</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span> <span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">member_dirs</span><span class="p">(</span><span class="n">directory</span><span class="p">)}</span>
+    <span class="n">L</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">names</span><span class="p">)</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">names</span><span class="p">):</span>
+        <span class="n">final</span><span class="p">,</span> <span class="n">best</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">converged</span> <span class="o">=</span> <span class="n">member_losses</span><span class="p">(</span><span class="n">dirs</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+        <span class="n">entry</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">"member"</span><span class="p">:</span> <span class="n">k</span><span class="p">,</span>
+            <span class="s2">"final_val_loss"</span><span class="p">:</span> <span class="n">final</span><span class="p">,</span>
+            <span class="s2">"best_val_loss"</span><span class="p">:</span> <span class="n">best</span><span class="p">,</span>
+            <span class="s2">"converged_epoch"</span><span class="p">:</span> <span class="n">converged</span><span class="p">,</span>
+            <span class="s2">"history"</span><span class="p">:</span> <span class="n">source</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">held</span> <span class="o">=</span> <span class="p">[</span><span class="n">r</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">rows</span> <span class="k">if</span> <span class="n">r</span><span class="p">[</span><span class="s2">"role"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"held"</span> <span class="ow">and</span> <span class="n">r</span><span class="p">[</span><span class="s2">"oof_members"</span><span class="p">]</span> <span class="o">==</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span>
+        <span class="n">common</span> <span class="o">=</span> <span class="p">[</span><span class="n">r</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">rows</span> <span class="k">if</span> <span class="n">r</span><span class="p">[</span><span class="s2">"role"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"unseen"</span><span class="p">]</span>
+        <span class="n">entry</span><span class="p">[</span><span class="s2">"n_held"</span><span class="p">],</span> <span class="n">entry</span><span class="p">[</span><span class="s2">"n_common"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">held</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">common</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">prefix</span><span class="p">,</span> <span class="n">sel</span> <span class="ow">in</span> <span class="p">((</span><span class="s2">"held"</span><span class="p">,</span> <span class="n">held</span><span class="p">),</span> <span class="p">(</span><span class="s2">"common"</span><span class="p">,</span> <span class="n">common</span><span class="p">)):</span>
+            <span class="k">for</span> <span class="n">err</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"err_forces"</span><span class="p">,</span> <span class="s2">"err_pressure_molecular"</span><span class="p">):</span>
+                <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="n">r</span><span class="p">[</span><span class="s2">"_member"</span><span class="p">][</span><span class="n">err</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">sel</span> <span class="k">if</span> <span class="n">err</span> <span class="ow">in</span> <span class="n">r</span><span class="p">[</span><span class="s2">"_member"</span><span class="p">]]</span>
+                <span class="n">entry</span><span class="p">[</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">err</span><span class="si">}</span><span class="s2">"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">values</span><span class="p">))</span> <span class="k">if</span> <span class="n">values</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">LOO_RHOS</span><span class="p">:</span>
+            <span class="n">ratios</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">r</span><span class="p">[</span><span class="s2">"_loo"</span><span class="p">][</span><span class="n">name</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">rows</span> <span class="k">if</span> <span class="s2">"_loo"</span> <span class="ow">in</span> <span class="n">r</span> <span class="ow">and</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">r</span><span class="p">[</span><span class="s2">"_loo"</span><span class="p">]</span>
+            <span class="p">]</span>
+            <span class="n">ratios</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">ratios</span> <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">x</span><span class="p">)]</span>
+            <span class="n">entry</span><span class="p">[</span><span class="sa">f</span><span class="s2">"loo_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">ratios</span><span class="p">))</span> <span class="k">if</span> <span class="n">ratios</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
+    <span class="n">histories</span> <span class="o">=</span> <span class="p">[</span><span class="n">val_history</span><span class="p">(</span><span class="n">dirs</span><span class="p">[</span><span class="n">k</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">names</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">entry</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">out</span><span class="p">):</span>
+        <span class="n">stretch</span><span class="p">,</span> <span class="n">entry</span><span class="p">[</span><span class="s2">"lag_peak"</span><span class="p">]</span> <span class="o">=</span> <span class="n">lag</span><span class="p">(</span><span class="n">histories</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">factor</span><span class="p">)</span>
+        <span class="n">entry</span><span class="p">[</span><span class="s2">"lag_epochs"</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">stretch</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">stretch</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">stretch</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span>
+        <span class="n">entry</span><span class="p">[</span><span class="s2">"_lag"</span><span class="p">]</span> <span class="o">=</span> <span class="n">stretch</span>
+    <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">out</span><span class="p">:</span>
+        <span class="n">flags</span><span class="p">,</span> <span class="n">notes</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">HEALTH</span><span class="p">:</span>
+            <span class="n">mine</span> <span class="o">=</span> <span class="n">entry</span><span class="p">[</span><span class="n">metric</span><span class="p">]</span>
+            <span class="n">others</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">e</span><span class="p">[</span><span class="n">metric</span><span class="p">]</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">out</span> <span class="k">if</span> <span class="n">e</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">entry</span> <span class="ow">and</span> <span class="n">e</span><span class="p">[</span><span class="n">metric</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="p">]</span>
+            <span class="k">if</span> <span class="n">mine</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">others</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">median</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">others</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">median</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">mine</span> <span class="o">&gt;</span> <span class="n">factor</span> <span class="o">*</span> <span class="n">median</span><span class="p">:</span>
+                <span class="n">text</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">metric</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">mine</span><span class="si">:</span><span class="s2">.4g</span><span class="si">}</span><span class="s2"> &gt; </span><span class="si">{</span><span class="n">factor</span><span class="si">:</span><span class="s2">g</span><span class="si">}</span><span class="s2"> x median </span><span class="si">{</span><span class="n">median</span><span class="si">:</span><span class="s2">.4g</span><span class="si">}</span><span class="s2">"</span>
+                <span class="p">(</span><span class="n">flags</span> <span class="k">if</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">GATE</span> <span class="k">else</span> <span class="n">notes</span><span class="p">)</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"loo_rho_forces"</span><span class="p">,</span> <span class="s2">"loo_rho_pressure_molecular"</span><span class="p">):</span>
+            <span class="n">mine</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">others</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">e</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">out</span> <span class="k">if</span> <span class="n">e</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">entry</span> <span class="ow">and</span> <span class="n">e</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="p">]</span>
+            <span class="k">if</span> <span class="n">mine</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">others</span> <span class="ow">and</span> <span class="n">mine</span> <span class="o">&gt;</span> <span class="n">factor</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">others</span><span class="p">)):</span>
+                <span class="n">notes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">mine</span><span class="si">:</span><span class="s2">.3g</span><span class="si">}</span><span class="s2">: the member inflates the spread"</span><span class="p">)</span>
+        <span class="n">stretch</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"_lag"</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">stretch</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">stretch</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">stretch</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&gt;=</span> <span class="n">LAG_MIN_EPOCHS</span><span class="p">:</span>
+            <span class="n">n_epochs</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">histories</span><span class="p">[</span><span class="n">out</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">entry</span><span class="p">)])</span>
+            <span class="n">notes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"trailed the others (smoothed val loss &gt; </span><span class="si">{</span><span class="n">factor</span><span class="si">:</span><span class="s2">g</span><span class="si">}</span><span class="s2"> x their median) "</span>
+                <span class="sa">f</span><span class="s2">"over epochs </span><span class="si">{</span><span class="n">stretch</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">stretch</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> of </span><span class="si">{</span><span class="n">n_epochs</span><span class="si">}</span><span class="s2">, at most "</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">entry</span><span class="p">[</span><span class="s1">'lag_peak'</span><span class="p">]</span><span class="si">:</span><span class="s2">.2g</span><span class="si">}</span><span class="s2"> x"</span>
+                <span class="o">+</span> <span class="p">(</span>
+                    <span class="s2">""</span>
+                    <span class="k">if</span> <span class="n">flags</span> <span class="ow">or</span> <span class="n">stretch</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">n_epochs</span> <span class="o">-</span> <span class="n">LAG_WINDOW</span>
+                    <span class="k">else</span> <span class="s2">", then recovered"</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        <span class="n">entry</span><span class="p">[</span><span class="s2">"flags"</span><span class="p">],</span> <span class="n">entry</span><span class="p">[</span><span class="s2">"notes"</span><span class="p">]</span> <span class="o">=</span> <span class="n">flags</span><span class="p">,</span> <span class="n">notes</span>
+    <span class="k">if</span> <span class="n">L</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"fewer than 3 members: no leave-one-out spreads"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">out</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_write_health</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">health</span><span class="p">):</span>
+    <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"member"</span><span class="p">,</span> <span class="o">*</span><span class="n">HEALTH</span><span class="p">,</span> <span class="s2">"lag_epochs"</span><span class="p">,</span> <span class="s2">"lag_peak"</span><span class="p">,</span> <span class="s2">"n_held"</span><span class="p">,</span> <span class="s2">"n_common"</span><span class="p">]</span>
+    <span class="n">columns</span> <span class="o">+=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">"loo_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">"</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">LOO_RHOS</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="s2">"flags"</span><span class="p">,</span> <span class="s2">"notes"</span><span class="p">,</span> <span class="s2">"history"</span><span class="p">]</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s2">""</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
+        <span class="n">writer</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">DictWriter</span><span class="p">(</span><span class="n">fh</span><span class="p">,</span> <span class="n">fieldnames</span><span class="o">=</span><span class="n">columns</span><span class="p">,</span> <span class="n">extrasaction</span><span class="o">=</span><span class="s2">"ignore"</span><span class="p">)</span>
+        <span class="n">writer</span><span class="o">.</span><span class="n">writeheader</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">health</span><span class="p">:</span>
+            <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">(</span>
+                <span class="p">{</span>
+                    <span class="n">c</span><span class="p">:</span> <span class="p">(</span><span class="s2">"; "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">e</span><span class="p">[</span><span class="n">c</span><span class="p">])</span> <span class="k">if</span> <span class="n">c</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"flags"</span><span class="p">,</span> <span class="s2">"notes"</span><span class="p">)</span> <span class="k">else</span> <span class="n">_cell</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">c</span><span class="p">)))</span>
+                    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">columns</span>
+                <span class="p">}</span>
+            <span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_cell</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">""</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">""</span> <span class="k">if</span> <span class="n">math</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">else</span> <span class="nb">repr</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">print_summary</span><span class="p">(</span><span class="n">summary</span><span class="p">,</span> <span class="n">fh</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Print the correlations and calibrations of :func:`check_committee`."""</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+
+    <span class="n">fh</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span> <span class="k">if</span> <span class="n">fh</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">fh</span>
+    <span class="n">roles</span> <span class="o">=</span> <span class="n">summary</span><span class="p">[</span><span class="s2">"roles"</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">summary</span><span class="p">[</span><span class="s1">'members'</span><span class="p">])</span><span class="si">}</span><span class="s2"> members; frames: </span><span class="si">{</span><span class="n">roles</span><span class="p">[</span><span class="s1">'held'</span><span class="p">]</span><span class="si">}</span><span class="s2"> held out, "</span>
+        <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">roles</span><span class="p">[</span><span class="s1">'unseen'</span><span class="p">]</span><span class="si">}</span><span class="s2"> unseen by every member, </span><span class="si">{</span><span class="n">roles</span><span class="p">[</span><span class="s1">'trained'</span><span class="p">]</span><span class="si">}</span><span class="s2"> trained on "</span>
+        <span class="s2">"by every member (left out)"</span><span class="p">,</span>
+        <span class="n">file</span><span class="o">=</span><span class="n">fh</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="si">{</span><span class="s1">'Spearman'</span><span class="si">:</span><span class="s2">58s</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">'rho'</span><span class="si">:</span><span class="s2">&gt;6s</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">'p'</span><span class="si">:</span><span class="s2">&gt;9s</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">'n'</span><span class="si">:</span><span class="s2">&gt;5s</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">fh</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">summary</span><span class="p">[</span><span class="s2">"spearman"</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">key</span><span class="si">:</span><span class="s2">58s</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">v</span><span class="p">[</span><span class="s1">'rho'</span><span class="p">]</span><span class="si">:</span><span class="s2">+6.2f</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">v</span><span class="p">[</span><span class="s1">'p'</span><span class="p">]</span><span class="si">:</span><span class="s2">9.2g</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">v</span><span class="p">[</span><span class="s1">'n'</span><span class="p">]</span><span class="si">:</span><span class="s2">5d</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">fh</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">summary</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"dropped"</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"dropped members: </span><span class="si">{</span><span class="s1">', '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="sa">f</span><span class="s1">'m</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s1">'</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">summary</span><span class="p">[</span><span class="s1">'dropped'</span><span class="p">])</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">fh</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="n">health</span> <span class="o">=</span> <span class="n">summary</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"member_health"</span><span class="p">,</span> <span class="p">[])</span>
+    <span class="k">if</span> <span class="n">health</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="s2">"</span><span class="se">\n</span><span class="s2">members (errors: forces eV/A, molecular pressure atm; loo = spread "</span>
+            <span class="s2">"with / without the member, median over frames)"</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">fh</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="s1">''</span><span class="si">:</span><span class="s2">4s</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">'val final'</span><span class="si">:</span><span class="s2">&gt;10s</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">'val best'</span><span class="si">:</span><span class="s2">&gt;10s</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">'held F'</span><span class="si">:</span><span class="s2">&gt;8s</span><span class="si">}</span><span class="s2"> "</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="s1">'held Pm'</span><span class="si">:</span><span class="s2">&gt;8s</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">'common F'</span><span class="si">:</span><span class="s2">&gt;9s</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">'common Pm'</span><span class="si">:</span><span class="s2">&gt;9s</span><span class="si">}</span><span class="s2"> "</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="s1">'loo rhoF'</span><span class="si">:</span><span class="s2">&gt;8s</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">'loo rhoPm'</span><span class="si">:</span><span class="s2">&gt;9s</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">fh</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">fmt</span><span class="p">):</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="s1">'-'</span><span class="si">:</span><span class="s2">&gt;</span><span class="si">{</span><span class="n">w</span><span class="si">}</span><span class="s2">s</span><span class="si">}</span><span class="s2">"</span> <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">x</span><span class="si">:{</span><span class="n">w</span><span class="si">}{</span><span class="n">fmt</span><span class="si">}}</span><span class="s2">"</span>
+
+        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">health</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"m</span><span class="si">{</span><span class="n">e</span><span class="p">[</span><span class="s1">'member'</span><span class="p">]</span><span class="si">:</span><span class="s2">&lt;3d</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">f</span><span class="p">(</span><span class="n">e</span><span class="p">[</span><span class="s1">'final_val_loss'</span><span class="p">],</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="s1">'.4g'</span><span class="p">)</span><span class="si">}</span><span class="s2"> "</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">f</span><span class="p">(</span><span class="n">e</span><span class="p">[</span><span class="s1">'best_val_loss'</span><span class="p">],</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="s1">'.4g'</span><span class="p">)</span><span class="si">}</span><span class="s2"> "</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">f</span><span class="p">(</span><span class="n">e</span><span class="p">[</span><span class="s1">'held_err_forces'</span><span class="p">],</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="s1">'.4f'</span><span class="p">)</span><span class="si">}</span><span class="s2"> "</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">f</span><span class="p">(</span><span class="n">e</span><span class="p">[</span><span class="s1">'held_err_pressure_molecular'</span><span class="p">],</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="s1">'.0f'</span><span class="p">)</span><span class="si">}</span><span class="s2"> "</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">f</span><span class="p">(</span><span class="n">e</span><span class="p">[</span><span class="s1">'common_err_forces'</span><span class="p">],</span><span class="w"> </span><span class="mi">9</span><span class="p">,</span><span class="w"> </span><span class="s1">'.4f'</span><span class="p">)</span><span class="si">}</span><span class="s2"> "</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">f</span><span class="p">(</span><span class="n">e</span><span class="p">[</span><span class="s1">'common_err_pressure_molecular'</span><span class="p">],</span><span class="w"> </span><span class="mi">9</span><span class="p">,</span><span class="w"> </span><span class="s1">'.0f'</span><span class="p">)</span><span class="si">}</span><span class="s2"> "</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">f</span><span class="p">(</span><span class="n">e</span><span class="p">[</span><span class="s1">'loo_rho_forces'</span><span class="p">],</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="s1">'.3f'</span><span class="p">)</span><span class="si">}</span><span class="s2"> "</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">f</span><span class="p">(</span><span class="n">e</span><span class="p">[</span><span class="s1">'loo_rho_pressure_molecular'</span><span class="p">],</span><span class="w"> </span><span class="mi">9</span><span class="p">,</span><span class="w"> </span><span class="s1">'.3f'</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+                <span class="n">file</span><span class="o">=</span><span class="n">fh</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">health</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">flag</span> <span class="ow">in</span> <span class="n">e</span><span class="p">[</span><span class="s2">"flags"</span><span class="p">]:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  FLAG m</span><span class="si">{</span><span class="n">e</span><span class="p">[</span><span class="s1">'member'</span><span class="p">]</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">flag</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">fh</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">note</span> <span class="ow">in</span> <span class="n">e</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"notes"</span><span class="p">,</span> <span class="p">[]):</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  note m</span><span class="si">{</span><span class="n">e</span><span class="p">[</span><span class="s1">'member'</span><span class="p">]</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">note</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">fh</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">e</span><span class="p">[</span><span class="s2">"flags"</span><span class="p">]</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">health</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">"  no member flagged"</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">fh</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">summary</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"calibration"</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">calibration </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">v</span><span class="p">[</span><span class="s1">'error'</span><span class="p">]</span><span class="si">}</span><span class="s2"> &gt; </span><span class="si">{</span><span class="n">v</span><span class="p">[</span><span class="s1">'fail_level'</span><span class="p">]</span><span class="si">:</span><span class="s2">g</span><span class="si">}</span><span class="s2">, "</span>
+            <span class="sa">f</span><span class="s2">"capture </span><span class="si">{</span><span class="n">v</span><span class="p">[</span><span class="s1">'capture'</span><span class="p">]</span><span class="si">:</span><span class="s2">g</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">v</span><span class="p">[</span><span class="s1">'n_fail'</span><span class="p">]</span><span class="si">}</span><span class="s2"> of </span><span class="si">{</span><span class="n">v</span><span class="p">[</span><span class="s1">'n'</span><span class="p">]</span><span class="si">}</span><span class="s2"> fail"</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">fh</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"threshold"</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"  threshold </span><span class="si">{</span><span class="n">v</span><span class="p">[</span><span class="s1">'threshold'</span><span class="p">]</span><span class="si">:</span><span class="s2">.4g</span><span class="si">}</span><span class="s2">: selects "</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">v</span><span class="p">[</span><span class="s1">'fraction_selected'</span><span class="p">]</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">v</span><span class="p">[</span><span class="s1">'n_above'</span><span class="p">]</span><span class="si">}</span><span class="s2"> above, "</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">v</span><span class="p">[</span><span class="s1">'n_below'</span><span class="p">]</span><span class="si">}</span><span class="s2"> below); RMS error above </span><span class="si">{</span><span class="n">v</span><span class="p">[</span><span class="s1">'rmse_above'</span><span class="p">]</span><span class="si">:</span><span class="s2">.4g</span><span class="si">}</span><span class="s2">, "</span>
+                <span class="sa">f</span><span class="s2">"below </span><span class="si">{</span><span class="n">v</span><span class="p">[</span><span class="s1">'rmse_below'</span><span class="p">]</span><span class="si">:</span><span class="s2">.4g</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+                <span class="n">file</span><span class="o">=</span><span class="n">fh</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"warning"</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  WARNING: </span><span class="si">{</span><span class="n">v</span><span class="p">[</span><span class="s1">'warning'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">fh</span><span class="p">)</span>
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.23.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

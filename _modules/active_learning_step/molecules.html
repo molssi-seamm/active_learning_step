@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>active_learning_step.molecules &#8212; SEAMM Active Learning Plug-in 2026.10.14 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=c224919a" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../../_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
+
+    <script src="../../_static/documentation_options.js?v=c92e1e03"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/active_learning_step/molecules';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="2026.10.14" />
+  
+    
+    <script src="../../_static/searchtools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/SEAMM logo.png" class="logo__image only-light" alt=""/>
+    <img src="../../_static/SEAMM Inverted 288x181.png" class="logo__image only-dark pst-js-only" alt=""/>
+  
+  
+    <p class="title logo__title">Active Learning</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../getting_started/index.html">
+    Getting Started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../user_guide/index.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../developer_guide/index.html">
+    Developer Documentation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/index.html">
+    API Documentation
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../authors.html">
+    Development Team
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../history.html">
+    History
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-external" href="https://molssi-seamm.github.io">
+    Main SEAMM documentation
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-external" href="https://molssi-seamm.github.io">
+    SEAMM Documentation
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-external" href="https://molssi.org">
+    MolSSI
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/molssi-seamm/geometry_analysis_step" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://twitter.com/MolSSI_NSF" title="Twitter" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-twitter fa-lg" aria-hidden="true"></i><span class="visually-hidden">Twitter</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../getting_started/index.html">
+    Getting Started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../user_guide/index.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../developer_guide/index.html">
+    Developer Documentation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/index.html">
+    API Documentation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../authors.html">
+    Development Team
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../history.html">
+    History
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://molssi-seamm.github.io">
+    Main SEAMM documentation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://molssi-seamm.github.io">
+    SEAMM Documentation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://molssi.org">
+    MolSSI
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/molssi-seamm/geometry_analysis_step" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://twitter.com/MolSSI_NSF" title="Twitter" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-twitter fa-lg" aria-hidden="true"></i><span class="visually-hidden">Twitter</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">active_learning_step.molecules</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for active_learning_step.molecules</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="sd">"""Molecules of a structure from its covalent bonds, with molsystem's rule.</span>
+
+<span class="sd">The committee's molecular pressure removes the intramolecular virial, so it needs to</span>
+<span class="sd">know which atoms form each molecule. SEAMM defines molecules through bonds:</span>
+<span class="sd">``molsystem``'s ``Configuration.perceive_bonds()`` and ``find_molecules()``. This</span>
+<span class="sd">module applies **the same rule** to coordinates alone, so that the command line runs in</span>
+<span class="sd">an MLFF environment that has neither SEAMM nor molsystem, and gives the same molecules:</span>
+
+<span class="sd">* two atoms are bonded when ``min_distance &lt; d &lt; tolerance * (r_i + r_j)``, with the</span>
+<span class="sd">  Pyykkö covalent radii molsystem uses (:mod:`~active_learning_step.covalent_radii`)</span>
+<span class="sd">  and ``tolerance`` 1.2, using every periodic image (ASE's neighbour list);</span>
+<span class="sd">* the alkali and alkaline-earth metals (:data:`IONIC_ELEMENTS`) are never bonded, so</span>
+<span class="sd">  each cation is a molecule of its own; halide anions come out as single atoms;</span>
+<span class="sd">* an atom has at most ``max_bonds`` bonds by element (H: 1), the shortest kept;</span>
+<span class="sd">* the molecules are the connected components, numbered in the order of their first</span>
+<span class="sd">  atom, so ``O H H O H H ...`` water gives ``index // 3``.</span>
+
+<span class="sd">Inside SEAMM, :func:`molecules_of_configuration` uses a configuration's own bonds when</span>
+<span class="sd">it has them. The test suite checks this module against molsystem wherever molsystem is</span>
+<span class="sd">installed, so the two cannot drift apart.</span>
+
+<span class="sd">Only ASE and numpy are needed.</span>
+<span class="sd">"""</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">ase</span><span class="w"> </span><span class="kn">import</span> <span class="n">Atoms</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ase.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">atomic_masses</span><span class="p">,</span> <span class="n">chemical_symbols</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ase.neighborlist</span><span class="w"> </span><span class="kn">import</span> <span class="n">neighbor_list</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">.covalent_radii</span><span class="w"> </span><span class="kn">import</span> <span class="n">COVALENT_RADII</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">"IONIC_ELEMENTS"</span><span class="p">,</span>
+    <span class="s2">"MAX_BONDS"</span><span class="p">,</span>
+    <span class="s2">"BOND_TOLERANCE"</span><span class="p">,</span>
+    <span class="s2">"MIN_DISTANCE"</span><span class="p">,</span>
+    <span class="s2">"molecules"</span><span class="p">,</span>
+    <span class="s2">"molecules_of_configuration"</span><span class="p">,</span>
+    <span class="s2">"masses"</span><span class="p">,</span>
+    <span class="s2">"as_atoms"</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="c1">#: Elements never bonded: the alkali and alkaline-earth metals, ions in molecular</span>
+<span class="c1">#: systems (as ``molsystem.topology.IONIC_ELEMENTS``).</span>
+<span class="n">IONIC_ELEMENTS</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"Li"</span><span class="p">,</span> <span class="s2">"Na"</span><span class="p">,</span> <span class="s2">"K"</span><span class="p">,</span> <span class="s2">"Rb"</span><span class="p">,</span> <span class="s2">"Cs"</span><span class="p">,</span> <span class="s2">"Fr"</span><span class="p">,</span> <span class="s2">"Be"</span><span class="p">,</span> <span class="s2">"Mg"</span><span class="p">,</span> <span class="s2">"Ca"</span><span class="p">,</span> <span class="s2">"Sr"</span><span class="p">,</span> <span class="s2">"Ba"</span><span class="p">,</span> <span class="s2">"Ra"</span><span class="p">)</span>
+
+<span class="c1">#: The most bonds an atom of an element may have (as ``molsystem.topology.MAX_BONDS``).</span>
+<span class="n">MAX_BONDS</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"H"</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+
+<span class="c1">#: Bonds are distances below this multiple of the sum of the covalent radii.</span>
+<span class="n">BOND_TOLERANCE</span> <span class="o">=</span> <span class="mf">1.2</span>
+
+<span class="c1">#: Pairs closer than this (Å) are ignored rather than bonded.</span>
+<span class="n">MIN_DISTANCE</span> <span class="o">=</span> <span class="mf">0.4</span>
+
+
+<div class="viewcode-block" id="as_atoms">
+<a class="viewcode-back" href="../../api/active_learning_step.html#active_learning_step.committee.as_atoms">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">as_atoms</span><span class="p">(</span><span class="n">structure</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""An ASE Atoms from Atoms or an xnn structure dict.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    structure : ase.Atoms or dict</span>
+<span class="sd">        The structure; a dict needs ``pos`` and ``atomic_numbers`` and may have</span>
+<span class="sd">        ``cell`` and ``pbc``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ase.Atoms</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">structure</span><span class="p">,</span> <span class="n">Atoms</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">structure</span>
+    <span class="n">cell</span> <span class="o">=</span> <span class="n">structure</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"cell"</span><span class="p">)</span>
+    <span class="n">pbc</span> <span class="o">=</span> <span class="n">structure</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"pbc"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">pbc</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">pbc</span> <span class="o">=</span> <span class="n">cell</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+    <span class="k">return</span> <span class="n">Atoms</span><span class="p">(</span>
+        <span class="n">numbers</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">structure</span><span class="p">[</span><span class="s2">"atomic_numbers"</span><span class="p">]),</span>
+        <span class="n">positions</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">structure</span><span class="p">[</span><span class="s2">"pos"</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">),</span>
+        <span class="n">cell</span><span class="o">=</span><span class="kc">None</span> <span class="k">if</span> <span class="n">cell</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
+        <span class="n">pbc</span><span class="o">=</span><span class="n">pbc</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_components</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Molecule index per atom from bonds (i, j): first-atom order."""</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">root</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+        <span class="k">while</span> <span class="n">parent</span><span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="o">!=</span> <span class="n">a</span><span class="p">:</span>
+            <span class="n">parent</span><span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="o">=</span> <span class="n">parent</span><span class="p">[</span><span class="n">parent</span><span class="p">[</span><span class="n">a</span><span class="p">]]</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="n">parent</span><span class="p">[</span><span class="n">a</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">a</span>
+
+    <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">):</span>
+        <span class="n">ra</span><span class="p">,</span> <span class="n">rb</span> <span class="o">=</span> <span class="n">root</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="n">root</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ra</span> <span class="o">!=</span> <span class="n">rb</span><span class="p">:</span>
+            <span class="n">parent</span><span class="p">[</span><span class="nb">max</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">rb</span><span class="p">)]</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">rb</span><span class="p">)</span>
+    <span class="n">roots</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">root</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)])</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">first</span><span class="p">,</span> <span class="n">inverse</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">roots</span><span class="p">,</span> <span class="n">return_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">return_inverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">order</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">first</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">order</span><span class="p">[</span><span class="n">inverse</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">bonds</span><span class="p">(</span>
+    <span class="n">structure</span><span class="p">,</span>
+    <span class="n">tolerance</span><span class="o">=</span><span class="n">BOND_TOLERANCE</span><span class="p">,</span>
+    <span class="n">radii</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">max_bonds</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">exclude</span><span class="o">=</span><span class="n">IONIC_ELEMENTS</span><span class="p">,</span>
+    <span class="n">min_distance</span><span class="o">=</span><span class="n">MIN_DISTANCE</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">"""The bonded pairs of a structure, by molsystem's ``perceive_bonds`` rule.</span>
+
+<span class="sd">    Parameters are those of ``molsystem``'s ``Configuration.perceive_bonds``:</span>
+<span class="sd">    ``tolerance`` times the sum of the covalent radii, ``radii`` overriding them by</span>
+<span class="sd">    element symbol, ``max_bonds`` by element symbol (over the default H: 1),</span>
+<span class="sd">    ``exclude`` the elements never bonded, ``min_distance`` the closest pair bonded.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    (numpy.ndarray, numpy.ndarray, numpy.ndarray)</span>
+<span class="sd">        Atom indices ``i`` and ``j`` of every bond (``i &lt;= j``; one entry per</span>
+<span class="sd">        bond, through whichever periodic image) and their lengths.</span>
+<span class="sd">    """</span>
+    <span class="n">atoms</span> <span class="o">=</span> <span class="n">as_atoms</span><span class="p">(</span><span class="n">structure</span><span class="p">)</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">atoms</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">empty</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">empty</span><span class="p">,</span> <span class="n">empty</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">symbols</span> <span class="o">=</span> <span class="n">atoms</span><span class="o">.</span><span class="n">get_chemical_symbols</span><span class="p">()</span>
+    <span class="n">radius</span> <span class="o">=</span> <span class="p">{</span><span class="n">s</span><span class="p">:</span> <span class="n">COVALENT_RADII</span><span class="p">[</span><span class="n">atoms</span><span class="o">.</span><span class="n">numbers</span><span class="p">[</span><span class="n">k</span><span class="p">]]</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">symbols</span><span class="p">)}</span>
+    <span class="k">if</span> <span class="n">radii</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">radius</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">k</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">radii</span><span class="o">.</span><span class="n">items</span><span class="p">()})</span>
+    <span class="k">for</span> <span class="n">s</span><span class="p">,</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">radius</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">r</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"No covalent radius available for </span><span class="si">{</span><span class="n">s</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">limits</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">MAX_BONDS</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">max_bonds</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">limits</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">max_bonds</span><span class="p">)</span>
+    <span class="n">excluded</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">exclude</span><span class="p">)</span> <span class="k">if</span> <span class="n">exclude</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">set</span><span class="p">()</span>
+
+    <span class="n">r_atom</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">radius</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">symbols</span><span class="p">])</span>
+    <span class="n">active</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">s</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">excluded</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">symbols</span><span class="p">])</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">active</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+        <span class="n">empty</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">empty</span><span class="p">,</span> <span class="n">empty</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">atoms</span><span class="o">.</span><span class="n">pbc</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+        <span class="c1"># neighbor_list needs a cell to hold a non-periodic structure</span>
+        <span class="n">atoms</span> <span class="o">=</span> <span class="n">atoms</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">atoms</span><span class="o">.</span><span class="n">set_cell</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+    <span class="c1"># every pair within the largest possible bond, then molsystem's criterion</span>
+    <span class="n">cutoff</span> <span class="o">=</span> <span class="n">tolerance</span> <span class="o">*</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">r_atom</span><span class="p">[</span><span class="n">active</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+    <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">shift</span> <span class="o">=</span> <span class="n">neighbor_list</span><span class="p">(</span><span class="s2">"ijdS"</span><span class="p">,</span> <span class="n">atoms</span><span class="p">,</span> <span class="n">cutoff</span><span class="p">,</span> <span class="n">self_interaction</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="c1"># each pair appears twice (i, j) and (j, i); keep one, as molsystem's pair list</span>
+    <span class="n">one</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">j</span><span class="p">)</span> <span class="o">|</span> <span class="p">((</span><span class="n">i</span> <span class="o">==</span> <span class="n">j</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">_positive</span><span class="p">(</span><span class="n">shift</span><span class="p">))</span>
+    <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">i</span><span class="p">[</span><span class="n">one</span><span class="p">],</span> <span class="n">j</span><span class="p">[</span><span class="n">one</span><span class="p">],</span> <span class="n">d</span><span class="p">[</span><span class="n">one</span><span class="p">]</span>
+    <span class="n">keep</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">active</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="o">&amp;</span> <span class="n">active</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+        <span class="o">&amp;</span> <span class="p">(</span><span class="n">d</span> <span class="o">&gt;</span> <span class="n">min_distance</span><span class="p">)</span>
+        <span class="o">&amp;</span> <span class="p">(</span><span class="n">d</span> <span class="o">&lt;</span> <span class="n">tolerance</span> <span class="o">*</span> <span class="p">(</span><span class="n">r_atom</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">r_atom</span><span class="p">[</span><span class="n">j</span><span class="p">]))</span>
+    <span class="p">)</span>
+    <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">i</span><span class="p">[</span><span class="n">keep</span><span class="p">],</span> <span class="n">j</span><span class="p">[</span><span class="n">keep</span><span class="p">],</span> <span class="n">d</span><span class="p">[</span><span class="n">keep</span><span class="p">]</span>
+
+    <span class="c1"># the per-element limits, keeping the shortest bonds</span>
+    <span class="n">order</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">"stable"</span><span class="p">)</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+    <span class="n">limit</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">limits</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="mi">10</span><span class="o">**</span><span class="mi">9</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">symbols</span><span class="p">])</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">order</span><span class="p">:</span>
+        <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">[</span><span class="n">k</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">j</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">a</span> <span class="o">==</span> <span class="n">b</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">count</span><span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">&gt;</span> <span class="n">limit</span><span class="p">[</span><span class="n">a</span><span class="p">]:</span>
+                <span class="k">continue</span>
+            <span class="n">count</span><span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">2</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">count</span><span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">limit</span><span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="ow">or</span> <span class="n">count</span><span class="p">[</span><span class="n">b</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">limit</span><span class="p">[</span><span class="n">b</span><span class="p">]:</span>
+                <span class="k">continue</span>
+            <span class="n">count</span><span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">count</span><span class="p">[</span><span class="n">b</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">i</span><span class="p">[</span><span class="n">out</span><span class="p">],</span> <span class="n">j</span><span class="p">[</span><span class="n">out</span><span class="p">],</span> <span class="n">d</span><span class="p">[</span><span class="n">out</span><span class="p">]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_positive</span><span class="p">(</span><span class="n">shift</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Whether each cell shift is the 'positive' one of its pair (first nonzero &gt; 0)."""</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">shift</span><span class="p">)</span>
+    <span class="n">first</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">s</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">s</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)),</span> <span class="n">first</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span>
+
+
+<div class="viewcode-block" id="molecules">
+<a class="viewcode-back" href="../../api/active_learning_step.html#active_learning_step.committee.molecules">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">molecules</span><span class="p">(</span><span class="n">structure</span><span class="p">,</span> <span class="o">**</span><span class="n">rule</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""The molecule index of every atom: connected components of the bonds.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    structure : ase.Atoms or dict</span>
+<span class="sd">        The structure (an xnn structure dict is accepted too). Periodic directions</span>
+<span class="sd">        use every image.</span>
+<span class="sd">    **rule</span>
+<span class="sd">        ``tolerance``, ``radii``, ``max_bonds``, ``exclude``, ``min_distance``, as</span>
+<span class="sd">        in :func:`bonds` (molsystem's ``perceive_bonds``).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    numpy.ndarray of int</span>
+<span class="sd">        ``(N,)`` molecule index per atom, numbered 0, 1, ... in the order of each</span>
+<span class="sd">        molecule's first atom.</span>
+<span class="sd">    """</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">as_atoms</span><span class="p">(</span><span class="n">structure</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+    <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">bonds</span><span class="p">(</span><span class="n">structure</span><span class="p">,</span> <span class="o">**</span><span class="n">rule</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_components</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">i</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="n">j</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span></div>
+
+
+
+<div class="viewcode-block" id="molecules_of_configuration">
+<a class="viewcode-back" href="../../api/active_learning_step.html#active_learning_step.committee.molecules_of_configuration">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">molecules_of_configuration</span><span class="p">(</span><span class="n">configuration</span><span class="p">,</span> <span class="o">**</span><span class="n">rule</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""The molecule index of every atom of a SEAMM (molsystem) configuration.</span>
+
+<span class="sd">    Uses the configuration's own bonds when it has any (``find_molecules``), so a</span>
+<span class="sd">    structure keeps the molecules SEAMM gave it. Otherwise the bonds are perceived</span>
+<span class="sd">    with molsystem's rule (:func:`bonds`), without adding them to the configuration.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    configuration : molsystem configuration</span>
+<span class="sd">        The structure.</span>
+<span class="sd">    **rule</span>
+<span class="sd">        Options of :func:`bonds`, used only when the configuration has no bonds.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    numpy.ndarray of int</span>
+<span class="sd">        ``(N,)`` molecule index per atom, in the order of each molecule's first atom.</span>
+<span class="sd">    """</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">configuration</span><span class="o">.</span><span class="n">atoms</span><span class="o">.</span><span class="n">n_atoms</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">configuration</span><span class="o">.</span><span class="n">bonds</span><span class="o">.</span><span class="n">n_bonds</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+        <span class="n">groups</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">configuration</span><span class="o">.</span><span class="n">find_molecules</span><span class="p">(</span><span class="n">as_indices</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">key</span><span class="o">=</span><span class="nb">min</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">members</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">groups</span><span class="p">):</span>
+            <span class="n">label</span><span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">members</span><span class="p">)]</span> <span class="o">=</span> <span class="n">k</span>
+        <span class="k">return</span> <span class="n">label</span>
+    <span class="n">xyz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span>
+        <span class="n">configuration</span><span class="o">.</span><span class="n">atoms</span><span class="o">.</span><span class="n">get_coordinates</span><span class="p">(</span><span class="n">fractionals</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span>
+    <span class="p">)</span>
+    <span class="n">numbers</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">chemical_symbols</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">configuration</span><span class="o">.</span><span class="n">atoms</span><span class="o">.</span><span class="n">symbols</span><span class="p">])</span>
+    <span class="n">structure</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"pos"</span><span class="p">:</span> <span class="n">xyz</span><span class="p">,</span> <span class="s2">"atomic_numbers"</span><span class="p">:</span> <span class="n">numbers</span><span class="p">}</span>
+    <span class="k">if</span> <span class="n">configuration</span><span class="o">.</span><span class="n">periodicity</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="n">structure</span><span class="p">[</span><span class="s2">"cell"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">configuration</span><span class="o">.</span><span class="n">cell</span><span class="o">.</span><span class="n">vectors</span><span class="p">(),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">structure</span><span class="p">[</span><span class="s2">"pbc"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="n">configuration</span><span class="o">.</span><span class="n">periodicity</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"only molecular and 3-D periodic configurations are handled"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">molecules</span><span class="p">(</span><span class="n">structure</span><span class="p">,</span> <span class="o">**</span><span class="n">rule</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="masses">
+<a class="viewcode-back" href="../../api/active_learning_step.html#active_learning_step.committee.masses">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">masses</span><span class="p">(</span><span class="n">structure</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""The atomic masses (amu) of a structure, from ASE's table.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    structure : ase.Atoms or dict</span>
+<span class="sd">        The structure.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    numpy.ndarray</span>
+<span class="sd">        ``(N,)`` masses.</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">structure</span><span class="p">,</span> <span class="n">Atoms</span><span class="p">):</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">structure</span><span class="o">.</span><span class="n">numbers</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">structure</span><span class="p">[</span><span class="s2">"atomic_numbers"</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">atomic_masses</span><span class="p">[</span><span class="n">z</span><span class="p">]</span></div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.23.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>active_learning_step.engine &#8212; SEAMM Active Learning Plug-in 2026.10.14 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=c224919a" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../../_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
+
+    <script src="../../_static/documentation_options.js?v=c92e1e03"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/active_learning_step/engine';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="2026.10.14" />
+  
+    
+    <script src="../../_static/searchtools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/SEAMM logo.png" class="logo__image only-light" alt=""/>
+    <img src="../../_static/SEAMM Inverted 288x181.png" class="logo__image only-dark pst-js-only" alt=""/>
+  
+  
+    <p class="title logo__title">Active Learning</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../getting_started/index.html">
+    Getting Started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../user_guide/index.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../developer_guide/index.html">
+    Developer Documentation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/index.html">
+    API Documentation
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../authors.html">
+    Development Team
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../history.html">
+    History
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-external" href="https://molssi-seamm.github.io">
+    Main SEAMM documentation
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-external" href="https://molssi-seamm.github.io">
+    SEAMM Documentation
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-external" href="https://molssi.org">
+    MolSSI
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/molssi-seamm/geometry_analysis_step" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://twitter.com/MolSSI_NSF" title="Twitter" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-twitter fa-lg" aria-hidden="true"></i><span class="visually-hidden">Twitter</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../getting_started/index.html">
+    Getting Started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../user_guide/index.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../developer_guide/index.html">
+    Developer Documentation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/index.html">
+    API Documentation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../authors.html">
+    Development Team
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../history.html">
+    History
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://molssi-seamm.github.io">
+    Main SEAMM documentation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://molssi-seamm.github.io">
+    SEAMM Documentation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://molssi.org">
+    MolSSI
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/molssi-seamm/geometry_analysis_step" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://twitter.com/MolSSI_NSF" title="Twitter" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-twitter fa-lg" aria-hidden="true"></i><span class="visually-hidden">Twitter</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">active_learning_step.engine</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for active_learning_step.engine</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="sd">"""``seamm-al engine``: a committee's mean as one MDI engine, with its spreads.</span>
+
+<span class="sd">The committee mean is served to an MDI driver (LAMMPS, ``fix mdi/qm``) as a single</span>
+<span class="sd">potential, adapted from code by Sina Mostafanejad: the</span>
+<span class="sd">mean of the members' short-range cores is one</span>
+<span class="sd">:class:`~xnn.common.models.InteratomicPotential` (:class:`CommitteeMeanCore`); the</span>
+<span class="sd">dispersion recorded in the checkpoints is added once on top (the same term in every</span>
+<span class="sd">member, so it is not averaged); and the force and stress heads differentiate the sum.</span>
+<span class="sd">The mean of the members' energies has the mean of their forces as its gradient, so</span>
+<span class="sd">this is the committee's prediction at the cost of one backward pass.</span>
+
+<span class="sd">What is added here: every ``every`` evaluations (``--spreads FILE --every N``) the</span>
+<span class="sd">engine also evaluates each member on its own (one forward and backward pass per</span>
+<span class="sd">member, only on the steps written) and appends the committee spreads to a CSV:</span>
+<span class="sd">``rho_energy``, ``rho_forces``, ``rho_forces_max_atom`` and, for periodic systems,</span>
+<span class="sd">``rho_pressure`` and ``rho_pressure_molecular`` (molecules from the bond graph of the</span>
+<span class="sd">first frame written). Each row also carries ``max_dF``, the largest difference between</span>
+<span class="sd">the engine's forces and the mean of the members' forces (zero to rounding when no</span>
+<span class="sd">dispersion is added; the check that the mean core is the members' mean). With</span>
+<span class="sd">``--flag NAME=VALUE`` a frame whose spread reaches a value is written, with its step</span>
+<span class="sd">and spreads and the per-atom force spread, to an extxyz (``--flagged``);</span>
+<span class="sd">``--frames`` writes every frame recorded.</span>
+
+<span class="sd">The members and the mean share their modules: each member is built once and the</span>
+<span class="sd">mean core holds the members' cores.</span>
+
+<span class="sd">xnn interface (public names): ``xnn.common.models.InteratomicPotential``,</span>
+<span class="sd">``ForceStressOutput``, ``add_dispersion``; ``xnn.common.models.hub.load_checkpoint``,</span>
+<span class="sd">``build_potential``; ``xnn.common.models.registry.resolve_dispersion``;</span>
+<span class="sd">``xnn.common.models.d4.enable_eeq_reuse``; ``xnn.common.deploy.mdi_engine.MDIEngine``,</span>
+<span class="sd">``BOHR_TO_ANGSTROM``, ``HARTREE_TO_EV``; ``xnn.common.data.structure_to_graph``,</span>
+<span class="sd">``collate``.</span>
+<span class="sd">"""</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">argparse</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">csv</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tensor</span><span class="p">,</span> <span class="n">nn</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">xnn.common.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">AtomicGraph</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">xnn.common.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">ForceStressOutput</span><span class="p">,</span> <span class="n">InteratomicPotential</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">"CommitteeMeanCore"</span><span class="p">,</span>
+    <span class="s2">"committee_mean_potential"</span><span class="p">,</span>
+    <span class="s2">"build_committee"</span><span class="p">,</span>
+    <span class="s2">"CommitteeEngine"</span><span class="p">,</span>
+    <span class="s2">"main"</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="n">SPREAD_COLUMNS</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s2">"step"</span><span class="p">,</span>
+    <span class="s2">"n_atoms"</span><span class="p">,</span>
+    <span class="s2">"rho_energy"</span><span class="p">,</span>
+    <span class="s2">"rho_forces"</span><span class="p">,</span>
+    <span class="s2">"rho_forces_max_atom"</span><span class="p">,</span>
+    <span class="s2">"rho_pressure"</span><span class="p">,</span>
+    <span class="s2">"rho_pressure_molecular"</span><span class="p">,</span>
+    <span class="s2">"energy_mean"</span><span class="p">,</span>
+    <span class="s2">"engine_energy"</span><span class="p">,</span>
+    <span class="s2">"max_dF"</span><span class="p">,</span>
+    <span class="s2">"seconds"</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<div class="viewcode-block" id="CommitteeMeanCore">
+<a class="viewcode-back" href="../../api/active_learning_step.html#active_learning_step.engine.CommitteeMeanCore">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">CommitteeMeanCore</span><span class="p">(</span><span class="n">InteratomicPotential</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""The mean energy of several short-range cores, differentiable.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    cores : sequence of torch.nn.Module</span>
+<span class="sd">        The members' cores (the model inside each</span>
+<span class="sd">        :class:`~xnn.common.models.ForceStressOutput`), returning ``node_energy``</span>
+<span class="sd">        and ``energy``; one cutoff for all.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    members : torch.nn.ModuleList</span>
+<span class="sd">        The cores.</span>
+<span class="sd">    cutoff : float</span>
+<span class="sd">        Their common neighbour-list cutoff.</span>
+<span class="sd">    node_feature_dim : int</span>
+<span class="sd">        That of the first core (the long-range and dispersion wrappers read it;</span>
+<span class="sd">        the mean core exposes no features of its own).</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        With fewer than two cores or differing cutoffs.</span>
+<span class="sd">    """</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cores</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">]):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">cores</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"a committee needs at least two members"</span><span class="p">)</span>
+        <span class="n">cutoffs</span> <span class="o">=</span> <span class="p">{</span><span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="s2">"cutoff"</span><span class="p">)),</span> <span class="mi">9</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">cores</span><span class="p">}</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">cutoffs</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"members must share one cutoff; got </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">cutoffs</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">members</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">ModuleList</span><span class="p">(</span><span class="n">cores</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cutoff</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">cutoffs</span><span class="o">.</span><span class="n">pop</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">node_feature_dim</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">cores</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">"node_feature_dim"</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">size</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Number of members."""</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">members</span><span class="p">)</span>
+
+<div class="viewcode-block" id="CommitteeMeanCore.forward">
+<a class="viewcode-back" href="../../api/active_learning_step.html#active_learning_step.engine.CommitteeMeanCore.forward">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">AtomicGraph</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tensor</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Mean ``node_energy`` and ``energy`` over the members.</span>
+
+<span class="sd">        Every member sees a shallow copy of the graph, as in</span>
+<span class="sd">        :class:`~active_learning_step.committee.Committee`. The result stays</span>
+<span class="sd">        attached to the graph's positions and cell, so a wrapping</span>
+<span class="sd">        :class:`~xnn.common.models.ForceStressOutput` differentiates it.</span>
+<span class="sd">        """</span>
+        <span class="n">node</span><span class="p">,</span> <span class="n">total</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">members</span><span class="p">:</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="n">m</span><span class="p">(</span><span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+            <span class="n">node</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">out</span><span class="p">[</span><span class="s2">"node_energy"</span><span class="p">])</span>
+            <span class="n">total</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">out</span><span class="p">[</span><span class="s2">"energy"</span><span class="p">])</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">"node_energy"</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">node</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
+            <span class="s2">"energy"</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">total</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
+        <span class="p">}</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="build_committee">
+<a class="viewcode-back" href="../../api/active_learning_step.html#active_learning_step.engine.build_committee">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">build_committee</span><span class="p">(</span><span class="n">paths</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""The members, each built once with forces and stress and no dispersion.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    (list of ForceStressOutput, list)</span>
+<span class="sd">        The members and their ``subtracted_dispersion`` records.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        When the records differ.</span>
+<span class="sd">    """</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">xnn.common.models.hub</span><span class="w"> </span><span class="kn">import</span> <span class="n">build_potential</span>
+
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.committee</span><span class="w"> </span><span class="kn">import</span> <span class="n">read_checkpoint</span>
+
+    <span class="n">members</span><span class="p">,</span> <span class="n">records</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">paths</span><span class="p">:</span>
+        <span class="n">ck</span> <span class="o">=</span> <span class="n">read_checkpoint</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+        <span class="n">records</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">ck</span><span class="o">.</span><span class="n">config</span><span class="p">,</span> <span class="s2">"subtracted_dispersion"</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">build_potential</span><span class="p">(</span>
+            <span class="n">ck</span><span class="o">.</span><span class="n">config</span><span class="p">,</span>
+            <span class="n">ck</span><span class="o">.</span><span class="n">state_dict</span><span class="p">,</span>
+            <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">,</span>
+            <span class="n">dispersion</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">compute_forces</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">compute_stress</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">p</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="n">members</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">m</span> <span class="k">if</span> <span class="n">device</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">m</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">))</span>
+    <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">r</span> <span class="o">!=</span> <span class="n">records</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">records</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"the members record different subtracted dispersions: </span><span class="si">{</span><span class="n">records</span><span class="si">}</span><span class="s2">"</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">members</span><span class="p">,</span> <span class="n">records</span></div>
+
+
+
+<div class="viewcode-block" id="committee_mean_potential">
+<a class="viewcode-back" href="../../api/active_learning_step.html#active_learning_step.engine.committee_mean_potential">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">committee_mean_potential</span><span class="p">(</span>
+    <span class="n">paths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">device</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">dtype</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">dispersion</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">eeq_reuse</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">compute_stress</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">members</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">records</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ForceStressOutput</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Build the committee mean as one potential with forces and stress.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    paths : iterable of str, optional</span>
+<span class="sd">        The members' checkpoints; or give ``members`` (and ``records``) from</span>
+<span class="sd">        :func:`build_committee`, whose cores the mean then shares.</span>
+<span class="sd">    device : torch.device or str, optional</span>
+<span class="sd">        Where to serve.</span>
+<span class="sd">    dtype : torch.dtype or str, optional</span>
+<span class="sd">        Dtype to serve in; by default that of the first member's weights.</span>
+<span class="sd">    dispersion : dict, str, bool or None, optional</span>
+<span class="sd">        The term added once on top of the mean, resolved against the</span>
+<span class="sd">        checkpoints' record as :func:`~xnn.common.models.registry.resolve_dispersion`</span>
+<span class="sd">        does: ``None`` adds the recorded term, ``False`` none (the energy the</span>
+<span class="sd">        labels had).</span>
+<span class="sd">    eeq_reuse : bool, optional</span>
+<span class="sd">        Carry the D4 EEQ solve between steps (molecular dynamics).</span>
+<span class="sd">    compute_stress : bool, optional</span>
+<span class="sd">        Build the stress head, by default ``True``.</span>
+<span class="sd">    members, records : optional</span>
+<span class="sd">        Prebuilt members and their dispersion records.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ForceStressOutput</span>
+<span class="sd">        ``ForceStressOutput(dispersion(CommitteeMeanCore(cores)))`` in eval mode;</span>
+<span class="sd">        its ``cutoff`` is the dispersion term's when one is added.</span>
+<span class="sd">    """</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">xnn.common.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">add_dispersion</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">xnn.common.models.registry</span><span class="w"> </span><span class="kn">import</span> <span class="n">resolve_dispersion</span>
+
+    <span class="k">if</span> <span class="n">members</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">members</span><span class="p">,</span> <span class="n">records</span> <span class="o">=</span> <span class="n">build_committee</span><span class="p">(</span><span class="n">paths</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+    <span class="n">serve_dtype</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">members</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span><span class="o">.</span><span class="n">dtype</span>
+    <span class="n">core</span> <span class="o">=</span> <span class="n">CommitteeMeanCore</span><span class="p">([</span><span class="n">m</span><span class="o">.</span><span class="n">model</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">members</span><span class="p">])</span>
+    <span class="n">spec</span> <span class="o">=</span> <span class="n">resolve_dispersion</span><span class="p">(</span><span class="n">dispersion</span><span class="p">,</span> <span class="n">records</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">records</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">spec</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># the term's constant tables are built in float64 and cast once, as</span>
+        <span class="c1"># build_potential does</span>
+        <span class="n">prev</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">get_default_dtype</span><span class="p">()</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">set_default_dtype</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">model</span> <span class="o">=</span> <span class="n">add_dispersion</span><span class="p">(</span><span class="n">core</span><span class="p">,</span> <span class="n">spec</span><span class="p">)</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="n">torch</span><span class="o">.</span><span class="n">set_default_dtype</span><span class="p">(</span><span class="n">prev</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"committee mean of </span><span class="si">{</span><span class="n">core</span><span class="o">.</span><span class="n">size</span><span class="si">}</span><span class="s2"> members with </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">model</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> on top"</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">core</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"committee mean of </span><span class="si">{</span><span class="n">core</span><span class="o">.</span><span class="n">size</span><span class="si">}</span><span class="s2"> members, no dispersion added"</span><span class="p">)</span>
+    <span class="n">potential</span> <span class="o">=</span> <span class="n">ForceStressOutput</span><span class="p">(</span>
+        <span class="n">model</span><span class="p">,</span> <span class="n">compute_forces</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">compute_stress</span><span class="o">=</span><span class="n">compute_stress</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">serve_dtype</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">device</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">potential</span> <span class="o">=</span> <span class="n">potential</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">eeq_reuse</span><span class="p">:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">xnn.common.models.d4</span><span class="w"> </span><span class="kn">import</span> <span class="n">enable_eeq_reuse</span>
+
+        <span class="n">enable_eeq_reuse</span><span class="p">(</span><span class="n">potential</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">potential</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_flags</span><span class="p">(</span><span class="n">specs</span><span class="p">):</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">spec</span> <span class="ow">in</span> <span class="n">specs</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s2">"="</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">spec</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"--flag needs NAME=VALUE, not </span><span class="si">{</span><span class="n">spec</span><span class="si">!r}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">spec</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"="</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">SPREAD_COLUMNS</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">7</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"cannot flag on </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">; one of </span><span class="si">{</span><span class="n">SPREAD_COLUMNS</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">7</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="n">out</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">out</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_engine_class</span><span class="p">():</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">xnn.common.deploy.mdi_engine</span><span class="w"> </span><span class="kn">import</span> <span class="n">MDIEngine</span>
+
+    <span class="k">class</span><span class="w"> </span><span class="nc">CommitteeEngine</span><span class="p">(</span><span class="n">MDIEngine</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""xnn's MDI engine serving a committee mean, writing its spreads.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        model : torch.nn.Module</span>
+<span class="sd">            The committee mean (:func:`committee_mean_potential`).</span>
+<span class="sd">        cutoff : float</span>
+<span class="sd">            Its neighbour-list cutoff.</span>
+<span class="sd">        device : str</span>
+<span class="sd">            Torch device.</span>
+<span class="sd">        total_charge : float</span>
+<span class="sd">            The system's net charge.</span>
+<span class="sd">        committee : active_learning_step.committee.Committee, optional</span>
+<span class="sd">            The members, for the spreads.</span>
+<span class="sd">        every : int, optional</span>
+<span class="sd">            Record the spreads every ``every`` evaluations (0: never).</span>
+<span class="sd">        spreads : str, optional</span>
+<span class="sd">            The CSV the spreads are appended to.</span>
+<span class="sd">        flags : dict, optional</span>
+<span class="sd">            Spread name -&gt; value; a frame reaching any is written to ``flagged``.</span>
+<span class="sd">        flagged, frames : str, optional</span>
+<span class="sd">            extxyz files for the flagged frames and for every frame recorded.</span>
+<span class="sd">        dispersion_added : bool, optional</span>
+<span class="sd">            Whether the mean carries a dispersion term (``max_dF`` is then not</span>
+<span class="sd">            reported).</span>
+<span class="sd">        """</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">model</span><span class="p">,</span>
+            <span class="n">cutoff</span><span class="p">,</span>
+            <span class="n">device</span><span class="o">=</span><span class="s2">"cpu"</span><span class="p">,</span>
+            <span class="n">total_charge</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+            <span class="n">committee</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">every</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">spreads</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">flags</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">flagged</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">frames</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">dispersion_added</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="p">):</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+                <span class="n">model</span><span class="p">,</span> <span class="n">cutoff</span><span class="o">=</span><span class="n">cutoff</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span> <span class="n">total_charge</span><span class="o">=</span><span class="n">total_charge</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">committee</span> <span class="o">=</span> <span class="n">committee</span>
+            <span class="k">if</span> <span class="n">committee</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">committee</span><span class="o">.</span><span class="n">parameters</span><span class="p">():</span>
+                    <span class="n">p</span><span class="o">.</span><span class="n">requires_grad_</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">every</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">every</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">flags</span> <span class="o">=</span> <span class="n">flags</span> <span class="ow">or</span> <span class="p">{}</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">flagged</span> <span class="o">=</span> <span class="n">flagged</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">frames</span> <span class="o">=</span> <span class="n">frames</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dispersion_added</span> <span class="o">=</span> <span class="n">dispersion_added</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">molecule</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_spreads_fh</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_writer</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">if</span> <span class="n">spreads</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_spreads_fh</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">spreads</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s2">""</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_writer</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">DictWriter</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_spreads_fh</span><span class="p">,</span> <span class="n">fieldnames</span><span class="o">=</span><span class="n">SPREAD_COLUMNS</span>
+                <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_writer</span><span class="o">.</span><span class="n">writeheader</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_n_recorded</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_t_record</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">calculate</span><span class="p">()</span>
+            <span class="n">step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n_calc</span> <span class="o">-</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">committee</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">every</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">step</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">every</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">record</span><span class="p">(</span><span class="n">step</span><span class="p">)</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">record</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">step</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">            </span><span class="sd">"""The committee spreads of the current structure, written out."""</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">xnn.common.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">collate</span><span class="p">,</span> <span class="n">structure_to_graph</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">xnn.common.deploy.mdi_engine</span><span class="w"> </span><span class="kn">import</span> <span class="n">BOHR_TO_ANGSTROM</span><span class="p">,</span> <span class="n">HARTREE_TO_EV</span>
+
+            <span class="kn">from</span><span class="w"> </span><span class="nn">.molecules</span><span class="w"> </span><span class="kn">import</span> <span class="n">masses</span><span class="p">,</span> <span class="n">molecules</span>
+
+            <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+            <span class="n">pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coords_bohr</span> <span class="o">*</span> <span class="n">BOHR_TO_ANGSTROM</span>
+            <span class="n">cell</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_bohr</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_bohr</span> <span class="o">*</span> <span class="n">BOHR_TO_ANGSTROM</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">"pos"</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">as_tensor</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">),</span>
+                <span class="s2">"atomic_numbers"</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">as_tensor</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">atomic_numbers</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">long</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span>
+                <span class="p">),</span>
+                <span class="s2">"cell"</span><span class="p">:</span> <span class="p">(</span>
+                    <span class="kc">None</span>
+                    <span class="k">if</span> <span class="n">cell</span> <span class="ow">is</span> <span class="kc">None</span>
+                    <span class="k">else</span> <span class="n">torch</span><span class="o">.</span><span class="n">as_tensor</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+                <span class="p">),</span>
+                <span class="s2">"pbc"</span><span class="p">:</span> <span class="p">(</span>
+                    <span class="kc">None</span>
+                    <span class="k">if</span> <span class="n">cell</span> <span class="ow">is</span> <span class="kc">None</span>
+                    <span class="k">else</span> <span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">bool</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+                <span class="p">),</span>
+                <span class="s2">"total_charge"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_charge</span><span class="p">,</span>
+            <span class="p">}</span>
+            <span class="n">g</span> <span class="o">=</span> <span class="n">collate</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">structure_to_graph</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">committee</span><span class="o">.</span><span class="n">cutoff</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)]</span>
+            <span class="p">)</span>
+            <span class="n">g</span><span class="o">.</span><span class="n">compute_dtype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span>
+            <span class="n">mol</span> <span class="o">=</span> <span class="n">mas</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">if</span> <span class="n">cell</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">molecule</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">plain</span> <span class="o">=</span> <span class="p">{</span>
+                        <span class="s2">"pos"</span><span class="p">:</span> <span class="n">pos</span><span class="p">,</span>
+                        <span class="s2">"atomic_numbers"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">atomic_numbers</span><span class="p">,</span>
+                        <span class="s2">"cell"</span><span class="p">:</span> <span class="n">cell</span><span class="p">,</span>
+                        <span class="s2">"pbc"</span><span class="p">:</span> <span class="p">[</span><span class="kc">True</span><span class="p">]</span> <span class="o">*</span> <span class="mi">3</span><span class="p">,</span>
+                    <span class="p">}</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">molecule</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">as_tensor</span><span class="p">(</span>
+                        <span class="n">molecules</span><span class="p">(</span><span class="n">plain</span><span class="p">),</span> <span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span>
+                    <span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_masses</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">as_tensor</span><span class="p">(</span>
+                        <span class="n">masses</span><span class="p">(</span><span class="n">plain</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span>
+                    <span class="p">)</span>
+                <span class="n">mol</span><span class="p">,</span> <span class="n">mas</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">molecule</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_masses</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">committee</span><span class="o">.</span><span class="n">disagreement</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">mol</span><span class="p">,</span> <span class="n">mas</span><span class="p">)</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">atomic_numbers</span><span class="p">)</span>
+            <span class="n">row</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">"step"</span><span class="p">:</span> <span class="n">step</span><span class="p">,</span>
+                <span class="s2">"n_atoms"</span><span class="p">:</span> <span class="n">n</span><span class="p">,</span>
+                <span class="s2">"rho_energy"</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s2">"rho_energy"</span><span class="p">][</span><span class="mi">0</span><span class="p">]),</span>
+                <span class="s2">"rho_forces"</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s2">"rho_forces"</span><span class="p">][</span><span class="mi">0</span><span class="p">]),</span>
+                <span class="s2">"rho_forces_max_atom"</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s2">"rho_forces_max_atom"</span><span class="p">][</span><span class="mi">0</span><span class="p">]),</span>
+                <span class="s2">"energy_mean"</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s2">"mean_energy"</span><span class="p">][</span><span class="mi">0</span><span class="p">]),</span>
+                <span class="s2">"engine_energy"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">energy</span> <span class="o">*</span> <span class="n">HARTREE_TO_EV</span><span class="p">,</span>
+            <span class="p">}</span>
+            <span class="k">if</span> <span class="n">cell</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">r</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"rho_pressure"</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">row</span><span class="p">[</span><span class="s2">"rho_pressure"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s2">"rho_pressure"</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+                <span class="n">row</span><span class="p">[</span><span class="s2">"rho_pressure_molecular"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s2">"rho_pressure_molecular"</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">dispersion_added</span><span class="p">:</span>
+                <span class="n">f_engine</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">forces</span> <span class="o">*</span> <span class="p">(</span><span class="n">HARTREE_TO_EV</span> <span class="o">/</span> <span class="n">BOHR_TO_ANGSTROM</span><span class="p">)</span>
+                <span class="n">f_mean</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="s2">"mean_forces"</span><span class="p">]</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">double</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+                <span class="n">row</span><span class="p">[</span><span class="s2">"max_dF"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">f_engine</span> <span class="o">-</span> <span class="n">f_mean</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_t_record</span> <span class="o">+=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_n_recorded</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">row</span><span class="p">[</span><span class="s2">"seconds"</span><span class="p">]</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_writer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">({</span><span class="n">k</span><span class="p">:</span> <span class="n">_cell</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">k</span><span class="p">))</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">SPREAD_COLUMNS</span><span class="p">})</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_spreads_fh</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+            <span class="n">hit</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="si">:</span><span class="s2">.4g</span><span class="si">}</span><span class="s2"> &gt;= </span><span class="si">{</span><span class="n">value</span><span class="si">:</span><span class="s2">.4g</span><span class="si">}</span><span class="s2">"</span>
+                <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">row</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">row</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">value</span>
+            <span class="p">]</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">hit</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">flagged</span><span class="p">)</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">frames</span><span class="p">:</span>
+                <span class="n">atom_sd</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="s2">"rho_forces_atom"</span><span class="p">]</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">double</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">hit</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">flagged</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_write_frame</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">flagged</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">cell</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">atom_sd</span><span class="p">,</span> <span class="n">hit</span><span class="p">)</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">frames</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_write_frame</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">frames</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">cell</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">atom_sd</span><span class="p">,</span> <span class="n">hit</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">row</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">_write_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">cell</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">atom_sd</span><span class="p">,</span> <span class="n">hit</span><span class="p">):</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">ase</span><span class="w"> </span><span class="kn">import</span> <span class="n">Atoms</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">ase.io</span><span class="w"> </span><span class="kn">import</span> <span class="n">write</span>
+
+            <span class="n">a</span> <span class="o">=</span> <span class="n">Atoms</span><span class="p">(</span><span class="n">numbers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">atomic_numbers</span><span class="p">,</span> <span class="n">positions</span><span class="o">=</span><span class="n">pos</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">cell</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">a</span><span class="o">.</span><span class="n">set_cell</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
+                <span class="n">a</span><span class="o">.</span><span class="n">set_pbc</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">row</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">a</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="sa">f</span><span class="s2">"AL/</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">"</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+            <span class="n">a</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s2">"SEAMM/configuration_name"</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"step </span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">'step'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_charge</span><span class="p">:</span>
+                <span class="n">a</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s2">"total_charge"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_charge</span>
+            <span class="k">if</span> <span class="n">hit</span><span class="p">:</span>
+                <span class="n">a</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s2">"AL/flags"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"; "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">hit</span><span class="p">)</span>
+            <span class="n">a</span><span class="o">.</span><span class="n">arrays</span><span class="p">[</span><span class="s2">"rho_forces_atom"</span><span class="p">]</span> <span class="o">=</span> <span class="n">atom_sd</span>
+            <span class="n">write</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">"extxyz"</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_spreads_fh</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_spreads_fh</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_spreads_fh</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n_recorded</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">"spreads recorded on </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_n_recorded</span><span class="si">}</span><span class="s2"> steps, "</span>
+                    <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="mi">1000</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">_t_record</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">_n_recorded</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> ms each"</span>
+                <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">CommitteeEngine</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_cell</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">""</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="CommitteeEngine">
+<a class="viewcode-back" href="../../api/active_learning_step.html#active_learning_step.engine.CommitteeEngine">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">CommitteeEngine</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Build the committee MDI engine (see :func:`_engine_class`)."""</span>
+    <span class="k">return</span> <span class="n">_engine_class</span><span class="p">()(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="main">
+<a class="viewcode-back" href="../../api/active_learning_step.html#active_learning_step.engine.main">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">argv</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Serve a committee mean to an MDI driver, recording its spreads."""</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span>
+        <span class="n">prog</span><span class="o">=</span><span class="s2">"seamm-al engine"</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">"MDI engine serving the mean of a committee of xnn checkpoints"</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">"--members"</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s2">"+"</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">"the members' checkpoints"</span>
+    <span class="p">)</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">"--drop-member"</span><span class="p">,</span>
+        <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s2">"append"</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="p">[],</span>
+        <span class="n">metavar</span><span class="o">=</span><span class="s2">"K"</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">"leave out the K-th member, counting from 0 (repeatable)"</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">"-mdi"</span><span class="p">,</span>
+        <span class="s2">"--mdi"</span><span class="p">,</span>
+        <span class="n">dest</span><span class="o">=</span><span class="s2">"mdi_options"</span><span class="p">,</span>
+        <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s1">'MDI options, e.g. "-role ENGINE -name xnn -method MPI"'</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">"--device"</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">"cuda"</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s2">"cpu"</span><span class="p">)</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">"--dtype"</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="p">(</span><span class="s2">"float32"</span><span class="p">,</span> <span class="s2">"float64"</span><span class="p">))</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">"--no-dispersion"</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s2">"store_true"</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">"serve the energy without the dispersion recorded as subtracted"</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">"--eeq-reuse"</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">"store_true"</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">"carry the D4 EEQ solve between steps"</span>
+    <span class="p">)</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">"--total-charge"</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">"--threads"</span><span class="p">,</span>
+        <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">"CPU threads for torch (default: OMP_NUM_THREADS, else the "</span>
+        <span class="s2">"CPUs this process may use)"</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">"--spreads"</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">"CSV of the spreads"</span><span class="p">)</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">"--every"</span><span class="p">,</span>
+        <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">"record the spreads every N evaluations (default 10)"</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">"--flag"</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s2">"append"</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="p">[],</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">"NAME=VALUE: write frames whose spread reaches it (repeatable)"</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">"--flagged"</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">"flagged.extxyz"</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">"extxyz of the flagged frames (default flagged.extxyz)"</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">"--frames"</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">"extxyz of every frame recorded"</span><span class="p">)</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">"--log-level"</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">"INFO"</span><span class="p">)</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">parse_args</span><span class="p">(</span><span class="n">argv</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span>
+        <span class="n">level</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">log_level</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span>
+        <span class="nb">format</span><span class="o">=</span><span class="s2">"</span><span class="si">%(asctime)s</span><span class="s2"> </span><span class="si">%(levelname)s</span><span class="s2"> </span><span class="si">%(name)s</span><span class="s2">: </span><span class="si">%(message)s</span><span class="s2">"</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.committee</span><span class="w"> </span><span class="kn">import</span> <span class="n">Committee</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.threads</span><span class="w"> </span><span class="kn">import</span> <span class="n">set_threads</span>
+
+    <span class="n">set_threads</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">threads</span><span class="p">)</span>
+    <span class="n">paths</span> <span class="o">=</span> <span class="p">[</span><span class="n">m</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">members</span><span class="p">)</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">drop_member</span><span class="p">)]</span>
+    <span class="n">dtype</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">torch</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span> <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">dtype</span> <span class="k">else</span> <span class="kc">None</span>
+    <span class="n">members</span><span class="p">,</span> <span class="n">records</span> <span class="o">=</span> <span class="n">build_committee</span><span class="p">(</span><span class="n">paths</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">committee_mean_potential</span><span class="p">(</span>
+        <span class="n">device</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">device</span><span class="p">,</span>
+        <span class="n">dispersion</span><span class="o">=</span><span class="kc">False</span> <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">no_dispersion</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">eeq_reuse</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">eeq_reuse</span><span class="p">,</span>
+        <span class="n">members</span><span class="o">=</span><span class="n">members</span><span class="p">,</span>
+        <span class="n">records</span><span class="o">=</span><span class="n">records</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">want</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">spreads</span> <span class="ow">or</span> <span class="n">args</span><span class="o">.</span><span class="n">flag</span> <span class="ow">or</span> <span class="n">args</span><span class="o">.</span><span class="n">frames</span><span class="p">)</span>
+    <span class="n">committee</span> <span class="o">=</span> <span class="n">Committee</span><span class="p">(</span><span class="n">members</span><span class="p">,</span> <span class="n">subtracted_dispersion</span><span class="o">=</span><span class="n">records</span><span class="p">)</span> <span class="k">if</span> <span class="n">want</span> <span class="k">else</span> <span class="kc">None</span>
+    <span class="n">dispersion_added</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">no_dispersion</span> <span class="ow">and</span> <span class="n">records</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+    <span class="n">mpi_comm</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="s2">"MPI"</span> <span class="ow">in</span> <span class="n">args</span><span class="o">.</span><span class="n">mdi_options</span><span class="o">.</span><span class="n">split</span><span class="p">():</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">mpi4py</span><span class="w"> </span><span class="kn">import</span> <span class="n">MPI</span>
+
+        <span class="n">mpi_comm</span> <span class="o">=</span> <span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span>
+    <span class="n">engine</span> <span class="o">=</span> <span class="n">CommitteeEngine</span><span class="p">(</span>
+        <span class="n">model</span><span class="p">,</span>
+        <span class="n">cutoff</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">cutoff</span><span class="p">),</span>
+        <span class="n">device</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">device</span><span class="p">,</span>
+        <span class="n">total_charge</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">total_charge</span><span class="p">,</span>
+        <span class="n">committee</span><span class="o">=</span><span class="n">committee</span><span class="p">,</span>
+        <span class="n">every</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">every</span> <span class="k">if</span> <span class="n">want</span> <span class="k">else</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">spreads</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">spreads</span><span class="p">,</span>
+        <span class="n">flags</span><span class="o">=</span><span class="n">_flags</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">flag</span><span class="p">),</span>
+        <span class="n">flagged</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">flagged</span> <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">flag</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">frames</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">frames</span><span class="p">,</span>
+        <span class="n">dispersion_added</span><span class="o">=</span><span class="n">dispersion_added</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">"engine: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">paths</span><span class="p">)</span><span class="si">}</span><span class="s2"> members (dropped </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">drop_member</span><span class="p">)</span><span class="si">}</span><span class="s2">), cutoff "</span>
+        <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">engine</span><span class="o">.</span><span class="n">cutoff</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> A, </span><span class="si">{</span><span class="n">engine</span><span class="o">.</span><span class="n">device</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">engine</span><span class="o">.</span><span class="n">dtype</span><span class="si">}</span><span class="s2">, dispersion "</span>
+        <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="s1">'added'</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">dispersion_added</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">'not added'</span><span class="si">}</span><span class="s2">, spreads every "</span>
+        <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">engine</span><span class="o">.</span><span class="n">every</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">want</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="mi">0</span><span class="si">}</span><span class="s2">"</span>
+    <span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">engine</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">mdi_options</span><span class="p">,</span> <span class="n">mpi_comm</span><span class="o">=</span><span class="n">mpi_comm</span><span class="p">)</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">engine</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">return</span> <span class="mi">0</span></div>
+
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+
+    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.23.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
