@@ -2,6 +2,8 @@
 
 """The ``seamm-al`` command: query-by-committee active learning from the shell.
 
+::
+
     seamm-al score -m m0/best.pt m1/best.pt ... [-o scores.csv] pool.extxyz [...]
     seamm-al train -c recipe.yaml -o committee labelled.extxyz [--cell-share 0.15]
     seamm-al select scores.csv --budget 75000 \\

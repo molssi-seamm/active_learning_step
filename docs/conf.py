@@ -40,6 +40,10 @@ import active_learning_step  # noqa: E402
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
+# The committee, engine and check modules import torch and xnn (an MLFF environment);
+# the documentation is built without them.
+autodoc_mock_imports = ["torch", "xnn", "mdi", "mpi4py"]
+
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.githubpages',
