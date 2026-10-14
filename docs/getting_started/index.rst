@@ -32,5 +32,15 @@ values of a column of the pool::
     seamm-al select pool.csv --random 1 --stratify-column source \
         --cost cluster=4 --max-frames 50
 
+In a SEAMM flowchart
+====================
+Add an Active Learning step and, inside it, the sub-steps: for example Score Pool,
+taking the candidates from the job's database or from files, then Select Frames with
+a budget. The sub-steps that need torch run in the MLFF environment of the xnn
+plug-in, set in the installation's ``xnn.ini``; nothing has to be installed there.
+Train Committee trains a committee and can save it as an xnn model, which the Model
+Chemistry step then offers for molecular dynamics that records where the members
+disagree. See :doc:`../user_guide/flowcharts`.
+
 That should be enough to get started. For more detail, see the
 :ref:`User Guide <user-guide>`.

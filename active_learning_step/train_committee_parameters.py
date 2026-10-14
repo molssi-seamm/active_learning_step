@@ -221,6 +221,20 @@ class TrainCommitteeParameters(seamm.Parameters):  # noqa: E999
                 "plus n."
             ),
         },
+        "model name": {
+            "default": "",
+            "kind": "string",
+            "default_units": "",
+            "enumeration": tuple(),
+            "format_string": "",
+            "description": "Save as the model:",
+            "help_text": (
+                "Also save the committee among your xnn models with this name, so "
+                "that the Model Chemistry step offers it as xnn:MLFF@<name>, for "
+                "example to run molecular dynamics with it and record where its "
+                "members disagree. Leave empty not to save it."
+            ),
+        },
         "device": {
             "default": "from the recipe",
             "kind": "string",

@@ -18,16 +18,11 @@ class TkSubstep(seamm.TkNode):
     Subclasses set :attr:`dialog_title`, list in :attr:`triggers` the choices
     that change which parameters apply, and say which do in :meth:`visible`, so
     a setting that does not apply to the current choices is never shown.
-
-    Attributes
-    ----------
-    dialog_title : str
-        The title of the dialog.
-    triggers : tuple of str
-        The parameters whose change lays the dialog out again.
     """
 
+    #: The title of the dialog
     dialog_title = "Active Learning"
+    #: The parameters whose change lays the dialog out again
     triggers = ()
 
     def __init__(

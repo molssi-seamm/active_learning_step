@@ -141,7 +141,9 @@ def _mlff_env(tmp_path, fake=False):
         # a wrapper, not a link: a link to a venv's python loses the venv
         python.write_text(f'#!/bin/sh\nexec "{sys.executable}" "$@"\n')
     python.chmod(0o755)
-    return {"xnn": {"code": str(bin_dir / "xnn"), "device": "cpu"}}
+    return {
+        "xnn": {"code": str(bin_dir / "xnn"), "device": "cpu", "models": "personal:xnn"}
+    }
 
 
 def _write_pool(path, n):
@@ -242,7 +244,10 @@ def test_train_check_score_select(tmp_path):
     steps:
     - Active Learning:
         steps:
-        - Train Committee: {{training data: "{data}", recipe: "{recipe}"}}
+        - Train Committee:
+            training data: "{data}"
+            recipe: "{recipe}"
+            model name: round1
         - Check Committee: {{calibrate: "rho_forces:0.15"}}
         - Score Pool: {{pool: files, pool files: "{pool}"}}
         - Select Frames: {{thresholds: from Check Committee}}
@@ -263,5 +268,9 @@ def test_train_check_score_select(tmp_path):
         "water 5",
     ]
     text = _text(job, 1)
+    # saved among the user's xnn models
+    saved = tmp_path / "home" / ".seamm.d" / "data" / "Forcefields" / "xnn" / "round1"
+    assert sorted(p.name for p in saved.glob("m*/best.pt")) == ["best.pt"] * 5
+    assert "xnn:MLFF@round1" in text
     assert "Member 4 is flagged" in text
     assert "Selected 3 of 6 structures (3 clusters)." in text

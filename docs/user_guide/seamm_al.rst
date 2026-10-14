@@ -32,7 +32,8 @@ Scoring
     seamm-al score -m m0/best.pt m1/best.pt m2/best.pt m3/best.pt m4/best.pt \
         -o scores.csv --carry temperature pool.extxyz
 
-The pools are extxyz files or SDF files written by SEAMM. ``scores.csv`` has one row
+The pools are extxyz files or SDF files written by SEAMM, either of them
+optionally gzipped (``trajectory.extxyz.gz``). ``scores.csv`` has one row
 per frame:
 
 =========================== ==========================================================

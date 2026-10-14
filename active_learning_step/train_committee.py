@@ -7,6 +7,7 @@ import logging
 from pathlib import Path
 import importlib.resources
 import shlex
+import shutil
 import textwrap
 
 from tabulate import tabulate
@@ -153,6 +154,8 @@ class TrainCommittee(active_learning_step.Substep):
             text += " Each member takes {number of steps} optimizer steps."
         if str(P["recipe changes"]).strip() != "":
             text += " The recipe is changed by {recipe changes}."
+        if str(P["model name"]).strip() != "":
+            text += " The committee is saved as the xnn model {model name}."
 
         return self.header + "\n" + __(text, **P, indent=4 * " ").__str__()
 
@@ -211,7 +214,62 @@ class TrainCommittee(active_learning_step.Substep):
         self.state.pop("thresholds", None)
         self.analyze(committee=out, P=P)
 
+        name = str(P["model name"]).strip()
+        if name != "":
+            saved = self.save_as_model(out, name)
+            text = (
+                f"The committee is saved as the xnn model '{name}' in {saved}, "
+                f"offered by the Model Chemistry step as xnn:MLFF@{name}."
+            )
+            printer.normal(__(text, indent=self.indent + 4 * " "))
+            printer.normal("")
+
         return next_node
+
+    def save_as_model(self, committee, name):
+        """Copy the committee's members into the user's xnn model directory.
+
+        Only what the engine needs is copied: each member's ``best.pt``, with its
+        ``member.json`` and ``history.json``, and the committee's manifest.
+
+        Returns
+        -------
+        pathlib.Path
+            The new model directory.
+        """
+        from xnn_step import XnnStep
+
+        for c in ":@/|":
+            if c in name:
+                raise ValueError(f"{self.title}: a model name cannot contain '{c}'")
+        config = self.mlff_config()
+        directories = XnnStep.model_directories(config)
+        personal = [d for prefix, d in directories if prefix.startswith("personal:")]
+        if personal:
+            base = personal[0]
+        elif directories:
+            base = directories[0][1]
+        else:
+            raise RuntimeError(
+                f"{self.title}: xnn.ini lists no model directories to save into"
+            )
+        target = base / name
+        if target.exists() or (base / f"{name}.pt").exists():
+            raise FileExistsError(
+                f"{self.title}: there is already an xnn model '{name}' in {base}"
+            )
+        target.mkdir(parents=True)
+        for path in ("manifest.json", "frames.csv"):
+            if (committee / path).exists():
+                shutil.copy2(committee / path, target / path)
+        for mdir in member_dirs(committee):
+            if not (mdir / "best.pt").exists():
+                continue
+            (target / mdir.name).mkdir()
+            for path in ("best.pt", "member.json", "history.json"):
+                if (mdir / path).exists():
+                    shutil.copy2(mdir / path, target / mdir.name / path)
+        return target
 
     def analyze(self, indent="", committee=None, P=None, **kwargs):
         """Print the members' training and store the results.
