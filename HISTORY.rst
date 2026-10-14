@@ -16,8 +16,10 @@ History
       steps and can copy them into a new system.
     * Train Committee can save the committee as an xnn model, which the Model
       Chemistry step then offers (with xnn-step 2026.10.14 or later) for molecular
-      dynamics with the committee mean, recording the members' spreads.
+      dynamics with the committee mean, recording the members' spreads; with
+      lammps-step 2026.10.14.1 or later this also runs on the CPU.
     * Candidate files may be gzipped, such as the trajectories LAMMPS writes.
+    * Requires xnn-step 2026.10.14 or later.
 
 2026.10.14 -- Initial release: query-by-committee active learning for MLFFs
     * A committee of machine-learned force fields, trained on different folds of the

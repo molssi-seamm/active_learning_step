@@ -6,4 +6,4 @@ seamm-exec
 seamm-util
 seamm-widgets
 tabulate
-xnn-step
+xnn-step>=2026.10.14

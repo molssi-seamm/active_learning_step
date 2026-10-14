@@ -155,4 +155,5 @@ spreads are written, ``--flag rho_forces=0.2`` writes the frames whose spread re
 the value to ``flagged.extxyz``, and ``--dtype float32`` and ``--eeq-reuse`` work as
 for a single model. The engine is about the members' cost together, so expect molecular
 dynamics several times slower than with one model on a CPU, and about twice as slow on
-a GPU.
+a GPU. Without a free GPU the LAMMPS step (2026.10.14.1 or later) runs the engine on
+the CPU with the job's cores, which is practical for boxes of a few hundred atoms.
