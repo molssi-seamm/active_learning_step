@@ -106,8 +106,8 @@ def parser():
         "--threads",
         type=int,
         default=None,
-        help="CPU threads for torch (default: OMP_NUM_THREADS, else the CPUs this "
-        "process may use)",
+        help="CPU threads for torch (default: TORCH_NUM_THREADS, else "
+        "OMP_NUM_THREADS, else the CPUs this process may use)",
     )
     s.add_argument(
         "--batch-size",
@@ -176,8 +176,8 @@ def parser():
         "--threads",
         type=int,
         default=None,
-        help="CPU threads for torch (default: OMP_NUM_THREADS, else the CPUs this "
-        "process may use)",
+        help="CPU threads for torch (default: TORCH_NUM_THREADS, else "
+        "OMP_NUM_THREADS, else the CPUs this process may use)",
     )
     r.add_argument("--device", default=None, help="override the config's device")
     r.add_argument(
@@ -236,8 +236,8 @@ def parser():
         "--threads",
         type=int,
         default=None,
-        help="CPU threads for torch (default: OMP_NUM_THREADS, else the CPUs this "
-        "process may use)",
+        help="CPU threads for torch (default: TORCH_NUM_THREADS, else "
+        "OMP_NUM_THREADS, else the CPUs this process may use)",
     )
     c.add_argument(
         "--calibrate",
