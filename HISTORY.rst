@@ -1,6 +1,12 @@
 =======
 History
 =======
+2026.10.17 -- Bugfix: a committee's engine beside a GPU uses its CPU threads
+    * The CPU threads torch uses now follow ``TORCH_NUM_THREADS`` before
+      ``OMP_NUM_THREADS``. Next to a GPU, LAMMPS's launcher keeps ``OMP_NUM_THREADS`` at 1
+      and gives torch 4 threads through ``TORCH_NUM_THREADS``, but the committee's
+      engine read only ``OMP_NUM_THREADS``, so its work on the CPU, such as the spreads,
+      ran on a single thread. The engine's log says which setting it used.
 
 2026.10.14.1 -- The Active Learning step for flowcharts
     * The Active Learning step now holds four sub-steps: Train Committee, Check

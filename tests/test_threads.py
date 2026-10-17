@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""The CPU thread count: requested, else OMP_NUM_THREADS, else the affinity mask."""
+"""The CPU thread count: requested, else TORCH_NUM_THREADS, else OMP_NUM_THREADS, else
+the affinity mask."""
 
 import pytest
 
@@ -22,6 +23,16 @@ def test_omp_num_threads_as_seamm_and_pbs_set_it():
         4,
         "OMP_NUM_THREADS",
     )
+
+
+def test_torch_num_threads_before_omp_num_threads():
+    # mdi_bind.sh beside a GPU: OMP_NUM_THREADS=1 for everything, 4 for torch
+    env = {"OMP_NUM_THREADS": "1", "TORCH_NUM_THREADS": "4"}
+    assert resolve_threads(None, env, 64) == (4, "TORCH_NUM_THREADS")
+    assert resolve_threads(2, env, 64) == (2, "requested")
+    # an unusable TORCH_NUM_THREADS falls through to OMP_NUM_THREADS
+    env = {"OMP_NUM_THREADS": "3", "TORCH_NUM_THREADS": "0"}
+    assert resolve_threads(None, env, 64) == (3, "OMP_NUM_THREADS")
 
 
 def test_otherwise_the_cpus_this_process_may_use():
