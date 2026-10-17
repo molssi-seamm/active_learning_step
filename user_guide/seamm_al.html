@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Command line: seamm-al &#8212; SEAMM Active Learning Plug-in 2026.10.14.1 documentation</title>
+    <title>Command line: seamm-al &#8212; SEAMM Active Learning Plug-in 2026.10.17 documentation</title>
   
   
   
@@ -40,7 +40,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="../_static/documentation_options.js?v=f0c00ab5"></script>
+    <script src="../_static/documentation_options.js?v=fed69469"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -55,7 +55,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="2026.10.14.1" />
+  <meta name="docsearch:version" content="2026.10.17" />
   
     
     <script src="../_static/searchtools.js"></script>
@@ -530,8 +530,10 @@ the engine give the same results with older releases, but a committee trained wi
 can only be read by 0.13 or later. <code class="docutils literal notranslate"><span class="pre">select</span></code> needs neither torch nor xnn and runs in
 any SEAMM environment. Without installing the package, run <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span>
 <span class="pre">active_learning_step.cli</span></code> with the repository on <code class="docutils literal notranslate"><span class="pre">PYTHONPATH</span></code>.</p>
-<p>On a CPU, torch uses <code class="docutils literal notranslate"><span class="pre">--threads</span></code> threads when given, otherwise <code class="docutils literal notranslate"><span class="pre">OMP_NUM_THREADS</span></code>
-(which SEAMM, PBS and most launchers set from the job’s allocation), otherwise as many
+<p>On a CPU, torch uses <code class="docutils literal notranslate"><span class="pre">--threads</span></code> threads when given, otherwise <code class="docutils literal notranslate"><span class="pre">TORCH_NUM_THREADS</span></code>
+(set for torch alone, as LAMMPS’s <code class="docutils literal notranslate"><span class="pre">mdi_bind.sh</span></code> does for an engine beside a GPU),
+otherwise <code class="docutils literal notranslate"><span class="pre">OMP_NUM_THREADS</span></code> (which SEAMM, PBS and most launchers set from the job’s
+allocation), otherwise as many
 as the CPUs the process may run on, which a scheduler’s cpuset or <code class="docutils literal notranslate"><span class="pre">taskset</span></code> limits.
 No scheduler is assumed, so the same commands work under Slurm, PBS, SEAMM’s own
 JobServer or none.</p>
