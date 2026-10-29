@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>History &#8212; SEAMM Active Learning Plug-in 2026.10.17 documentation</title>
+    <title>History &#8212; SEAMM Active Learning Plug-in 2026.10.29 documentation</title>
   
   
   
@@ -40,7 +40,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="_static/documentation_options.js?v=fed69469"></script>
+    <script src="_static/documentation_options.js?v=1fe4c37e"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -54,7 +54,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="2026.10.17" />
+  <meta name="docsearch:version" content="2026.10.29" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -511,6 +511,14 @@
   <section id="history">
 <h1>History<a class="headerlink" href="#history" title="Link to this heading">#</a></h1>
 <dl class="simple">
+<dt>2026.10.29 – Bugfix: names with ‘=’ in the extended XYZ files</dt><dd><ul class="simple">
+<li><p>The extended XYZ files of scored and selected frames are written with ASE, which
+leaves a value with ‘=’ but no space unquoted and then reads it back merged with
+the next key: a configuration named ‘LiDMCct_chel_ctmin_toO=’ came back as
+‘LiDMCct_chel_ctmin_toO=pbc=F F F’. Such values, and those with backslashes, are
+now quoted, so every name reads back as itself.</p></li>
+</ul>
+</dd>
 <dt>2026.10.17 – Bugfix: a committee’s engine beside a GPU uses its CPU threads</dt><dd><ul class="simple">
 <li><p>The CPU threads torch uses now follow <code class="docutils literal notranslate"><span class="pre">TORCH_NUM_THREADS</span></code> before
 <code class="docutils literal notranslate"><span class="pre">OMP_NUM_THREADS</span></code>. Next to a GPU, LAMMPS’s launcher keeps <code class="docutils literal notranslate"><span class="pre">OMP_NUM_THREADS</span></code> at 1

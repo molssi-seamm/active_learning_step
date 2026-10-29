@@ -84,6 +84,14 @@ active\_learning\_step.engine module
    :show-inheritance:
    :undoc-members:
 
+active\_learning\_step.extxyz\_io module
+----------------------------------------
+
+.. automodule:: active_learning_step.extxyz_io
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
 active\_learning\_step.lammps\_data module
 ------------------------------------------
 
