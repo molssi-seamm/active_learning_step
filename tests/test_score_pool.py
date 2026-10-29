@@ -66,3 +66,17 @@ def test_copy_to_new_system(system_db):
     assert np.allclose(copy.cell.parameters, configuration.cell.parameters)
     # the system it came from is unchanged
     assert configuration.system.n_configurations == 1
+
+
+def test_description_keeps_braces_in_a_regexp():
+    """A system-name regexp with a {m,n} quantifier is the user's text, not a format
+    field (the Loop step raised KeyError: '6,8' on one, ChemAI 5446)."""
+    import seamm
+    from active_learning_step.score_pool import ScorePool
+
+    step = ScorePool(flowchart=seamm.Flowchart())
+    step._id = ("1",)
+    P = step.parameters.values_to_dict()
+    P["source systems"] = "name regexp"
+    P["source system name"] = "^(CBH:)?C{6,8}$"
+    assert "^(CBH:)?C{6,8}$" in step.description_text(P)
