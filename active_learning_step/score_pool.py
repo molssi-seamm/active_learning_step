@@ -138,6 +138,8 @@ class ScorePool(active_learning_step.Substep):
             where = "the structures in {pool files}"
         else:
             where = seamm.standard_parameters.structure_selection_description(P)
+            # The names and regexps in it are the user's text, not format fields
+            where = where.replace("{", "{{").replace("}", "}}")
             where = "the structures selected from the database. " + where
         if P["committee"] == "none":
             text = f"List {where} for a random draw, without a committee."

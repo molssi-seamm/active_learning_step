@@ -1,6 +1,12 @@
 =======
 History
 =======
+2026.10.29.1 -- Bugfix: a system-name regexp with braces stopped Score Pool
+    * Score Pool with structures selected by a regular expression with a ``{m}`` or
+      ``{m,n}`` quantifier, such as ``^(CBH:)?C{6,8}$``, failed before it ran: the
+      description took the braces for a format field. The names and expressions are
+      now printed as given.
+
 2026.10.29 -- Bugfix: names with '=' in the extended XYZ files
     * The extended XYZ files of scored and selected frames are written with ASE, which
       leaves a value with '=' but no space unquoted and then reads it back merged with
