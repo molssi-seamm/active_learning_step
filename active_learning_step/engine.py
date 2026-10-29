@@ -421,6 +421,7 @@ def _engine_class():
         def _write_frame(self, path, pos, cell, row, atom_sd, hit):
             from ase import Atoms
             from ase.io import write
+            from .extxyz_io import quoted_extxyz
 
             a = Atoms(numbers=self.atomic_numbers, positions=pos)
             if cell is not None:
@@ -435,7 +436,8 @@ def _engine_class():
             if hit:
                 a.info["AL/flags"] = "; ".join(hit)
             a.arrays["rho_forces_atom"] = atom_sd
-            write(path, a, format="extxyz", append=True)
+            with quoted_extxyz():
+                write(path, a, format="extxyz", append=True)
 
         def close(self):
             if self._spreads_fh is not None:
