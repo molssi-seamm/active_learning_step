@@ -357,6 +357,7 @@ def write_pool(configurations, path):
     """
     from ase import Atoms
     from ase.io import write
+    from .extxyz_io import quoted_extxyz
 
     frames = []
     for configuration in configurations:
@@ -381,4 +382,5 @@ def write_pool(configurations, path):
         atoms.info["system_id"] = int(configuration.system.id)
         atoms.info["configuration_id"] = int(configuration.id)
         frames.append(atoms)
-    write(str(path), frames, format="extxyz")
+    with quoted_extxyz():
+        write(str(path), frames, format="extxyz")

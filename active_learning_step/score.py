@@ -272,6 +272,7 @@ def score_pool(
 def _write_atoms(fh, atoms, row, rho_atom, mol):
     """Append a frame with its per-atom spread to the extxyz of ``--atoms``."""
     from ase.io import write
+    from .extxyz_io import quoted_extxyz
 
     a = atoms  # keeps the frame's info, arrays and labels
     a.arrays["rho_forces_atom"] = np.asarray(rho_atom, dtype=float)
@@ -281,4 +282,5 @@ def _write_atoms(fh, atoms, row, rho_atom, mol):
         value = row.get(key)
         if value is not None and not (isinstance(value, float) and np.isnan(value)):
             a.info[f"AL/{key}"] = value
-    write(fh, a, format="extxyz")
+    with quoted_extxyz():
+        write(fh, a, format="extxyz")

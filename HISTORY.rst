@@ -1,6 +1,13 @@
 =======
 History
 =======
+2026.10.29 -- Bugfix: names with '=' in the extended XYZ files
+    * The extended XYZ files of scored and selected frames are written with ASE, which
+      leaves a value with '=' but no space unquoted and then reads it back merged with
+      the next key: a configuration named 'LiDMCct_chel_ctmin_toO=' came back as
+      'LiDMCct_chel_ctmin_toO=pbc=F F F'. Such values, and those with backslashes, are
+      now quoted, so every name reads back as itself.
+
 2026.10.17 -- Bugfix: a committee's engine beside a GPU uses its CPU threads
     * The CPU threads torch uses now follow ``TORCH_NUM_THREADS`` before
       ``OMP_NUM_THREADS``. Next to a GPU, LAMMPS's launcher keeps ``OMP_NUM_THREADS`` at 1
